@@ -25,7 +25,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#if !defined(SF2000)
 #include <dirent.h>
+#else
+#include "../../../dirent.h"
+#endif
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #define STBI_WRITE_ONLY_PNG
 #define STBI_WRITE_NO_FAILURE_STRINGS

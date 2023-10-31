@@ -448,14 +448,20 @@ uint8_t *main_cfgload(char *cfg, int *len)
 #else
 #define CLIFLAG "-"
 #define SEP "/"
+#if !defined(SF2000)
 #include <dirent.h>
+#else
+#include "../../../dirent.h"
+#endif
 #ifdef _MACOS_
 #include <AppKit/AppKit.h>
 #else
 void main_delay(int msec);
 #include <signal.h>     /* including the glib version of this with __USE_MISC doesn't compile... */
 #define __USE_MISC      /* needed for MAP_ANONYMOUS */
+#if !defined(SF2000)
 #include <dlfcn.h>
+#endif
 #include <unistd.h>
 #include <sys/mman.h>
 #include <sys/stat.h>   /* mkdir... */

@@ -24,7 +24,11 @@
 #define _POSIX_C_SOURCE 199309L    /* needed for timespec and nanosleep() */
 #include <time.h>
 #include <fcntl.h>
+#if !defined(SF2000)
 #include <dirent.h>
+#else
+#include "../../../../dirent.h"
+#endif
 #include <unistd.h>
 #include <pthread.h>
 #include <termios.h>
