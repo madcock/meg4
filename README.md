@@ -77,6 +77,33 @@ The proprietary MEG-4 PRO version offers extra functionality over the GPL'd vers
 and it can also *export a standalone WebAssembly* binary with just your game in it, without the built-in editors. These look like
 genuine games, no-one can tell they were created with MEG-4 (assuming your game doesn't crash because the error screen will tell).
 
+Contributors
+------------
+
+I would like to say thanks to [Mátyás Jani](https://gitlab.com/jzombi) for thorough testing and making suggestions on useful
+features, and [Tony Wang](https://github.com/paladin-t) for the Chinese, and [nics_le](https://gitlab.com/nics_le) for the German
+translation fixes!
+
+Social and Newsroom
+-------------------
+
+- [Hacker News](https://news.ycombinator.com/item?id=36358952)
+- [Raspberry Pi Forum](https://forums.raspberrypi.com/viewtopic.php?t=353261)
+- [OpenGameArt](https://opengameart.org/forumtopic/meg-4)
+- [Softpedia](https://www.softpedia.com/get/Gaming-Related/MEG-4.shtml)
+- [AlternativeTo](https://alternativeto.net/software/meg-4/about/)
+- [Slant](https://www.slant.co/topics/17727/viewpoints/15/~fantasy-consoles~meg-4)
+- [EnginesDatabase](https://enginesdatabase.com/engine/meg4/)
+- [Fantasy Console Wiki](https://fantasyconsoles.org/) (on [github](https://paladin-t.github.io/fantasy/))
+- [Hungarian UNIX Portal](https://hup.hu/node/182149) (non-English)
+
+Mirrors
+-------
+
+- [gitlab](https://gitlab.com/bztsrc/meg4)
+- [github](https://github.com/relector-tuxnix/meg4/)
+- [codeberg](https://codeberg.org/bzt/meg4)
+
 Known Bugs
 ----------
 
@@ -92,13 +119,6 @@ On the other hand Lua is 3rd party. Most of its error messages aren't and can't 
 correctly returned, or might be not; it also might segfault and crash MEG-4... These aren't bugs in MEG-4. *Do not* report these.
 I surely could, but it's not my job to fix Lua. Address your complaints to Pontifical Catholic University of Rio de Janeiro. On
 the other hand contributions for Lua workarounds are always welcome.
-
-Contributors
-------------
-
-I would like to say thanks to [Mátyás Jani](https://gitlab.com/jzombi) for thorough testing and making suggestions on useful
-features, and [Tony Wang](https://github.com/paladin-t) for the Chinese, and [nics_le](https://gitlab.com/nics_le) for the German
-translation fixes!
 
 To Do
 -----
@@ -117,6 +137,8 @@ To Do
 - ELSEIF and SELECT CASE in the BASIC compiler
 
 - the BASIC compiler isn't as throughfully tested (yet) as the C compiler
+
+- most of the built-in helps are machine translated, they really could use some fix from a native speaker contributor
 
 Cheers,
 bzt

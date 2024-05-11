@@ -2036,7 +2036,7 @@ Scales a vector with two elements.
 <dt>Parameters</dt><dd>
 | Argument | Description |
 | a | address of two floats |
-| b | scaler value |
+| s | scaler value |
 </dd>
 <dt>See Also</dt><dd>
 [dotv2], [lenv2], [negv2], [addv2], [subv2], [mulv2], [divv2], [clampv2], [lerpv2], [normv2]

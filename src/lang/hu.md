@@ -1517,7 +1517,7 @@ Igaz értékkel tér vissza, ha legalább egy billentyű várakozik a sorban (de
 1 ha van kiolvasatlan billentyű a sorban, egyébként 0 ha a sor üres.
 </dd>
 <dt>Lásd még</dt><dd>
-[pendkey], [lenkey], [speckey]
+[popkey], [lenkey], [speckey]
 </dd>
 <hr>
 ## lenkey
@@ -2035,7 +2035,7 @@ Atméretezi a kételemű vektort (skálázás, skalárral szorzás).
 <dt>Paraméterek</dt><dd>
 | Paraméter | Leírás |
 | a | két float címe |
-| b | skálázó érték |
+| s | skálázó érték |
 </dd>
 <dt>Lásd még</dt><dd>
 [dotv2], [lenv2], [negv2], [addv2], [subv2], [mulv2], [divv2], [clampv2], [lerpv2], [normv2]
@@ -2233,7 +2233,7 @@ Atméretezi a háromelemű vektort (skálázás, skalárral szorzás).
 <dt>Paraméterek</dt><dd>
 | Paraméter | Leírás |
 | a | három float címe |
-| b | skálázó érték |
+| s | skálázó érték |
 </dd>
 <dt>Lásd még</dt><dd>
 [dotv3], [lenv3], [negv3], [addv3], [subv3], [mulv3], [divv3], [crossv3], [clampv3], [lerpv3], [normv3]
@@ -2449,7 +2449,7 @@ Atméretezi a négyelemű vektort (skálázás, skalárral szorzás).
 <dt>Paraméterek</dt><dd>
 | Paraméter | Leírás |
 | a | négy float címe |
-| b | skálázó érték |
+| s | skálázó érték |
 </dd>
 <dt>Lásd még</dt><dd>
 [dotv4], [lenv4], [negv4], [addv4], [subv4], [mulv4], [divv4], [clampv4], [lerpv4], [normv4]
@@ -2682,7 +2682,7 @@ Atméretezi a kvaterniót (skálázás, skalárral szorzás).
 <dt>Paraméterek</dt><dd>
 | Paraméter | Leírás |
 | a | négy float címe |
-| b | skálázó érték |
+| s | skálázó érték |
 </dd>
 <dt>Lásd még</dt><dd>
 [idq], [eulerq], [dotq], [lenq], [negq], [addq], [subq], [mulq], [rotq], [lerpq], [slerpq], [normq]

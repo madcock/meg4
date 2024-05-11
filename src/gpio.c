@@ -123,7 +123,7 @@ int meg4_api_gpio_get(uint8_t pin)
 /**
  * Write the value to a GPIO pin.
  * @param pin physical pin number, 1 to 40
- * @param value 1 to set the pin high, 0 for low.
+ * @param value 1 to set the pin high, 0 for low
  * @return Returns 0 on success, -1 on error (GPIO pin not supported).
  * @see [gpio_get]
  */

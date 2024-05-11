@@ -507,7 +507,7 @@ void help_view(void)
                 dy += LINEHEIGHT;
             }
         }
-        menu_scrmax = dy + menu_scroll;
+        menu_scrmax = dy + menu_scroll + 16;
         meg4.mmio.cropy0 = y0;
     } else {
         /* display one help page */
@@ -625,7 +625,7 @@ void help_view(void)
         }
 /*for(i = 0; i < help_pages[help_current].numlink; i++)meg4_box(meg4.valt, 630, 388, dp, help_pages[help_current].link[i].x, help_pages[help_current].link[i].y-12, help_pages[help_current].link[i].w, LINEHEIGHT, 0xffffffff, 0, 0xffffffff, 0, 0, 0, 0, 0);*/
         if(!help_pages[help_current].h) help_pages[help_current].h = dy + menu_scroll;
-        menu_scrmax = help_pages[help_current].h;
+        menu_scrmax = help_pages[help_current].h + 16;
         meg4.mmio.cropy0 = y0;
     }
 }

@@ -86,7 +86,7 @@ The scancodes are as follows:
 
 | Offset | Size       | Description                                                        |
 |--------|-----------:|--------------------------------------------------------------------|
-|  0006E |          2 | gamepad joystick treshold (defaults to 8000)                       |
+|  0006E |          2 | gamepad joystick threshold (defaults to 8000)                      |
 |  00070 |          8 | primary gamepad - keyboard scancode mappings (see [keyboard])      |
 |  00078 |          4 | 4 gamepads button pressed state (see [getpad])                     |
 
@@ -138,8 +138,8 @@ The `△△▽▽◁▷◁▷ⒷⒶ` sequence makes the `KEY_CHEAT` "key" presse
 |  004AA |          2 | light source position X offset (see [tri3d], [tritx], [mesh])      |
 |  004AC |          2 | light source position Y offset                                     |
 |  004AE |          2 | light source position Z offset                                     |
-|  00600 |      64000 | map, 320 x 200 sprite indeces (see [map] and [maze])               |
-|  10000 |      65536 | sprites, 256 x 256 palette indeces, 1024 8 x 8 pixels (see [spr])  |
+|  00600 |      64000 | map, 320 x 200 sprite indices (see [map] and [maze])               |
+|  10000 |      65536 | sprites, 256 x 256 palette indices, 1024 8 x 8 pixels (see [spr])  |
 |  28000 |       2048 | window for 4096 font glyphs (see 0007E, [width] and [text])        |
 
 ## Digital Signal Processor
@@ -205,7 +205,7 @@ in the type byte, although it looks like one of their nibble might belong to the
 | ...    | 000  | No effect                                                  |
 | Arp    | 0xy  | Arpeggio, play note, note+x semitone and note+y semitone   |
 | Po/    | 1xx  | Portamento up, slide period by x up                        |
-| Po\\   | 2xx  | Portamento down, slide period by x up                      |
+| Po\\   | 2xx  | Portamento down, slide period by x down                    |
 | Ptn    | 3xx  | Tone portamento, slide period to period x                  |
 | Vib    | 4xy  | Vibrato, oscillate the pitch by y semitones at x freq      |
 | Ctv    | 5xy  | Continue Tone portamento + volume slide by x up or y down  |
@@ -258,17 +258,17 @@ and to describe how to display them. These are:
 | Code | Description                                                |
 |------|------------------------------------------------------------|
 | `%%` | The `%` character                                          |
-| `%d` | Print the next parameter as a decimal number               |
-| `%u` | Print the next parameter as an unsigned decimal number     |
-| `%x` | Print the next parameter as a hexadecimal number           |
-| `%o` | Print the next parameter as an octal number                |
-| `%b` | Print the next parameter as a binary number                |
-| `%f` | Print the next parameter as a floating point number        |
-| `%s` | Print the next parameter as a string                       |
-| `%c` | Print the next parameter as an UTF-8 character             |
-| `%p` | Print the next parameter as an address (pointer)           |
-| `\t` | Tab, fix vertical position before continue printing        |
-| `\n` | Start a new line for printing                              |
+| `%d` | Next parameter as a decimal number                         |
+| `%u` | Next parameter as an unsigned decimal number               |
+| `%x` | Next parameter as a hexadecimal number                     |
+| `%o` | Next parameter as an octal number                          |
+| `%b` | Next parameter as a binary number                          |
+| `%f` | Next parameter as a floating point number                  |
+| `%s` | Next parameter as a string                                 |
+| `%c` | Next parameter as an UTF-8 character                       |
+| `%p` | Next parameter as an address (pointer)                     |
+| `\t` | Tab, fix vertical position before continue                 |
+| `\n` | Start a new line                                           |
 
 You can add padding by specifying the length between `%` and the code. If that starts with `0`, then value will be padded
 with zeros, otherwise with spaces. For example `%4d` will pad the value to the right with spaces, and `%04x` with zeros.

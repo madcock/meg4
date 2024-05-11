@@ -224,7 +224,7 @@ The scancodes are as follows:
 
 | Offset | Size       | Description                                                        |
 |--------|-----------:|--------------------------------------------------------------------|
-|  0006E |          2 | gamepad joystick treshold (defaults to 8000)                       |
+|  0006E |          2 | gamepad joystick threshold (defaults to 8000)                      |
 |  00070 |          8 | primary gamepad - keyboard scancode mappings (see [keyboard])      |
 |  00078 |          4 | 4 gamepads button pressed state (see [getpad])                     |
 
@@ -276,8 +276,8 @@ The `△△▽▽◁▷◁▷ⒷⒶ` sequence makes the `KEY_CHEAT` "key" presse
 |  004AA |          2 | light source position X offset (see [tri3d], [tritx], [mesh])      |
 |  004AC |          2 | light source position Y offset                                     |
 |  004AE |          2 | light source position Z offset                                     |
-|  00600 |      64000 | map, 320 x 200 sprite indeces (see [map] and [maze])               |
-|  10000 |      65536 | sprites, 256 x 256 palette indeces, 1024 8 x 8 pixels (see [spr])  |
+|  00600 |      64000 | map, 320 x 200 sprite indices (see [map] and [maze])               |
+|  10000 |      65536 | sprites, 256 x 256 palette indices, 1024 8 x 8 pixels (see [spr])  |
 |  28000 |       2048 | window for 4096 font glyphs (see 0007E, [width] and [text])        |
 
 ## Digital Signal Processor
@@ -343,7 +343,7 @@ in the type byte, although it looks like one of their nibble might belong to the
 | ...    | 000  | No effect                                                  |
 | Arp    | 0xy  | Arpeggio, play note, note+x semitone and note+y semitone   |
 | Po/    | 1xx  | Portamento up, slide period by x up                        |
-| Po\\   | 2xx  | Portamento down, slide period by x up                      |
+| Po\\   | 2xx  | Portamento down, slide period by x down                    |
 | Ptn    | 3xx  | Tone portamento, slide period to period x                  |
 | Vib    | 4xy  | Vibrato, oscillate the pitch by y semitones at x freq      |
 | Ctv    | 5xy  | Continue Tone portamento + volume slide by x up or y down  |
@@ -396,17 +396,17 @@ and to describe how to display them. These are:
 | Code | Description                                                |
 |------|------------------------------------------------------------|
 | `%%` | The `%` character                                          |
-| `%d` | Print the next parameter as a decimal number               |
-| `%u` | Print the next parameter as an unsigned decimal number     |
-| `%x` | Print the next parameter as a hexadecimal number           |
-| `%o` | Print the next parameter as an octal number                |
-| `%b` | Print the next parameter as a binary number                |
-| `%f` | Print the next parameter as a floating point number        |
-| `%s` | Print the next parameter as a string                       |
-| `%c` | Print the next parameter as an UTF-8 character             |
-| `%p` | Print the next parameter as an address (pointer)           |
-| `\t` | Tab, fix vertical position before continue printing        |
-| `\n` | Start a new line for printing                              |
+| `%d` | Next parameter as a decimal number                         |
+| `%u` | Next parameter as an unsigned decimal number               |
+| `%x` | Next parameter as a hexadecimal number                     |
+| `%o` | Next parameter as an octal number                          |
+| `%b` | Next parameter as a binary number                          |
+| `%f` | Next parameter as a floating point number                  |
+| `%s` | Next parameter as a string                                 |
+| `%c` | Next parameter as an UTF-8 character                       |
+| `%p` | Next parameter as an address (pointer)                     |
+| `\t` | Tab, fix vertical position before continue                 |
+| `\n` | Start a new line                                           |
 
 You can add padding by specifying the length between `%` and the code. If that starts with `0`, then value will be padded
 with zeros, otherwise with spaces. For example `%4d` will pad the value to the right with spaces, and `%04x` with zeros.
@@ -607,7 +607,7 @@ Write the value to a GPIO pin.
 <dt>Parameters</dt><dd>
 | Argument | Description |
 | pin | physical pin number, 1 to 40 |
-| value | 1 to set the pin high, 0 for low. |
+| value | 1 to set the pin high, 0 for low |
 </dd>
 <dt>Return Value</dt><dd>
 Returns 0 on success, -1 on error (GPIO pin not supported).
@@ -939,7 +939,7 @@ Draws a textured triangle in [3D space].
 void mesh(addr_t verts, addr_t uvs, uint16_t numtri, addr_t tris)
 ```
 <dt>Description</dt><dd>
-Draws a mesh made of triangles in [3D space], using indeces to verticles and texture coordinates (or palette).
+Draws a mesh made of triangles in [3D space], using indices to vertices and texture coordinates (or palette).
 </dd>
 <dt>Parameters</dt><dd>
 | Argument | Description |
@@ -1441,7 +1441,7 @@ Zero if wasn't released, non-zero if released.
 int getbtn(int btn)
 ```
 <dt>Description</dt><dd>
-Gets the mouse button's state.
+Gets the mouse buttons state.
 </dd>
 <dt>Parameters</dt><dd>
 | Argument | Description |
@@ -1467,7 +1467,7 @@ Gets mouse button clicking.
 | btn | one of the [pointer] buttons, `BTN_` |
 </dd>
 <dt>Return Value</dt><dd>
-Zero if not clciked, non-zero if clicked.
+Zero if not clicked, non-zero if clicked.
 </dd>
 <dt>See Also</dt><dd>
 [prspad], [relpad], [getpad], [getbtn], [getkey]
@@ -1519,7 +1519,7 @@ Returns true if there's a key pending in the queue (but leaves the key in the qu
 Returns 1 if there are keys in the queue pending.
 </dd>
 <dt>See Also</dt><dd>
-[pendkey], [lenkey], [speckey]
+[popkey], [lenkey], [speckey]
 </dd>
 <hr>
 ## lenkey
@@ -1738,7 +1738,7 @@ Returns the natural logarithm of the value.
 | val | value |
 </dd>
 <dt>Return Value</dt><dd>
-Returns natural logarithm of val.
+Returns natural logarithm of value.
 </dd>
 <dt>See Also</dt><dd>
 [exp]
@@ -1777,7 +1777,7 @@ Returns the square root of the value. This is a slow operation, try to avoid.
 | val | value |
 </dd>
 <dt>Return Value</dt><dd>
-Square root.
+Square root of the value.
 </dd>
 <dt>See Also</dt><dd>
 [pow], [rsqrt]
@@ -1796,7 +1796,7 @@ Returns the reciprocal of the square root of the value (`1 / sqrt(val)`). Uses J
 | val | value |
 </dd>
 <dt>Return Value</dt><dd>
-Reciprocal of the square root.
+Reciprocal of the square root of the value.
 </dd>
 <dt>See Also</dt><dd>
 [pow], [sqrt]
@@ -2037,7 +2037,7 @@ Scales a vector with two elements.
 <dt>Parameters</dt><dd>
 | Argument | Description |
 | a | address of two floats |
-| b | scaler value |
+| s | scaler value |
 </dd>
 <dt>See Also</dt><dd>
 [dotv2], [lenv2], [negv2], [addv2], [subv2], [mulv2], [divv2], [clampv2], [lerpv2], [normv2]
@@ -2235,7 +2235,7 @@ Scales a vector with three elements.
 <dt>Parameters</dt><dd>
 | Argument | Description |
 | a | address of three floats |
-| b | scaler value |
+| s | scaler value |
 </dd>
 <dt>See Also</dt><dd>
 [dotv3], [lenv3], [negv3], [addv3], [subv3], [mulv3], [divv3], [crossv3], [clampv3], [lerpv3], [normv3]
@@ -2451,7 +2451,7 @@ Scales a vector with four elements.
 <dt>Parameters</dt><dd>
 | Argument | Description |
 | a | address of four floats |
-| b | scaler value |
+| s | scaler value |
 </dd>
 <dt>See Also</dt><dd>
 [dotv4], [lenv4], [negv4], [addv4], [subv4], [mulv4], [divv4], [clampv4], [lerpv4], [normv4]
@@ -2626,9 +2626,9 @@ Loads a quaternion using Euler angles.
 <dt>Parameters</dt><dd>
 | Argument | Description |
 | dst | address of four floats |
-| pitch | rotation around X axis in degress, 0 to 359 |
-| yaw | rotation around Y axis in degress, 0 to 359 |
-| roll | rotation around Z axis in degress, 0 to 359 |
+| pitch | rotation around X axis in degrees, 0 to 359 |
+| yaw | rotation around Y axis in degrees, 0 to 359 |
+| roll | rotation around Z axis in degrees, 0 to 359 |
 </dd>
 <dt>See Also</dt><dd>
 [idq], [dotq], [lenq], [scaleq], [negq], [addq], [subq], [mulq], [rotq], [lerpq], [slerpq], [normq]
@@ -2684,7 +2684,7 @@ Scales a quaternion.
 <dt>Parameters</dt><dd>
 | Argument | Description |
 | a | address of four floats |
-| b | scaler value |
+| s | scaler value |
 </dd>
 <dt>See Also</dt><dd>
 [idq], [eulerq], [dotq], [lenq], [negq], [addq], [subq], [mulq], [rotq], [lerpq], [slerpq], [normq]
@@ -2838,7 +2838,7 @@ Normalizes a quaternion.
 void idm4(addr_t a)
 ```
 <dt>Description</dt><dd>
-Loads an 4 x 4 identity matrix.
+Loads a 4 x 4 identity matrix.
 </dd>
 <dt>Parameters</dt><dd>
 | Argument | Description |
@@ -3029,9 +3029,9 @@ Translate a vertex cloud, aka. place a 3D model in [3D space].
 | x | world X coordinate, -32767 to 32767 |
 | y | world Y coordinate, -32767 to 32767 |
 | z | world Z coordinate, -32767 to 32767 |
-| pitch | rotation around X axis in degress, 0 to 359 |
-| yaw | rotation around Y axis in degress, 0 to 359 |
-| roll | rotation around Z axis in degress, 0 to 359 |
+| pitch | rotation around X axis in degrees, 0 to 359 |
+| yaw | rotation around Y axis in degrees, 0 to 359 |
+| roll | rotation around Z axis in degrees, 0 to 359 |
 | scale | scale, use 1.0 to keep original size |
 </dd>
 <dt>See Also</dt><dd>

@@ -1828,7 +1828,7 @@ void meg4_api_tritx(uint8_t u0, uint8_t v0, int16_t x0, int16_t y0, int16_t z0,
 }
 
 /**
- * Draws a mesh made of triangles in [3D space], using indeces to verticles and texture coordinates (or palette).
+ * Draws a mesh made of triangles in [3D space], using indices to vertices and texture coordinates (or palette).
  * @param verts address of vertices array, 3 x 2 bytes each, X, Y, Z
  * @param uvs address of UVs array (if 0, then palette is used), 2 x 1 bytes each, texture X, Y
  * @param numtri number of triangles
