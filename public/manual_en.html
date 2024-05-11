@@ -512,6 +512,10 @@ loaded at that position, otherwise at the first empty slot.</p>
 red, green and blue numeric values. Each color entry line defines the color of a specific UI element, see the default theme
 <a href="https://gitlab.com/bztsrc/meg4/blob/main/src/misc/theme.gpl" target="new">src/misc/theme.gpl</a> for an example. Theme files can also be edited
 visually using <a href="https://www.gimp.org" target="new">GIMP</a> or <a href="http://www.gpick.org" target="new">Gpick</a> programs too.</p>
+<p>By default, MEG-4 supports the <i>Raspberry Pi 3B+</i> GPIO pin layout, but you can load any arbitrary configuration from a plain text
+file. Here the first line must be "GPIO Layout", the second line is the name of the board, the third line is the device file, and
+the rest is a list of physical pin - GPIO register offset mappings (where -1 means the pin is not assigned to the GPIO chip, eg.
+voltage or ground pins). For an example, see <a href="https://gitlab.com/bztsrc/meg4/blob/main/src/misc/gpio.txt" target="new">src/misc/gpio.txt</a>.</p>
 <p>Furthermore, you can import PICO-8 cartridges (both in <i>.p8</i> and <i>.p8.png</i> formats) and TIC-80 cartridges (both in <i>.tic</i> and
 <i>.tic.png</i> formats), however you'll have to adjust the imported source code, because their memory layouts and API calls are
 different to MEG-4's. But at least you'll get their assets properly. The TIC-80 project format isn't supported because those

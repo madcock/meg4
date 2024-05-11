@@ -393,6 +393,13 @@ int meg4_import(char *name, uint8_t *buf, int len, int lvl)
         goto end;
     }
 
+    /* GPIO Layout */
+    if(!lvl && len > 11 && !memcmp(buf, "GPIO Layout", 11)) {
+        main_log(1, "GPIO layout detected", i);
+        if(gpio_init(buf, len)) main_cfgsave("gpio.txt", buf, len);
+        goto end;
+    }
+
     /* memory overlays (do this soon, in case the overlay's data contains some magic bytes which would be interpreted) */
     if(name && strlen(name) == 9 && !memcmp(name, "mem", 3) && name[5] == '.') {
         i = gethex((uint8_t*)name + 3, 2);

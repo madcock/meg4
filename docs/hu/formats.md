@@ -120,6 +120,11 @@ zöld és kék numerikus színértékekkel. Mindegyik színsor az interfész egy
 [src/misc/theme.gpl](https://gitlab.com/bztsrc/meg4/blob/main/src/misc/theme.gpl) alap téma definícióját. A témafájlok
 szerkeszthetők még vizuálisan a [GIMP](https://www.gimp.org) és a [Gpick](http://www.gpick.org) programokkal is.
 
+Alapból a MEG-4 a *Raspberry Pi 3B+* GPIO tüskekiosztását használja, de tetszőleges beállítás betölthető egy egyszerű szöveges
+fájlból. Ennél az első sornak "GPIO Layout"-nak kell lennie, a második sor a board neve, a harmadik sor az eszközfájl, a többi
+pedig egy fizikai tüske - GPIO regiszter offszet összerendelés lista (ahol a -1 jelenti azt, hogy a tüskéhez nincs GPIO regiszter,
+például táp vagy földelés). Példának lásd [src/misc/gpio.txt](https://gitlab.com/bztsrc/meg4/blob/main/src/misc/gpio.txt).
+
 Továbbá betölthetők PICO-8 kertridzsek (mindkét *.p8* és *.p8.png* formátumban) valamint TIC-80 kertridzsek (mindkét *.tic* és
 *.tic.png* formátumban) is, de a beimportált forráskódot kézzel kell majd szerkesztened, mivel a címkiosztásuk és a függvényeik
 eltérnek a MEG-4-étől. De legalább a többi kelléked meglesz. A TIC-80 projektfurmátuma nem támogatott, mivel az ilyen fájlok
