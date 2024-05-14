@@ -31,6 +31,7 @@
 #include <math.h>
 uint32_t gethex(uint8_t *ptr, int len);
 int casecmp(char *s1, char *s2, int len);
+extern int errline;
 
 #define TOK_DBG 0
 
@@ -715,9 +716,13 @@ arrayindex:         s += 2; q = 1;
                     for(k = o, l = o - 1, p = 0, m = n - 1; l > s; l--) {
                         if(tok[l].type == HL_D) { if(tok[l].id == '(') { p--; } else if(tok[l].id == ')') { p++; } }
                         if(l == s + 1 || (tok[l].type == HL_D && tok[l].id == ',' && !p)) {
-                            q = t[m]; if(tok[l].type == HL_D && tok[l].id) l++;
+                            q = t[m]; if(tok[l].type == HL_D && tok[l].id && tok[l].id != '(') l++;
                             comp_cdbg(comp, l); ep = 0;
-                            if(comp_expr(comp, l, k, &q, &ep, O_LET) != k) return 0;
+                            if(comp_expr(comp, l, k, &q, &ep, O_LET) != k) {
+                                /* the reentrant comp_expr() call should have already set the error, but just in case it hasn't */
+                                if(!errline) code_error(tok[l].pos, lang[ERR_BADARG]);
+                                return 0;
+                            }
                             comp_resolve(comp, ep);
                             /* we accept integer values as pointers (could be addresses), all the other combinations are invalid */
                             if((q & 15) != (t[m] & 15) && !((t[m] & 15) == T_PTR && (q == T(T_SCALAR,T_VOID) || q == T(T_SCALAR,T_I32) || q == T(T_SCALAR,T_U32))) &&
@@ -1174,7 +1179,7 @@ int cpu_compile(void)
 
     /* add system functions */
     comp.id = (idn_t*)malloc((MEG4_NUM_API + MEG4_NUM_BDEF) * sizeof(idn_t));
-    if(!comp.id) goto end;
+    if(!comp.id) { code_error(2, lang[ERR_MEMORY]); goto end; }
     memset(comp.id, 0, (MEG4_NUM_API + MEG4_NUM_BDEF) * sizeof(idn_t));
     for(i = 0; i < MEG4_NUM_API; i++) {
         strcpy(comp.id[i].name, meg4_api[i].name);
@@ -1252,6 +1257,7 @@ end:if(comp.tok) free(comp.tok);
     if(comp.code) free(comp.code);
     if(ret) main_log(1, "compiled successfully, bytecode %u words (code %u, debug %u), data %u bytes",
         meg4.code_len, comp.nc > 4 ? comp.nc - 4 : 0, comp.ncd + comp.ndd, meg4.dp);
+    else if(!errline) { code_error(2, lang[ERR_SYNTAX]); }
     return ret;
 }
 #endif /* NOEDITORS */
