@@ -322,7 +322,7 @@ El formato de los efectos de sonido y las pistas de música son los mismos, la �
 |--------|-----------:|--------------------------------------------------------------------|
 |      0 |          1 | número de nota, consulte `NOTE_x` define, 0 a 96                   |
 |      1 |          1 | índice de forma de onda, 0 a 31                                    |
-|      2 |          1 | tipo de efecto, 0 a 255                                            |
+|      2 |          1 | tipo de efecto, 0 a 255 (consulte [efectos de sonido])             |
 |      3 |          1 | parámetro de efecto                                                |
 
 El conteo de notas es el siguiente: 0 significa que no hay notas colocadas. Seguido de 8 octavas, cada una con 12 notas, por lo
@@ -330,6 +330,8 @@ que 1 equivale a C-0, 12 es B-0 (en la octava más baja), 13 es C-1 (una octava 
 más alto). Por ejemplo, la nota D en la cuarta octava sería 1 + 4\*12 + 2 = 51. La nota B-7 es 96, la nota más alta de la
 octava más alta. También tiene definiciones integradas, por ejemplo, C-1 es `NOTE_C_1` y C#1 es `NOTE_Cs1`. Si no desea contar,
 puede usarlas también en su programa.
+
+## Efectos de sonido
 
 Para simplificar, MEG-4 utiliza los mismos códigos que el archivo Amiga MOD (de esta manera verás lo mismo en el editor integrado
 y en un rastreador de música de terceros), pero no los admite todos. Como se dijo anteriormente, estos códigos están representados

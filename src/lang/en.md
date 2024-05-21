@@ -324,7 +324,7 @@ one for each channel, and there are 1024 rows; while for sound effects there's o
 |--------|-----------:|--------------------------------------------------------------------|
 |      0 |          1 | note number, see `NOTE_x` defines, 0 to 96                         |
 |      1 |          1 | waveform index, 0 to 31                                            |
-|      2 |          1 | effect type, 0 to 255                                              |
+|      2 |          1 | effect type, 0 to 255 (see [note effects])                         |
 |      3 |          1 | effect parameter                                                   |
 
 The counting of notes goes as follows: 0 means no note set. Followed by 8 octaves, each with 12 notes, so 1 equals to C-0,
@@ -332,6 +332,8 @@ The counting of notes goes as follows: 0 means no note set. Followed by 8 octave
 D note on the 4th octave would be 1 + 4\*12 + 2 = 51. The B-7 is 96, the highest note on the highest octave. You also have
 built-in defines, for example C-1 is `NOTE_C_1` and C#1 is `NOTE_Cs1`, if you don't want to count then you can use these as well
 in your program.
+
+## Note Effects
 
 For simplicity, MEG-4 uses the same codes as the Amiga MOD file (this way you'll see the same in the built-in editor as well
 as in a third party music tracker), but it does not support all of them. As said earlier, these codes are represented by three

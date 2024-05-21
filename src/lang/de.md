@@ -2,81 +2,81 @@
 
 ## Diverses
 
-All values are little endian, so the smaller digit is stored on the smaller address.
+Alle Werte sind Little-Endian-Werte, sodass die kleinere Ziffer an der kleineren Adresse gespeichert wird.
 
-| Offset | Size       | Description                                                        |
+| Offset | Größe      | Beschreibung                                                       |
 |--------|-----------:|--------------------------------------------------------------------|
-|  00000 |          1 | MEG-4 firmware version major                                       |
-|  00001 |          1 | MEG-4 firmware version minor                                       |
-|  00002 |          1 | MEG-4 firmware version bugfix                                      |
-|  00003 |          1 | performance counter, last frame's unspent time in 1/1000th secs    |
-|  00004 |          4 | number of 1/1000th second ticks since power on                     |
-|  00008 |          8 | UTC unix timestamp                                                 |
-|  00010 |          2 | current locale                                                     |
+|  00000 |          1 | MEG-4 Firmware-Version Major                                       |
+|  00001 |          1 | MEG-4 Firmware-Version Minor                                       |
+|  00002 |          1 | MEG-4 Firmware-Version Bugfix                                      |
+|  00003 |          1 | Leistungsindikator, nicht verbrauchte Zeit in 1/1000 Sekunden      |
+|  00004 |          4 | Anzahl der 1/1000-Sekunden-Ticks seit dem Einschalten              |
+|  00008 |          8 | UTC-Unix-Zeitstempel                                               |
+|  00010 |          2 | Aktuelles Gebietsschema                                            |
 
-The performance counter shows the time unspent when the last frame was generated. If this is zero or negative, then it means
-how much your loop() function has overstepped its available timeframe.
+Der Leistungsindikator zeigt die nicht verbrauchte Zeit an, als der letzte Frame generiert wurde. Wenn dieser Null oder
+negativ ist, bedeutet dies, um wie viel Ihre Funktion loop() ihren verfügbaren Zeitrahmen überschritten hat.
 
 ## Mauszeiger
 
-| Offset | Size       | Description                                                        |
+| Offset | Größe      | Beschreibung                                                       |
 |--------|-----------:|--------------------------------------------------------------------|
-|  00012 |          2 | pointer buttons state (see [getbtn] and [getclk])                  |
-|  00014 |          2 | pointer sprite index                                               |
-|  00016 |          2 | pointer X coordinate                                               |
-|  00018 |          2 | pointer Y coordinate                                               |
+|  00012 |          2 | Zustand der Zeigertasten (siehe [getbtn] und [getclk])             |
+|  00014 |          2 | Zeiger-Sprite-Index                                                |
+|  00016 |          2 | Zeiger-X-Koordinate                                                |
+|  00018 |          2 | Zeiger-Y-Koordinate                                                |
 
-The pointer buttons are as follows:
+Die Zeigertasten sind wie folgt:
 
-| Define  | Bitmask   | Description                                                        |
+| Define  | Bitmask   | Beschreibung                                                       |
 |---------|----------:|--------------------------------------------------------------------|
-| `BTN_L` |         1 | Left mouse button                                                  |
-| `BTN_M` |         2 | Middle mouse button                                                |
-| `BTN_R` |         4 | Right mouse button                                                 |
-| `SCR_U` |         8 | Scroll up                                                          |
-| `SCR_D` |        16 | Scroll down                                                        |
-| `SCR_L` |        32 | Scroll left                                                        |
-| `SCR_R` |        64 | Scroll right                                                       |
+| `BTN_L` |         1 | Linke Maustaste                                                    |
+| `BTN_M` |         2 | Mittlere Maustaste                                                 |
+| `BTN_R` |         4 | Rechte Maustaste                                                   |
+| `SCR_U` |         8 | Hochscrollen                                                       |
+| `SCR_D` |        16 | Runterscrollen                                                     |
+| `SCR_L` |        32 | Nach links scrollen                                                |
+| `SCR_R` |        64 | Nack rechts scrollen                                               |
 
-The upper bits of the pointer sprite index are used for hotspots: bit 13-15 hotspot Y, bit 10-12 hotspot X, bit 0-9 sprite.
-There are some predefined built-in cursors:
+Die oberen Bits des Zeiger-Sprite-Index werden für Hotspots verwendet: Bit 13-15 Hotspot Y, Bit 10-12 Hotspot X, Bit 0-9 Sprite.
+Es gibt einige vordefinierte integrierte Cursor:
 
-| Define       | Value     | Description                                                   |
+| Define       | Wert      | Beschreibung                                                  |
 |--------------|----------:|---------------------------------------------------------------|
-| `PTR_NORM`   |      03fb | Normal (arrow) pointer                                        |
-| `PTR_TEXT`   |      03fc | Text pointer                                                  |
-| `PTR_HAND`   |      0bfd | Link pointer                                                  |
-| `PTR_ERR`    |      93fe | Error pointer                                                 |
-| `PTR_NONE`   |      ffff | The pointer is hidden                                         |
+| `PTR_NORM`   |      03fb | Normaler (Pfeil-)Zeiger                                       |
+| `PTR_TEXT`   |      03fc | Textzeiger                                                    |
+| `PTR_HAND`   |      0bfd | Linkzeiger                                                    |
+| `PTR_ERR`    |      93fe | Fehlerzeiger                                                  |
+| `PTR_NONE`   |      ffff | Der Zeiger ist ausgeblendet                                   |
 
 ## Tastatur
 
-| Offset | Size       | Description                                                        |
+| Offset | Größe      | Beschreibung                                                       |
 |--------|-----------:|--------------------------------------------------------------------|
-|  0001A |          1 | keyboard queue tail                                                |
-|  0001B |          1 | keyboard queue head                                                |
-|  0001C |         64 | keyboard queue, 16 elements, each 4 bytes (see [popkey])           |
-|  0005C |         18 | keyboard keys pressed state by scancodes (see [getkey])            |
+|  0001A |          1 | Ende der Tastaturwarteschlange                                     |
+|  0001B |          1 | Kopf der Tastaturwarteschlange                                     |
+|  0001C |         64 | Tastaturwarteschlange, 16 Elemente, jeweils 4 Bytes (siehe [popkey]) |
+|  0005C |         18 | Status der gedrückten Tastaturtasten nach Scancodes (siehe [getkey]) |
 
-The keys popped from the queue are represented in UTF-8. Some invalid UTF-8 sequences represent special (non-printable)
-keys, for example:
+Die aus der Warteschlange entnommenen Schlüssel werden in UTF-8 dargestellt. Einige ungültige UTF-8-Sequenzen stellen spezielle
+(nicht druckbare) Schlüssel dar, zum Beispiel:
 
-| Keycode | Description                                     |
+| Keycode | Beschreibung                                    |
 |---------|-------------------------------------------------|
-| `\x8`   | The character 8, <kbd>Backspace</kbd> key       |
-| `\x9`   | The character 9, <kbd>Tab</kbd> key             |
-| `\n`    | The character 10, <kbd>⏎Enter</kbd> key         |
-| `\x1b`  | The character 27, <kbd>Esc</kbd> key            |
-| `Del`   | The <kbd>Del</kbd> key                          |
-| `Up`    | The cursor arrow <kbd>▴</kbd> key               |
-| `Down`  | The cursor arrow <kbd>▾</kbd> key               |
-| `Left`  | The cursor arrow <kbd>◂</kbd> key               |
-| `Rght`  | The cursor arrow <kbd>▸</kbd> key               |
-| `Cut`   | The Cut key (or <kbd>Ctrl</kbd>+<kbd>X</kbd>)   |
-| `Cpy`   | The Copy key (or <kbd>Ctrl</kbd>+<kbd>C</kbd>)  |
-| `Pst`   | The Paste key (or <kbd>Ctrl</kbd>+<kbd>V</kbd>) |
+| `\x8`   | Das Zeichen 8, die <kbd>Backspace</kbd>-Taste   |
+| `\x9`   | Das Zeichen 9, die <kbd>Tab</kbd>-Taste         |
+| `\n`    | Das Zeichen 10, die <kbd>⏎Enter</kbd>-Taste     |
+| `\x1b`  | Das Zeichen 27, <kbd>Esc</kbd>-Taste            |
+| `Del`   | Die <kbd>Del</kbd>-Taste                        |
+| `Up`    | Die Cursor-Pfeiltaste <kbd>▴</kbd>-Taste        |
+| `Down`  | Die Cursor-Pfeiltaste <kbd>▾</kbd>-Taste        |
+| `Left`  | Die Cursor-Pfeiltaste <kbd>◂</kbd>-Taste        |
+| `Rght`  | Die Cursor-Pfeiltaste <kbd>▸</kbd>-Taste        |
+| `Cut`   | Die Cut-Taste (oder <kbd>Ctrl</kbd>+<kbd>X</kbd>) |
+| `Cpy`   | Die Copy-Taste (oder <kbd>Ctrl</kbd>+<kbd>C</kbd>) |
+| `Pst`   | Die Paste-Taste (oder <kbd>Ctrl</kbd>+<kbd>V</kbd>) |
 
-The scancodes are as follows:
+Die Scancodes lauten wie folgt:
 
 | ScanCode | Address | Bitmask | Define            |
 |---------:|---------|--------:|-------------------|
@@ -221,200 +221,203 @@ The scancodes are as follows:
 
 ## Gamepad
 
-| Offset | Size       | Description                                                        |
+| Offset | Größe      | Beschreibung                                                       |
 |--------|-----------:|--------------------------------------------------------------------|
-|  0006E |          2 | gamepad joystick treshold (defaults to 8000)                       |
-|  00070 |          8 | primary gamepad - keyboard scancode mappings (see [keyboard])      |
-|  00078 |          4 | 4 gamepads button pressed state (see [getpad])                     |
+|  0006E |          2 | Gamepad-Joystick-Grenzwert (Standard: 8000)                        |
+|  00070 |          8 | Primäres Gamepad – Tastatur-Scancode-Zuordnungen (siehe [Tastatur]) |
+|  00078 |          4 | 4-Gamepad-Taste gedrückter Zustand (siehe [getpad])                |
 
-The gamepad buttons are as follows:
+Die Gamepad-Tasten sind wie folgt:
 
-| Define  | Bitmask   | Description                                                        |
+| Define  | Bitmask   | Beschreibung                                                       |
 |---------|----------:|--------------------------------------------------------------------|
-| `BTN_L` |         1 | The `◁` button or joystick left                                   |
-| `BTN_U` |         2 | The `△` button or joystick up                                     |
-| `BTN_R` |         4 | The `▷` button or joystick right                                  |
-| `BTN_D` |         8 | The `▽` button or joystick down                                   |
-| `BTN_A` |        16 | The `Ⓐ` button                                                     |
-| `BTN_B` |        32 | The `Ⓑ` button                                                     |
-| `BTN_X` |        64 | The `Ⓧ` button                                                     |
-| `BTN_Y` |       128 | The `Ⓨ` button                                                     |
+| `BTN_L` |         1 | Die `◁`-Taste oder der Joystick nach links                         |
+| `BTN_U` |         2 | Die `△`-Taste oder der Joystick nach oben                          |
+| `BTN_R` |         4 | Die `▷`-Taste oder der Joystick nach rechts                        |
+| `BTN_D` |         8 | Die `▽`-Taste oder der Joystick nach unten                         |
+| `BTN_A` |        16 | Die `Ⓐ`-Taste                                                     |
+| `BTN_B` |        32 | Die `Ⓑ`-Taste                                                     |
+| `BTN_X` |        64 | Die `Ⓧ`-Taste                                                     |
+| `BTN_Y` |       128 | Die `Ⓨ`-Taste                                                     |
 
-The `△△▽▽◁▷◁▷ⒷⒶ` sequence makes the `KEY_CHEAT` "key" pressed.
+Die Sequenz `△△▽▽◁▷◁▷ⒷⒶ` bewirkt, dass die „Taste“ `KEY_CHEAT` gedrückt wird.
 
 ## Grafikverarbeitungseinheit
 
-| Offset | Size       | Description                                                        |
+| Offset | Größe      | Beschreibung                                                       |
 |--------|-----------:|--------------------------------------------------------------------|
-|  0007E |          1 | UNICODE code point upper bits for font glyph mapping               |
-|  0007F |          1 | sprite bank selector for the map                                   |
-|  00080 |       1024 | palette, 256 colors, each entry 4 bytes, RGBA                      |
-|  00480 |          2 | x0, crop area X start in pixels (for all drawing functions)        |
-|  00482 |          2 | x1, crop area X end in pixels                                      |
-|  00484 |          2 | y0, crop area Y start in pixels                                    |
-|  00486 |          2 | y1, crop area Y end in pixels                                      |
-|  00488 |          2 | displayed vram X offset in pixels or 0xffff                        |
-|  0048A |          2 | displayed vram Y offset in pixels or 0xffff                        |
-|  0048C |          1 | turtle pen down flag (see [up], [down])                            |
-|  0048D |          1 | turtle pen color, palette index 0 to 255 (see [color])             |
-|  0048E |          2 | turtle direction in degrees, 0 to 359 (see [left], [right])        |
-|  00490 |          2 | turtle X offset in pixels (see [move])                             |
-|  00492 |          2 | turtle Y offset in pixels                                          |
-|  00494 |          2 | maze walking speed in 1/128 tiles (see [maze])                     |
-|  00496 |          2 | maze rotating speed in degrees (1 to 90)                           |
-|  00498 |          1 | console foreground color, palette index 0 to 255 (see [printf])    |
-|  00499 |          1 | console background color, palette index 0 to 255                   |
-|  0049A |          2 | console X offset in pixels                                         |
-|  0049C |          2 | console Y offset in pixels                                         |
-|  0049E |          2 | camera X offset in [3D space] (see [tri3d], [tritx], [mesh])       |
-|  004A0 |          2 | camera Y offset                                                    |
-|  004A2 |          2 | camera Z offset                                                    |
-|  004A4 |          2 | camera direction, pitch (0 up, 90 forward)                         |
-|  004A6 |          2 | camera direction, yaw (0 left, 90 forward)                         |
-|  004A8 |          1 | camera field of view in angles (45, negative gives orthographic)   |
-|  004AA |          2 | light source position X offset (see [tri3d], [tritx], [mesh])      |
-|  004AC |          2 | light source position Y offset                                     |
-|  004AE |          2 | light source position Z offset                                     |
-|  00600 |      64000 | map, 320 x 200 sprite indeces (see [map] and [maze])               |
-|  10000 |      65536 | sprites, 256 x 256 palette indeces, 1024 8 x 8 pixels (see [spr])  |
-|  28000 |       2048 | window for 4096 font glyphs (see 0007E, [width] and [text])        |
+|  0007E |          1 | Obere Bits des UNICODE-Codepunkts für die Zuordnung von Schriftartglyphen |
+|  0007F |          1 | Sprite-Bank-Auswahl für die Karte                                  |
+|  00080 |       1024 | Palette, 256 Farben, jeder Eintrag 4 Bytes, RGBA                   |
+|  00480 |          2 | x0, Zuschneidebereich X Start in Pixel (für alle Zeichenfunktionen) |
+|  00482 |          2 | x1, Zuschneidebereich X Ende in Pixel                              |
+|  00484 |          2 | y0, Zuschneidebereich Y Start in Pixel                             |
+|  00486 |          2 | y1, Zuschneidebereich Y Ende in Pixel                              |
+|  00488 |          2 | Angezeigter VRAM-X-Offset in Pixel oder 0xffff                     |
+|  0048A |          2 | Angezeigter VRAM-Y-Offset in Pixel oder 0xffff                     |
+|  0048C |          1 | Schildkröten-Pen-Down-Flagge (siehe [up], [down])                  |
+|  0048D |          1 | Schildkrötenstiftfarbe, Palettenindex 0 bis 255 (siehe [color])    |
+|  0048E |          2 | Schildkrötenrichtung in Grad, 0 bis 359 (siehe [left], [right])    |
+|  00490 |          2 | Schildkröten-X-Versatz in Pixel (siehe [move])                     |
+|  00492 |          2 | Schildkröten-Y-Versatz in Pixel                                    |
+|  00494 |          2 | Labyrinth-Gehgeschwindigkeit in 1/128 Kacheln (siehe [maze])       |
+|  00496 |          2 | Rotationsgeschwindigkeit des Labyrinths in Grad (1 bis 90)         |
+|  00498 |          1 | Vordergrundfarbe der Konsole, Palettenindex 0 bis 255 (siehe [printf]) |
+|  00499 |          1 | Hintergrundfarbe der Konsole, Palettenindex 0 bis 255              |
+|  0049A |          2 | Konsolen-X-Offset in Pixel                                         |
+|  0049C |          2 | Konsolen-Y-Offset in Pixel                                         |
+|  0049E |          2 | Kamera-X-Versatz im [3D-Welt] (siehe [tri3d], [tritx], [mesh])     |
+|  004A0 |          2 | Kamera-Y-Versatz                                                   |
+|  004A2 |          2 | Kamera-Z-Versatz                                                   |
+|  004A4 |          2 | Kamerarichtung, Neigung (0 nach oben, 90 nach vorne)               |
+|  004A6 |          2 | Kamerarichtung, Gieren (0 nach links, 90 nach vorne)               |
+|  004A8 |          1 | Kamerasichtfeld in Winkeln (45, negativ ergibt orthografisch)      |
+|  004AA |          2 | Lichtquellenposition X-Versatz (siehe [tri3d], [tritx], [mesh])    |
+|  004AC |          2 | Lichtquellenposition Y-Versatz                                     |
+|  004AE |          2 | Lichtquellenposition Z-Versatz                                     |
+|  00600 |      64000 | Karte, 320 x 200 Sprite-Indizes (siehe [map] und [maze])           |
+|  10000 |      65536 | Sprites, 256 x 256 Palettenindizes, 1024 8 x 8 Pixel (siehe [spr]) |
+|  28000 |       2048 | Fenster für 4096 Schriftartglyphen (siehe 0007E, [width] und [text]) |
 
 ## Digitaler Signalprozessor
 
-| Offset | Size       | Description                                                        |
+| Offset | Größe      | Beschreibung                                                       |
 |--------|-----------:|--------------------------------------------------------------------|
-|  0007C |          1 | waveform bank selector (1 to 31)                                   |
-|  0007D |          1 | music track bank selector (0 to 7)                                 |
-|  004BA |          1 | current tempo (in ticks per row, read-only)                        |
-|  004BB |          1 | current track being played (read-only)                             |
-|  004BC |          2 | current row being played (read-only)                               |
-|  004BE |          2 | number of total rows in current track (read-only)                  |
-|  004C0 |         64 | 16 channel status registers, each 4 bytes (read-only)              |
-|  00500 |        256 | 64 sound effects, each 4 bytes                                     |
-|  20000 |      16384 | window for waveform samples (see 0007C)                            |
-|  24000 |      16384 | window for music patterns (see 0007D)                              |
+|  0007C |          1 | Auswahl der Wellenformbank (1 bis 31)                              |
+|  0007D |          1 | Auswahl der Musiktitelbank (0 bis 7)                               |
+|  004BA |          1 | Aktuelles Tempo (in Ticks pro Zeile, schreibgeschützt)             |
+|  004BB |          1 | Aktuell abgespielter Titel (schreibgeschützt)                      |
+|  004BC |          2 | Aktuelle Zeile wird abgespielt (schreibgeschützt)                  |
+|  004BE |          2 | Anzahl der Gesamtzeilen im aktuellen Titel (schreibgeschützt)      |
+|  004C0 |         64 | 16 Kanalstatusregister, jeweils 4 Bytes (schreibgeschützt)         |
+|  00500 |        256 | 64 Soundeffekte, jeweils 4 Bytes                                   |
+|  20000 |      16384 | Fenster für Wellenform-Samples (siehe 0007C)                       |
+|  24000 |      16384 | Fenster für Musikmuster (siehe 0007D)                              |
 
-The DSP status registers are all read-only, and for each channel they look like:
+Die DSP-Statusregister sind alle schreibgeschützt und sehen für jeden Kanal folgendermaßen aus:
 
-| Offset | Size       | Description                                                        |
+| Offset | Größe      | Beschreibung                                                       |
 |--------|-----------:|--------------------------------------------------------------------|
-|      0 |          2 | current position in the waveform being played                      |
-|      2 |          1 | current waveform (1 to 31, 0 if the channel is silent)             |
-|      3 |          1 | current volume (0 means channel is turned off)                     |
+|      0 |          2 | Aktuelle Position in der wiedergegebenen Wellenform                |
+|      2 |          1 | Aktuelle Wellenform (1 bis 31, 0, wenn der Kanal still ist)        |
+|      3 |          1 | Aktuelle Lautstärke (0 bedeutet, dass der Kanal ausgeschaltet ist) |
 
-The first 4 channels are for the music, the rest for the sound effects.
+Die ersten 4 Kanäle sind für die Musik, der Rest für die Soundeffekte.
 
-Note that the waveform index 0 means "use the previous waveform", so index 0 cannot be used in the selector.
-The format of every other waveform:
+Beachten Sie, dass der Wellenformindex 0 „die vorherige Wellenform verwenden“ bedeutet, sodass Index 0 nicht im Selektor
+verwendet werden kann. Das Format jeder anderen Wellenform:
 
-| Offset | Size       | Description                                                        |
+| Offset | Größe      | Beschreibung                                                       |
 |--------|-----------:|--------------------------------------------------------------------|
-|      0 |          2 | number of samples                                                  |
-|      2 |          2 | loop start                                                         |
-|      4 |          2 | loop length                                                        |
-|      6 |          1 | finetune value, -8 to 7                                            |
-|      7 |          1 | volume, 0 to 64                                                    |
-|      8 |      16376 | signed 8-bit mono samples                                          |
+|      0 |          2 | Anzahl von Samples                                                 |
+|      2 |          2 | Schleifenstart                                                     |
+|      4 |          2 | Schleifenlänge                                                     |
+|      6 |          1 | Feinstimmung, -8 bis 7                                             |
+|      7 |          1 | Lautstärke, 0 bis 64                                               |
+|      8 |      16376 | signierte 8-Bit-Mono-Samples                                       |
 
-The format of the sound effects and the music tracks are the same, the only difference is, music tracks have 4 notes per row,
-one for each channel, and there are 1024 rows; while for sound effects there's only one note and 64 rows.
+Das Format der Soundeffekte und der Musiktitel ist das gleiche, der einzige Unterschied besteht darin, dass Musiktitel 4 Noten
+pro Zeile haben, eine für jeden Kanal, und es 1024 Zeilen gibt; Für Soundeffekte hingegen gibt es nur eine Note und 64 Zeilen.
 
-| Offset | Size       | Description                                                        |
+| Offset | Größe      | Beschreibung                                                       |
 |--------|-----------:|--------------------------------------------------------------------|
-|      0 |          1 | note number, see `NOTE_x` defines, 0 to 96                         |
-|      1 |          1 | waveform index, 0 to 31                                            |
-|      2 |          1 | effect type, 0 to 255                                              |
-|      3 |          1 | effect parameter                                                   |
+|      0 |          1 | Notennummer, siehe `NOTE_x`-Definitionen, 0 bis 96                 |
+|      1 |          1 | Wellenformindex, 0 bis 31                                          |
+|      2 |          1 | Effekttyp, 0 bis 255 (siehe [Klangeffekte])                        |
+|      3 |          1 | Effektparameter                                                    |
 
-The counting of notes goes as follows: 0 means no note set. Followed by 8 octaves, each with 12 notes, so 1 equals to C-0,
-12 is B-0 (on the lowest octave), 13 is C-1 (one octave higher) and 14 is C#1 (C sharp, semitone higher). For example the
-D note on the 4th octave would be 1 + 4\*12 + 2 = 51. The B-7 is 96, the highest note on the highest octave. You also have
-built-in defines, for example C-1 is `NOTE_C_1` and C#1 is `NOTE_Cs1`, if you don't want to count then you can use these as well
-in your program.
+Die Notenzählung erfolgt wie folgt: 0 bedeutet, dass keine Note gesetzt ist. Es folgen 8 Oktaven mit jeweils 12 Noten, also
+entspricht 1 C-0, 12 H-0 (auf der tiefsten Oktave), 13 C-1 (eine Oktave höher) und 14 C#1 (Cis, Halbton höher). Beispielsweise
+wäre die D-Note in der 4. Oktave 1 + 4\*12 + 2 = 51. Die H-7 ist 96, die höchste Note in der höchsten Oktave. Sie haben auch
+integrierte Definitionen, zum Beispiel ist C-1 `NOTE_C_1` und C#1 ist `NOTE_Cs1`. Wenn Sie nicht zählen möchten, können Sie
+diese auch in Ihrem Programm verwenden.
 
-For simplicity, MEG-4 uses the same codes as the Amiga MOD file (this way you'll see the same in the built-in editor as well
-as in a third party music tracker), but it does not support all of them. As said earlier, these codes are represented by three
-hex numbers, the first being the type `t`, and the last two the parameter, `xy` (or `xx`). The types `E1` to `ED` are all stored
-in the type byte, although it looks like one of their nibble might belong to the parameter, but it's not.
+## Klangeffekte
 
-| Effect | Code | Description                                                |
+Der Einfachheit halber verwendet MEG-4 dieselben Codes wie die Amiga MOD-Datei (auf diese Weise sehen Sie dasselbe sowohl im
+integrierten Editor als auch in einem Musik-Tracker eines Drittanbieters), es werden jedoch nicht alle davon unterstützt. Wie
+bereits erwähnt, werden diese Codes durch drei Hexadezimalzahlen dargestellt, wobei die erste der Typ `t` und die letzten beiden
+der Parameter `xy` (oder `xx`) ist. Die Typen `E1` bis `ED` werden alle im Typbyte gespeichert, obwohl es so aussieht, als ob
+eines ihrer Halbbytes zum Parameter gehören könnte, aber das ist nicht der Fall.
+
+| Effekt | Code | Beschreibung                                               |
 |--------|------|------------------------------------------------------------|
-| ...    | 000  | No effect                                                  |
-| Arp    | 0xy  | Arpeggio, play note, note+x semitone and note+y semitone   |
-| Po/    | 1xx  | Portamento up, slide period by x up                        |
-| Po\\   | 2xx  | Portamento down, slide period by x up                      |
-| Ptn    | 3xx  | Tone portamento, slide period to period x                  |
-| Vib    | 4xy  | Vibrato, oscillate the pitch by y semitones at x freq      |
-| Ctv    | 5xy  | Continue Tone portamento + volume slide by x up or y down  |
-| Cvv    | 6xy  | Continue Vibrato + volume slide by x up or by y down       |
-| Trm    | 7xy  | Tremolo, oscillate the volume by y amplitude at x freq     |
-| Ofs    | 9xx  | Set sample offset to x \* 256                              |
-| Vls    | Axy  | Slide volume by x up or by y down                          |
-| Jmp    | Bxx  | Position jump, set row to x \* 64                          |
-| Vol    | Cxx  | Set volume to x                                            |
-| Fp/    | E1x  | Fine portamento up, increase period by x                   |
-| Fp\\   | E2x  | Fine portamento down, decrease period by x                 |
-| Svw    | E4x  | Set vibrato waveform, 0 sine, 1 saw, 2 square, 3 noise     |
-| Ftn    | E5x  | Set finetune, change tuning by x (-8 to 7)                 |
-| Stw    | E7x  | Set tremolo waveform, 0 sine, 1 saw, 2 square, 3 noise     |
-| Rtg    | E9x  | Retrigger note, trigger current sample every x ticks       |
-| Fv/    | EAx  | Fine volume slide up, increase by x                        |
-| Fv\\   | EBx  | Fine volume slide down, decrease by x                      |
-| Cut    | ECx  | Cut note in x ticks                                        |
-| Dly    | EDx  | Delay note in x ticks                                      |
-| Tpr    | Fxx  | Set number of ticks per row to x (tick defalts to 6)       |
+| ...    | 000  | Kein Effekt                                                |
+| Arp    | 0xy  | Arpeggio, Note, Note+x-Halbton und Note+y-Halbton spielen  |
+| Po/    | 1xx  | Portamento nach oben, Periode um x nach oben verschieben   |
+| Po\\   | 2xx  | Portamento nach unten, Periode um x nach unten verschieben |
+| Ptn    | 3xx  | Ton-Portamento, von Periode zu Periode x gleiten           |
+| Vib    | 4xy  | Vibrato, oszillieren die Tonhöhe um y Halbtöne bei x Frequenz |
+| Ctv    | 5xy  | Weiter Ton-Portamento + Lautstärke mit x nach oben oder y nach unten schieben |
+| Cvv    | 6xy  | Weiter Vibrato + Lautstärke um x nach oben oder um y nach unten schieben |
+| Trm    | 7xy  | Tremolo, oszillieren Sie die Lautstärke um y Amplitude bei x Frequenz |
+| Ofs    | 9xx  | Stellen Sie den Sample-Offset auf x \* 256 ein             |
+| Vls    | Axy  | Schieben Sie die Lautstärke um x nach oben oder um y nach unten |
+| Jmp    | Bxx  | Positionssprung, Zeile auf x \* 64 setzen                  |
+| Vol    | Cxx  | Lautstärke auf x einstellen                                |
+| Fp/    | E1x  | Feines Portamento nach oben, Periode um x erhöhen          |
+| Fp\\   | E2x  | Feines Portamento nach unten, Periode um x verringern      |
+| Svw    | E4x  | Vibrato-Wellenform einstellen: 0 Sinus, 1 Sägezahn, 2 Rechteck, 3 Rauschen |
+| Ftn    | E5x  | Feinstimmung einstellen, Stimmung um x ändern (-8 bis 7)   |
+| Stw    | E7x  | Tremolo-Wellenform einstellen: 0 Sinus, 1 Sägezahn, 2 Rechteck, 3 Rauschen |
+| Rtg    | E9x  | Note erneut auslösen, aktuelles Sample alle x Ticks auslösen |
+| Fv/    | EAx  | Feinlautstärke nach oben schieben, um x erhöhen            |
+| Fv\\   | EBx  | Feinkautstärke nach unten schieben, um x verringern        |
+| Cut    | ECx  | Note in x Ticks schneiden                                  |
+| Dly    | EDx  | Verzögerungsnotiz für x Ticks                              |
+| Tpr    | Fxx  | Anzahl der Ticks pro Zeile auf x setzen (Tick-Standard ist 6) |
 
 ## Benutzergedächtnis
 
-Memory addresses from 00000 to 2FFFF belong to the MMIO, everything above (starting from 30000 or `MEM_USER`) is freely usable
-user memory.
+Speicheradressen von 00000 bis 2FFFF gehören zum MMIO, alles darüber (ab 30000 oder `MEM_USER`) ist frei nutzbarer
+Benutzerspeicher.
 
-| Offset | Size       | Description                                                        |
+| Offset | Größe      | Beschreibung                                                       |
 |--------|-----------:|--------------------------------------------------------------------|
-|  30000 |          4 | (BASIC only) offset of DATA                                        |
-|  30004 |          4 | (BASIC only) current READ counter                                  |
-|  30008 |          4 | (BASIC only) maximum READ, number of DATA                          |
+|  30000 |          4 | (nur BASIC) offset von DATA                                        |
+|  30004 |          4 | (nur BASIC) aktueller READ-Zähler                                  |
+|  30008 |          4 | (nur BASIC) maximale READ-Zähler, Anzahl der DATA                  |
 
-This is followed by the global variables that you have declared in your program, followed by the constants, like string literals.
-In case of BASIC, then this is followed by the actual DATA records.
+Darauf folgen die globalen Variablen, die Sie in Ihrem Programm deklariert haben, gefolgt von den Konstanten, wie z. B.
+String-Literalen. Im Falle von BASIC folgen dann die eigentlichen DATA-Records.
 
-Memory addresses above the initialized data can be dynamically allocated and freed in your program via the [malloc] and [free] calls.
+Speicheradressen über den initialisierten Daten können in Ihrem Programm über die Aufrufe [malloc] und [free] dynamisch zugewiesen
+und freigegeben werden.
 
-Lastly the stack, which is at the top (starting from C0000 or `MEM_LIMIT`) and growing *downwards*. Your program's local variables
-(that you declared inside a function) go here. The size of the stack always changes depending on which function calls which other
-function in your program.
+Zuletzt der Stapel, der ganz oben liegt (beginnend bei C0000 oder `MEM_LIMIT`) und *nach unten* wächst. Hier finden Sie die
+lokalen Variablen Ihres Programms (die Sie innerhalb einer Funktion deklariert haben). Die Größe des Stapels ändert sich immer
+abhängig davon, welche Funktion welche andere Funktion in Ihrem Programm aufruft.
 
-If by any chance the top of the dynamically allocated data and the bottom of the stack would overlap, then MEG-4 throws an
-"Out of memory" error.
+Wenn sich zufällig der obere Teil der dynamisch zugewiesenen Daten und der untere Teil des Stapels überlappen würden, gibt MEG-4
+den Fehler „Nicht genügend Speicher“ aus.
 
 ## Formatierungszeichenfolge
 
-Some functions, [printf], [sprintf] and [trace] use a format string that may contain special characters to reference arguments
-and to describe how to display them. These are:
+Einige Funktionen, [printf], [sprintf] und [trace], verwenden eine Formatzeichenfolge, die Sonderzeichen enthalten kann, um auf
+Argumente zu verweisen und zu beschreiben, wie sie angezeigt werden. Diese sind:
 
-| Code | Description                                                |
+| Code | Beschreibung                                               |
 |------|------------------------------------------------------------|
-| `%%` | The `%` character                                          |
-| `%d` | Print the next parameter as a decimal number               |
-| `%u` | Print the next parameter as an unsigned decimal number     |
-| `%x` | Print the next parameter as a hexadecimal number           |
-| `%o` | Print the next parameter as an octal number                |
-| `%b` | Print the next parameter as a binary number                |
-| `%f` | Print the next parameter as a floating point number        |
-| `%s` | Print the next parameter as a string                       |
-| `%c` | Print the next parameter as an UTF-8 character             |
-| `%p` | Print the next parameter as an address (pointer)           |
-| `\t` | Tab, fix vertical position before continue printing        |
-| `\n` | Start a new line for printing                              |
+| `%%` | Das Zeichen `%`                                            |
+| `%d` | Nächster Parameter als Dezimalzahl                         |
+| `%u` | Nächster Parameter als vorzeichenlose Dezimalzahl          |
+| `%x` | Nächster Parameter als Hexadezimalzahl                     |
+| `%o` | Nächster Parameter als Oktalzahl                           |
+| `%b` | Nächster Parameter als Binärzahl                           |
+| `%f` | Nächster Parameter als Gleitkommazahl                      |
+| `%s` | Nächster Parameter als Zeichenfolge                        |
+| `%c` | Nächster Parameter als UTF-8-Zeichen                       |
+| `%p` | Nächster Parameter als Adresse (Zeiger)                    |
+| `\t` | Tab, fixieren Sie die vertikale Position, bevor Sie fortfahren |
+| `\n` | Beginnen Sie eine neue Zeile                               |
 
-You can add padding by specifying the length between `%` and the code. If that starts with `0`, then value will be padded
-with zeros, otherwise with spaces. For example `%4d` will pad the value to the right with spaces, and `%04x` with zeros.
-The `f` accepts a number after a dot, which tells the number of digits in the fractional part (up to 8), eg. `%.6f`.
+Sie können Auffüllungen hinzufügen, indem Sie die Länge zwischen `%` und dem Code angeben. Wenn dieser mit `0` beginnt, wird der
+Wert mit Nullen aufgefüllt, andernfalls mit Leerzeichen. Beispielsweise füllt `%4d` den Wert rechts mit Leerzeichen und `%04x` mit
+Nullen auf. Das `f` akzeptiert eine Zahl nach einem Punkt, die die Anzahl der Ziffern im Bruchteil angibt (bis zu 8), z. B. `%.6f`.
 
-## 3D-Raum
+## 3D-Welt
 
-In MEG-4, the 3 dimensional space is handled according to the right-hand rule: +X is on the right, +Y is up, and +Z is towards the
-viewer.
+In MEG-4 wird der dreidimensionale Raum nach der Rechte-Hand-Regel behandelt: +X ist rechts, +Y ist oben und +Z ist zum Betrachter hin.
 
 ```
   +Y
@@ -424,19 +427,21 @@ viewer.
 +Z
 ```
 
-Each point must be placed in the range -32767 to +32767. How this 3D world is projected to your 2D screen depends on how you
-configure the camera (see [Graphics Processing Unit] address 0049E). Of course, you have to place the camera in the world, with
-X, Y, Z coordinates. Then you have to tell where the camera is looking at, using pitch and yaw. Finally you also have to tell what
-kind of lens the camera has, by specifying the field of view angle. That latter normally should be between 30 (very narrow) and
-180 degrees (like fish and birds). MEG-4 supports up to 127 degrees, but there's a trick. Positive FOV values will be projected as
-perspective (the farther the object is, the smaller it is), but negative values also handled, just with orthographic projection
-(no matter the distance, the object's size will be the same). Perspective is used in FPS games, while the orthographic projection
-is mostly preferred by strategy games.
+Jeder Punkt muss im Bereich von -32767 bis +32767 liegen. Wie diese 3D-Welt auf Ihren 2D-Bildschirm projiziert wird, hängt davon
+ab, wie Sie die Kamera konfigurieren (siehe [Grafikverarbeitungseinheit] Adresse 0049E). Natürlich müssen Sie die Kamera mit X-, Y-
+und Z-Koordinaten in der Welt platzieren. Dann müssen Sie anhand von Nick- und Gierbewegungen erkennen, wohin die Kamera blickt.
+Schließlich müssen Sie noch angeben, über welche Art von Objektiv die Kamera verfügt, indem Sie den Blickwinkel angeben. Letzterer
+sollte normalerweise zwischen 30 (sehr eng) und 180 Grad (wie bei Fischen und Vögeln) liegen. MEG-4 unterstützt bis zu 127 Grad,
+aber es gibt einen Trick. Positive FOV-Werte werden perspektivisch projiziert (je weiter das Objekt entfernt ist, desto kleiner
+ist es), negative Werte werden jedoch auch verarbeitet, nur mit orthografischer Projektion (unabhängig von der Entfernung bleibt
+die Größe des Objekts gleich). Die Perspektive wird in FPS-Spielen verwendet, während die orthographische Projektion vor allem in
+Strategiespielen bevorzugt wird.
 
-You can display a set of triangles (a complete 3D model) using the [mesh] function efficiently. Because models probably have local
-coordinates, that would draw all models one on top of another around the origo. So if you want to dispay multiple models in the
-world, first you should translate them (place them) into world coordinates using [trns], and then use the translated vertex cloud
-with [mesh] (moving and rotating the model around won't change the triangles, just their vertex coordinates).
+Mit der Funktion [mesh] können Sie eine Reihe von Dreiecken (ein vollständiges 3D-Modell) effizient anzeigen. Da Modelle wahrscheinlich
+lokale Koordinaten haben, würden dadurch alle Modelle übereinander um den Ursprung herum gezeichnet. Wenn Sie also mehrere Modelle
+auf der Welt anzeigen möchten, sollten Sie sie zuerst mit [trns] in Weltkoordinaten übersetzen (platzieren) und dann die übersetzte
+Scheitelpunktwolke mit [mesh] verwenden (das Verschieben und Drehen des Modells ist nicht möglich). Ändern Sie die Dreiecke, nur
+ihre Scheitelpunktkoordinaten).
 
 # Konsole
 
@@ -445,12 +450,12 @@ with [mesh] (moving and rotating the model around won't change the triangles, ju
 ```c
 void putc(uint32_t chr)
 ```
-<dt>Description</dt><dd>
-Prints a character to console.
+<dt>Beschreibung</dt><dd>
+Gibt ein Zeichen an die Konsole aus.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| chr | UTF-8 character |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| chr | UTF-8-Zeichen |
 </dd>
 <hr>
 ## printf
@@ -458,13 +463,13 @@ Prints a character to console.
 ```c
 void printf(str_t fmt, ...)
 ```
-<dt>Description</dt><dd>
-Prints text to console.
+<dt>Beschreibung</dt><dd>
+Gibt Text an die Konsole aus.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| fmt | string to display, a [format string] |
-| ... | optional arguments |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| fmt | anzuzeigende Zeichenfolge, eine [Formatierungszeichenfolge] |
+| ... | optionale Argumente |
 </dd>
 <hr>
 ## getc
@@ -472,13 +477,13 @@ Prints text to console.
 ```c
 uint32_t getc(void)
 ```
-<dt>Description</dt><dd>
-Reads a character from console, blocks program when there's no input.
+<dt>Beschreibung</dt><dd>
+Liest ein Zeichen von der Konsole und blockiert das Programm, wenn keine Eingabe erfolgt.
 </dd>
-<dt>Return Value</dt><dd>
-An UTF-8 character the user entered.
+<dt>Rückgabewert</dt><dd>
+Ein vom Benutzer eingegebenes UTF-8-Zeichen.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [popkey]
 </dd>
 <hr>
@@ -487,11 +492,11 @@ An UTF-8 character the user entered.
 ```c
 str_t gets(void)
 ```
-<dt>Description</dt><dd>
-Reads in a newline terminated string from user (does not return the newline).
+<dt>Beschreibung</dt><dd>
+Liest eine mit einer neuen Zeile abgeschlossene Zeichenfolge vom Benutzer ein (gibt die neue Zeile nicht zurück).
 </dd>
-<dt>Return Value</dt><dd>
-The bytes read in a string.
+<dt>Rückgabewert</dt><dd>
+Die in einem String gelesenen Bytes.
 </dd>
 <hr>
 ## trace
@@ -499,13 +504,13 @@ The bytes read in a string.
 ```c
 void trace(str_t fmt, ...)
 ```
-<dt>Description</dt><dd>
-Trace execution by printing to stdout. Only works if `meg4` was started with the `-v` verbose flag.
+<dt>Beschreibung</dt><dd>
+Verfolgen Sie die Ausführung durch Drucken auf stdout. Funktioniert wenn `meg4` mit dem Verbose-Flag `-v` gestartet wurde.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| fmt | [format string] |
-| ... | optional arguments |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| fmt | [Formatierungszeichenfolge] |
+| ... | optionale Argumente |
 </dd>
 <hr>
 ## delay
@@ -513,12 +518,12 @@ Trace execution by printing to stdout. Only works if `meg4` was started with the
 ```c
 void delay(uint16_t msec)
 ```
-<dt>Description</dt><dd>
-Delays program execution.
+<dt>Beschreibung</dt><dd>
+Verzögert die Programmausführung.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| msec | delay in milliseconds |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| msec | Verzögerung in Millisekunden |
 </dd>
 <hr>
 ## exit
@@ -526,8 +531,8 @@ Delays program execution.
 ```c
 void exit(void)
 ```
-<dt>Description</dt><dd>
-Exits program.
+<dt>Beschreibung</dt><dd>
+Beendet das Programm.
 </dd>
 
 # Audio
@@ -537,14 +542,14 @@ Exits program.
 ```c
 void sfx(uint8_t sfx, uint8_t channel, uint8_t volume)
 ```
-<dt>Description</dt><dd>
-Plays a sound effect.
+<dt>Beschreibung</dt><dd>
+Spielt einen Soundeffekt ab.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| sfx | the index of the sound effect, 0 to 63 |
-| channel | channel to be used, 0 to 11 |
-| volume | volume to be used, 0 to 255, 0 turns off channel |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| sfx | der Index des Soundeffekts, 0 bis 63 |
+| channel | Kanal, der verwendet werden soll, 0 bis 11 |
+| volume | verwendende Lautstärke, 0 bis 255, 0 schaltet den Kanal aus |
 </dd>
 <hr>
 ## music
@@ -552,14 +557,14 @@ Plays a sound effect.
 ```c
 void music(uint8_t track, uint16_t row, uint8_t volume)
 ```
-<dt>Description</dt><dd>
-Plays a music track.
+<dt>Beschreibung</dt><dd>
+Spielt einen Musiktitel ab.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| track | the index of the music track, 0 to 7 |
-| row | row to start playing from, 0 to 1023 (max song length) |
-| volume | volume to be used, 0 to 255, 0 turns off music |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| track | der Index des Musiktitels, 0 bis 7 |
+| row | Zeile, ab der mit der Wiedergabe begonnen wird, 0 bis 1023 (maximale Songlänge) |
+| volume | verwendende Lautstärke, 0 bis 255, 0 schaltet die Musik aus |
 </dd>
 
 # GPIO
@@ -569,11 +574,11 @@ Plays a music track.
 ```c
 uint32_t gpio_rev(void)
 ```
-<dt>Description</dt><dd>
-Query the GPIO board's revision number. Returns 0 if the platform isn't GPIO capable.
+<dt>Beschreibung</dt><dd>
+Fragen Sie die Revisionsnummer des GPIO-Boards ab. Gibt 0 zurück, wenn die Plattform nicht GPIO-fähig ist.
 </dd>
-<dt>Return Value</dt><dd>
-Board's revision number or 0 if not supported.
+<dt>Rückgabewert</dt><dd>
+Revisionsnummer des Boards oder 0, falls nicht unterstützt.
 </dd>
 <hr>
 ## gpio_get
@@ -581,17 +586,17 @@ Board's revision number or 0 if not supported.
 ```c
 int gpio_get(uint8_t pin)
 ```
-<dt>Description</dt><dd>
-Read the value of a GPIO pin.
+<dt>Beschreibung</dt><dd>
+Lesen Sie den Wert eines GPIO-Pins.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| pin | physical pin number, 1 to 40 |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| pin | physische Pin-Nummer, 1 bis 40 |
 </dd>
-<dt>Return Value</dt><dd>
-Returns 1 if the pin is high, 0 if it's low, -1 on error (GPIO pin not supported).
+<dt>Rückgabewert</dt><dd>
+Gibt 1 zurück, wenn der Pin hoch ist, 0, wenn er niedrig ist, -1 bei Fehler (GPIO-Pin wird nicht unterstützt).
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [gpio_set]
 </dd>
 <hr>
@@ -600,36 +605,36 @@ Returns 1 if the pin is high, 0 if it's low, -1 on error (GPIO pin not supported
 ```c
 int gpio_set(uint8_t pin, int value)
 ```
-<dt>Description</dt><dd>
-Write the value to a GPIO pin.
+<dt>Beschreibung</dt><dd>
+Schreiben Sie den Wert auf einen GPIO-Pin.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| pin | physical pin number, 1 to 40 |
-| value | 1 to set the pin high, 0 for low. |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| pin | physische Pin-Nummer, 1 bis 40 |
+| value | 1, um den Pin auf hoch zu setzen, 0 für niedrig |
 </dd>
-<dt>Return Value</dt><dd>
-Returns 0 on success, -1 on error (GPIO pin not supported).
+<dt>Rückgabewert</dt><dd>
+Gibt 0 bei Erfolg zurück, -1 bei Fehler (GPIO-Pin wird nicht unterstützt).
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [gpio_get]
 </dd>
 
-# Graphics
+# Grafik
 
 ## cls
 
 ```c
 void cls(uint8_t palidx)
 ```
-<dt>Description</dt><dd>
-Clears the entire screen and resets display offsets, also sets the console's background color.
+<dt>Beschreibung</dt><dd>
+Löscht den gesamten Bildschirm, setzt Anzeigeversätze zurück und legt außerdem die Hintergrundfarbe der Konsole fest.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| palidx | color, palette index 0 to 255 |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| palidx | Farbe, Palettenindex 0 bis 255 |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [pget], [pset]
 </dd>
 <hr>
@@ -638,18 +643,18 @@ Clears the entire screen and resets display offsets, also sets the console's bac
 ```c
 uint32_t cget(uint16_t x, uint16_t y)
 ```
-<dt>Description</dt><dd>
-Get pixel at a coordinate and return color RGBA.
+<dt>Beschreibung</dt><dd>
+Pixel an einer Koordinate abrufen und geben Sie die Farbe RGBA zurück.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| x | X coordinate in pixels |
-| y | Y coordinate in pixels |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| x | X-Koordinate in Pixel |
+| y | Y-Koordinate in Pixel |
 </dd>
-<dt>Return Value</dt><dd>
-A packed color, with RGBA channels (red is in the least significant byte).
+<dt>Rückgabewert</dt><dd>
+Eine gepackte Farbe mit RGBA-Kanälen (Rot befindet sich im niederwertigsten Byte).
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [cls], [pget], [pset]
 </dd>
 <hr>
@@ -658,18 +663,18 @@ A packed color, with RGBA channels (red is in the least significant byte).
 ```c
 uint8_t pget(uint16_t x, uint16_t y)
 ```
-<dt>Description</dt><dd>
-Get pixel at a coordinate and return its palette index.
+<dt>Beschreibung</dt><dd>
+Pixel an einer Koordinate abrufen und deren Palettenindex zurückgeben.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| x | X coordinate in pixels |
-| y | Y coordinate in pixels |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| x | X-Koordinate in Pixel |
+| y | Y-Koordinate in Pixel |
 </dd>
-<dt>Return Value</dt><dd>
-Color in palette index, 0 to 255.
+<dt>Rückgabewert</dt><dd>
+Farbe im Palettenindex, 0 bis 255.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [cls], [pset], [cget]
 </dd>
 <hr>
@@ -678,16 +683,16 @@ Color in palette index, 0 to 255.
 ```c
 void pset(uint8_t palidx, uint16_t x, uint16_t y)
 ```
-<dt>Description</dt><dd>
-Plots a pixel at a coordinate.
+<dt>Beschreibung</dt><dd>
+Plottet ein Pixel an einer Koordinate.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| palidx | color, palette index 0 to 255 |
-| x | X coordinate in pixels |
-| y | Y coordinate in pixels |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| palidx | Farbe, Palettenindex 0 bis 255 |
+| x | X-Koordinate in Pixel |
+| y | Y-Koordinate in Pixel |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [cls], [pget]
 </dd>
 <hr>
@@ -696,18 +701,18 @@ Plots a pixel at a coordinate.
 ```c
 uint16_t width(int8_t type, str_t str)
 ```
-<dt>Description</dt><dd>
-Returns displayed text's width in pixels.
+<dt>Beschreibung</dt><dd>
+Gibt die Breite des angezeigten Texts in Pixel zurück.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| type | font type, -4 to 4 |
-| str | string to measure |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| type | Schrifttyp, -4 bis 4 |
+| str | Zeichenfolge zum Messen |
 </dd>
-<dt>Return Value</dt><dd>
-Number of pixels required to display text.
+<dt>Rückgabewert</dt><dd>
+Anzahl der Pixel, die zum Anzeigen von Text erforderlich sind.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [text]
 </dd>
 <hr>
@@ -716,20 +721,20 @@ Number of pixels required to display text.
 ```c
 void text(uint8_t palidx, int16_t x, int16_t y, int8_t type, uint8_t shidx, uint8_t sha, str_t str)
 ```
-<dt>Description</dt><dd>
-Prints text on screen.
+<dt>Beschreibung</dt><dd>
+Druckt Text auf dem Bildschirm.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| palidx | color, palette index 0 to 255 |
-| x | X coordinate in pixels |
-| y | Y coordinate in pixels |
-| type | font type, -4 to -1 monospace, 1 to 4 proportional |
-| shidx | shadow's color, palette index 0 to 255 |
-| sha | shadow's alpha, 0 (fully transparent) to 255 (fully opaque) |
-| str | string to display |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| palidx | Farbe, Palettenindex 0 bis 255 |
+| x | X-Koordinate in Pixel |
+| y | Y-Koordinate in Pixel |
+| type | Schrifttyp, -4 bis -1 Monospace, 1 bis 4 Proportional |
+| shidx | Schattenfarbe, Palettenindex 0 bis 255 |
+| sha | Alpha des Schattens, 0 (vollständig transparent) bis 255 (vollständig undurchsichtig) |
+| str | Zeichenfolge, die angezeigt werden soll |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [width]
 </dd>
 <hr>
@@ -738,18 +743,18 @@ Prints text on screen.
 ```c
 void line(uint8_t palidx, int16_t x0, int16_t y0, int16_t x1, int16_t y1)
 ```
-<dt>Description</dt><dd>
-Draws an anti-aliased line.
+<dt>Beschreibung</dt><dd>
+Zeichnet eine geglättete Linie.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| palidx | color, palette index 0 to 255 |
-| x0 | starting X coordinate in pixels |
-| y0 | starting Y coordinate in pixels |
-| x1 | ending X coordinate in pixels |
-| y1 | ending Y coordinate in pixels |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| palidx | Farbe, Palettenindex 0 bis 255 |
+| x0 | Start-X-Koordinate in Pixel |
+| y0 | Start-Y-Koordinate in Pixel |
+| x1 | Ende-X-Koordinate in Pixel |
+| y1 | Ende-Y-Koordinate in Pixel |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [qbez], [cbez]
 </dd>
 <hr>
@@ -759,20 +764,20 @@ Draws an anti-aliased line.
 void qbez(uint8_t palidx, int16_t x0, int16_t y0, int16_t x1, int16_t y1,
     int16_t cx, int16_t cy)
 ```
-<dt>Description</dt><dd>
-Draws a quadratic Bezier curve.
+<dt>Beschreibung</dt><dd>
+Zeichnet eine quadratische Bezier-Kurve.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| palidx | color, palette index 0 to 255 |
-| x0 | starting X coordinate in pixels |
-| y0 | starting Y coordinate in pixels |
-| x1 | ending X coordinate in pixels |
-| y1 | ending Y coordinate in pixels |
-| cx | control point X coordinate in pixels |
-| cy | control point Y coordinate in pixels |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| palidx | Farbe, Palettenindex 0 bis 255 |
+| x0 | Start-X-Koordinate in Pixel |
+| y0 | Start-Y-Koordinate in Pixel |
+| x1 | Ende-X-Koordinate in Pixel |
+| y1 | Ende-Y-Koordinate in Pixel |
+| cx | X-Koordinate des Kontrollpunkts in Pixel |
+| cy | Y-Koordinate des Kontrollpunkts in Pixel |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [line], [cbez]
 </dd>
 <hr>
@@ -782,22 +787,22 @@ Draws a quadratic Bezier curve.
 void cbez(uint8_t palidx, int16_t x0, int16_t y0, int16_t x1, int16_t y1,
     int16_t cx0, int16_t cy0, int16_t cx1, int16_t cy1)
 ```
-<dt>Description</dt><dd>
-Draws a cubic Bezier curve.
+<dt>Beschreibung</dt><dd>
+Zeichnet eine kubische Bezier-Kurve.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| palidx | color, palette index 0 to 255 |
-| x0 | starting X coordinate in pixels |
-| y0 | starting Y coordinate in pixels |
-| x1 | ending X coordinate in pixels |
-| y1 | ending Y coordinate in pixels |
-| cx0 | first control point X coordinate in pixels |
-| cy0 | first control point Y coordinate in pixels |
-| cx1 | second control point X coordinate in pixels |
-| cy1 | second control point Y coordinate in pixels |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| palidx | Farbe, Palettenindex 0 bis 255 |
+| x0 | Start-X-Koordinate in Pixel |
+| y0 | Start-Y-Koordinate in Pixel |
+| x1 | Ende-X-Koordinate in Pixel |
+| y1 | Ende-Y-Koordinate in Pixel |
+| cx0 | X-Koordinate des ersten Kontrollpunkts in Pixel |
+| cy0 | Y-Koordinate des ersten Kontrollpunkts in Pixel |
+| cx1 | X-Koordinate des zweiten Kontrollpunkts in Pixel |
+| cy1 | Y-Koordinate des zweiten Kontrollpunkts in Pixel |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [line], [qbez]
 </dd>
 <hr>
@@ -806,20 +811,20 @@ Draws a cubic Bezier curve.
 ```c
 void tri(uint8_t palidx, int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2)
 ```
-<dt>Description</dt><dd>
-Draws a triangle.
+<dt>Beschreibung</dt><dd>
+Zeichnet ein Dreieck.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| palidx | color, palette index 0 to 255 |
-| x0 | first edge X coordinate in pixels |
-| y0 | first edge Y coordinate in pixels |
-| x1 | second edge X coordinate in pixels |
-| y1 | second edge Y coordinate in pixels |
-| x2 | third edge X coordinate in pixels |
-| y2 | third edge Y coordinate in pixels |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| palidx | Farbe, Palettenindex 0 bis 255 |
+| x0 | X-Koordinate der ersten Kante in Pixel |
+| y0 | Y-Koordinate der ersten Kante in Pixel |
+| x1 | X-Koordinate der zweiten Kante in Pixel |
+| y1 | Y-Koordinate der zweiten Kante in Pixel |
+| x2 | X-Koordinate der dritten Kante in Pixel |
+| y2 | Y-Koordinate der dritten Kante in Pixel |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [ftri], [tri2d], [tri3d], [tritx], [mesh], [trns]
 </dd>
 <hr>
@@ -828,20 +833,20 @@ Draws a triangle.
 ```c
 void ftri(uint8_t palidx, int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2)
 ```
-<dt>Description</dt><dd>
-Draws a filled triangle.
+<dt>Beschreibung</dt><dd>
+Zeichnet ein gefülltes Dreieck.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| palidx | color, palette index 0 to 255 |
-| x0 | first edge X coordinate in pixels |
-| y0 | first edge Y coordinate in pixels |
-| x1 | second edge X coordinate in pixels |
-| y1 | second edge Y coordinate in pixels |
-| x2 | third edge X coordinate in pixels |
-| y2 | third edge Y coordinate in pixels |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| palidx | Farbe, Palettenindex 0 bis 255 |
+| x0 | X-Koordinate der ersten Kante in Pixel |
+| y0 | Y-Koordinate der ersten Kante in Pixel |
+| x1 | X-Koordinate der zweiten Kante in Pixel |
+| y1 | Y-Koordinate der zweiten Kante in Pixel |
+| x2 | X-Koordinate der dritten Kante in Pixel |
+| y2 | Y-Koordinate der dritten Kante in Pixel |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [tri], [tri2d], [tri3d], [tritx], [mesh], [trns]
 </dd>
 <hr>
@@ -852,22 +857,22 @@ void tri2d(uint8_t pi0, int16_t x0, int16_t y0,
     uint8_t pi1, int16_t x1, int16_t y1,
     uint8_t pi2, int16_t x2, int16_t y2)
 ```
-<dt>Description</dt><dd>
-Draws a filled triangle with color gradients.
+<dt>Beschreibung</dt><dd>
+Zeichnet ein gefülltes Dreieck mit Farbverläufen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| pi0 | first edge color, palette index 0 to 255 |
-| x0 | first edge X coordinate in pixels |
-| y0 | first edge Y coordinate in pixels |
-| pi1 | second edge color, palette index 0 to 255 |
-| x1 | second edge X coordinate in pixels |
-| y1 | second edge Y coordinate in pixels |
-| pi2 | third edge color, palette index 0 to 255 |
-| x2 | third edge X coordinate in pixels |
-| y2 | third edge Y coordinate in pixels |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| pi0 | Farbe der ersten Kante, Palettenindex 0 bis 255 |
+| x0 | X-Koordinate der ersten Kante in Pixel |
+| y0 | Y-Koordinate der ersten Kante in Pixel |
+| pi1 | Farbe der zweiten Kante, Palettenindex 0 bis 255 |
+| x1 | X-Koordinate der zweiten Kante in Pixel |
+| y1 | Y-Koordinate der zweiten Kante in Pixel |
+| pi2 | Farbe der dritten Kante, Palettenindex 0 bis 255 |
+| x2 | X-Koordinate der dritten Kante in Pixel |
+| y2 | Y-Koordinate der dritten Kante in Pixel |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [tri], [ftri], [tri3d], [tritx], [mesh], [trns]
 </dd>
 <hr>
@@ -878,25 +883,25 @@ void tri3d(uint8_t pi0, int16_t x0, int16_t y0, int16_t z0,
     uint8_t pi1, int16_t x1, int16_t y1, int16_t z1,
     uint8_t pi2, int16_t x2, int16_t y2, int16_t z2)
 ```
-<dt>Description</dt><dd>
-Draws a filled triangle with color gradients in [3D space].
+<dt>Beschreibung</dt><dd>
+Zeichnet ein gefülltes Dreieck mit Farbverläufen in [3D-Welt].
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| pi0 | first edge color, palette index 0 to 255 |
-| x0 | first edge X coordinate in space |
-| y0 | first edge Y coordinate in space |
-| z0 | first edge Z coordinate in space |
-| pi1 | second edge color, palette index 0 to 255 |
-| x1 | second edge X coordinate in space |
-| y1 | second edge Y coordinate in space |
-| z1 | second edge Z coordinate in space |
-| pi2 | third edge color, palette index 0 to 255 |
-| x2 | third edge X coordinate in space |
-| y2 | third edge Y coordinate in space |
-| z2 | third edge Z coordinate in space |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| pi0 | Farbe der ersten Kante, Palettenindex 0 bis 255 |
+| x0 | X-Koordinate der ersten Kante im Welt |
+| y0 | Y-Koordinate der ersten Kante im Welt |
+| z0 | Z-Koordinate der ersten Kante im Welt |
+| pi1 | Farbe der zweiten Kante, Palettenindex 0 bis 255 |
+| x1 | X-Koordinate der zweiten Kante im Welt |
+| y1 | Y-Koordinate der zweiten Kante im Welt |
+| z1 | Z-Koordinate der zweiten Kante im Welt |
+| pi2 | Farbe der dritten Kante, Palettenindex 0 bis 255 |
+| x2 | X-Koordinate der dritten Kante im Welt |
+| y2 | Y-Koordinate der dritten Kante im Welt |
+| z2 | Z-Koordinate der dritten Kante im Welt |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [tri], [ftri], [tri2d], [tritx], [mesh], [trns]
 </dd>
 <hr>
@@ -907,28 +912,28 @@ void tritx(uint8_t u0, uint8_t v0, int16_t x0, int16_t y0, int16_t z0,
     uint8_t u1, uint8_t v1, int16_t x1, int16_t y1, int16_t z1,
     uint8_t u2, uint8_t v2, int16_t x2, int16_t y2, int16_t z2)
 ```
-<dt>Description</dt><dd>
-Draws a textured triangle in [3D space].
+<dt>Beschreibung</dt><dd>
+Zeichnet ein Dreieck mit Textur in [3D-Welt].
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| u0 | first edge texture X coordinate 0 to 255 |
-| v0 | first edge texture Y coordinate 0 to 255 |
-| x0 | first edge X coordinate in space |
-| y0 | first edge Y coordinate in space |
-| z0 | first edge Z coordinate in space |
-| u1 | second edge texture X coordinate 0 to 255 |
-| v1 | second edge texture Y coordinate 0 to 255 |
-| x1 | second edge X coordinate in space |
-| y1 | second edge Y coordinate in space |
-| z1 | second edge Z coordinate in space |
-| u2 | third edge texture X coordinate 0 to 255 |
-| v2 | third edge texture Y coordinate 0 to 255 |
-| x2 | third edge X coordinate in space |
-| y2 | third edge Y coordinate in space |
-| z2 | third edge Z coordinate in space |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| u0 | X-Koordinate der ersten Kantentextur 0 bis 255 |
+| v0 | Y-Koordinate der ersten Kantentextur 0 bis 255 |
+| x0 | X-Koordinate der ersten Kante im Welt |
+| y0 | Y-Koordinate der ersten Kante im Welt |
+| z0 | Z-Koordinate der ersten Kante im Welt |
+| u1 | X-Koordinate der zweiten Kantentextur 0 bis 255 |
+| v1 | Y-Koordinate der zweiten Kantentextur 0 bis 255 |
+| x1 | X-Koordinate der zweiten Kante im Welt |
+| y1 | Y-Koordinate der zweiten Kante im Welt |
+| z1 | Z-Koordinate der zweiten Kante im Welt |
+| u2 | X-Koordinate der dritten Kantentextur 0 bis 255 |
+| v2 | Y-Koordinate der dritten Kantentextur 0 bis 255 |
+| x2 | X-Koordinate der dritten Kante im Welt |
+| y2 | Y-Koordinate der dritten Kante im Welt |
+| z2 | Z-Koordinate der dritten Kante im Welt |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [tri], [ftri], [tri2d], [tri3d], [mesh], [trns]
 </dd>
 <hr>
@@ -937,17 +942,17 @@ Draws a textured triangle in [3D space].
 ```c
 void mesh(addr_t verts, addr_t uvs, uint16_t numtri, addr_t tris)
 ```
-<dt>Description</dt><dd>
-Draws a mesh made of triangles in [3D space], using indeces to verticles and texture coordinates (or palette).
+<dt>Beschreibung</dt><dd>
+Zeichnet ein Netz aus Dreiecken in [3D-Welt] und verwendet dabei Indizes für Scheitelpunkte und Texturkoordinaten (oder Palette).
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| verts | address of vertices array, 3 x 2 bytes each, X, Y, Z |
-| uvs | address of UVs array (if 0, then palette is used), 2 x 1 bytes each, texture X, Y |
-| numtri | number of triangles |
-| tris | address of triangles array with indices, 6 x 1 bytes each, vi1, ui1/pi1, vi2, ui2/pi2, vi3, ui3/pi3 |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| verts | Adresse des Vertices-Arrays, jeweils 3 x 2 Bytes, X, Y, Z |
+| uvs | Adresse des UVs-Arrays (wenn 0, dann wird Palette verwendet), jeweils 2 x 1 Byte, Textur X, Y |
+| numtri | Anzahl der Dreiecke |
+| tris | Adresse des Dreiecks-Arrays mit Indizes, jeweils 6 x 1 Byte, vi1, ui1/pi1, vi2, ui2/pi2, vi3, ui3/pi3 |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [tri], [ftri], [tri2d], [tri3d], [tritx], [trns]
 </dd>
 <hr>
@@ -956,18 +961,18 @@ Draws a mesh made of triangles in [3D space], using indeces to verticles and tex
 ```c
 void rect(uint8_t palidx, int16_t x0, int16_t y0, int16_t x1, int16_t y1)
 ```
-<dt>Description</dt><dd>
-Draws a rectangle.
+<dt>Beschreibung</dt><dd>
+Zeichnet ein Rechteck.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| palidx | color, palette index 0 to 255 |
-| x0 | top left corner X coordinate in pixels |
-| y0 | top left corner Y coordinate in pixels |
-| x1 | bottom right X coordinate in pixels |
-| y1 | bottom right Y coordinate in pixels |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| palidx | Farbe, Palettenindex 0 bis 255 |
+| x0 | X-Koordinate der oberen linken Ecke in Pixel |
+| y0 | Y-Koordinate der oberen linken Ecke in Pixel |
+| x1 | X-Koordinate der unten rechts Ecke in Pixel |
+| y1 | Y-Koordinate der unten rechts Ecke in Pixel |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [frect]
 </dd>
 <hr>
@@ -976,18 +981,18 @@ Draws a rectangle.
 ```c
 void frect(uint8_t palidx, int16_t x0, int16_t y0, int16_t x1, int16_t y1)
 ```
-<dt>Description</dt><dd>
-Draws a filled rectangle.
+<dt>Beschreibung</dt><dd>
+Zeichnet ein gefülltes Rechteck.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| palidx | color, palette index 0 to 255 |
-| x0 | top left corner X coordinate in pixels |
-| y0 | top left corner Y coordinate in pixels |
-| x1 | bottom right X coordinate in pixels |
-| y1 | bottom right Y coordinate in pixels |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| palidx | Farbe, Palettenindex 0 bis 255 |
+| x0 | X-Koordinate der oberen linken Ecke in Pixel |
+| y0 | Y-Koordinate der oberen linken Ecke in Pixel |
+| x1 | X-Koordinate der unten rechts Ecke in Pixel |
+| y1 | Y-Koordinate der unten rechts Ecke in Pixel |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [rect]
 </dd>
 <hr>
@@ -996,17 +1001,17 @@ Draws a filled rectangle.
 ```c
 void circ(uint8_t palidx, int16_t x, int16_t y, uint16_t r)
 ```
-<dt>Description</dt><dd>
-Draws a circle.
+<dt>Beschreibung</dt><dd>
+Zeichnet einen Kreis.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| palidx | color, palette index 0 to 255 |
-| x | center X coordinate in pixels |
-| y | center Y coordinate in pixels |
-| r | radius in pixels |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| palidx | Farbe, Palettenindex 0 bis 255 |
+| x | Mittelpunkt-X-Koordinate in Pixel |
+| y | Mittelpunkt-Y-Koordinate in Pixel |
+| r | Radius in Pixel |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [fcirc], [ellip], [fellip]
 </dd>
 <hr>
@@ -1015,17 +1020,17 @@ Draws a circle.
 ```c
 void fcirc(uint8_t palidx, int16_t x, int16_t y, uint16_t r)
 ```
-<dt>Description</dt><dd>
-Draws a filled circle.
+<dt>Beschreibung</dt><dd>
+Zeichnet einen gefüllten Kreis.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| palidx | color, palette index 0 to 255 |
-| x | center X coordinate in pixels |
-| y | center Y coordinate in pixels |
-| r | radius in pixels |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| palidx | Farbe, Palettenindex 0 bis 255 |
+| x | Mittelpunkt-X-Koordinate in Pixel |
+| y | Mittelpunkt-Y-Koordinate in Pixel |
+| r | Radius in Pixel |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [circ], [ellip], [fellip]
 </dd>
 <hr>
@@ -1034,18 +1039,18 @@ Draws a filled circle.
 ```c
 void ellip(uint8_t palidx, int16_t x0, int16_t y0, int16_t x1, int16_t y1)
 ```
-<dt>Description</dt><dd>
-Draws an ellipse.
+<dt>Beschreibung</dt><dd>
+Zeichnet eine Ellipse.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| palidx | color, palette index 0 to 255 |
-| x0 | top left corner X coordinate in pixels |
-| y0 | top left corner Y coordinate in pixels |
-| x1 | bottom right X coordinate in pixels |
-| y1 | bottom right Y coordinate in pixels |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| palidx | Farbe, Palettenindex 0 bis 255 |
+| x0 | X-Koordinate der oberen linken Ecke in Pixel |
+| y0 | Y-Koordinate der oberen linken Ecke in Pixel |
+| x1 | X-Koordinate der unten rechts Ecke in Pixel |
+| y1 | Y-Koordinate der unten rechts Ecke in Pixel |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [circ], [fcirc], [fellip]
 </dd>
 <hr>
@@ -1054,18 +1059,18 @@ Draws an ellipse.
 ```c
 void fellip(uint8_t palidx, int16_t x0, int16_t y0, int16_t x1, int16_t y1)
 ```
-<dt>Description</dt><dd>
-Draws a filled ellipse.
+<dt>Beschreibung</dt><dd>
+Zeichnet eine gefüllte Ellipse.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| palidx | color, palette index 0 to 255 |
-| x0 | top left corner X coordinate in pixels |
-| y0 | top left corner Y coordinate in pixels |
-| x1 | bottom right X coordinate in pixels |
-| y1 | bottom right Y coordinate in pixels |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| palidx | Farbe, Palettenindex 0 bis 255 |
+| x0 | X-Koordinate der oberen linken Ecke in Pixel |
+| y0 | Y-Koordinate der oberen linken Ecke in Pixel |
+| x1 | X-Koordinate der unten rechts Ecke in Pixel |
+| y1 | Y-Koordinate der unten rechts Ecke in Pixel |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [circ], [fcirc], [ellip]
 </dd>
 <hr>
@@ -1074,16 +1079,16 @@ Draws a filled ellipse.
 ```c
 void move(int16_t x, int16_t y, uint16_t deg)
 ```
-<dt>Description</dt><dd>
-Moves turtle to the given position on screen or in the maze.
+<dt>Beschreibung</dt><dd>
+Bewegt die Schildkröte an die angegebene Position auf dem Bildschirm oder im Labyrinth.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| x | X coordinate in pixels (or 1/128 tiles with [maze]) |
-| y | Y coordinate in pixels |
-| deg | direction in degrees, 0 to 359, 0 is upwards on screen, 90 is to the right |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| x | X-Koordinate in Pixel (oder 1/128 Kacheln mit [maze]) |
+| y | Y-Koordinate in Pixel |
+| deg | Richtung in Grad, 0 bis 359, 0 bedeutet auf dem Bildschirm nach oben, 90 bedeutet nach rechts |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [left], [right], [up], [down], [color], [forw], [back]
 </dd>
 <hr>
@@ -1092,14 +1097,14 @@ Moves turtle to the given position on screen or in the maze.
 ```c
 void left(uint16_t deg)
 ```
-<dt>Description</dt><dd>
-Turns turtle left.
+<dt>Beschreibung</dt><dd>
+Dreht die Schildkröte nach links.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| deg | change in degrees, 0 to 359 |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| deg | Änderung in Grad, 0 bis 359 |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [move], [right], [up], [down], [color], [forw], [back]
 </dd>
 <hr>
@@ -1108,14 +1113,14 @@ Turns turtle left.
 ```c
 void right(uint16_t deg)
 ```
-<dt>Description</dt><dd>
-Turns turtle right.
+<dt>Beschreibung</dt><dd>
+Dreht die Schildkröte nach rechts.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| deg | change in degrees, 0 to 359 |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| deg | Änderung in Grad, 0 bis 359 |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [move], [left], [up], [down], [color], [forw], [back]
 </dd>
 <hr>
@@ -1124,10 +1129,10 @@ Turns turtle right.
 ```c
 void up(void)
 ```
-<dt>Description</dt><dd>
-Lifts turtle's tail up. The turtle will move without drawing a line.
+<dt>Beschreibung</dt><dd>
+Hebt den Schwanz der Schildkröte an. Die Schildkröte bewegt sich, ohne eine Linie zu zeichnen.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [move], [left], [right], [down], [color], [forw], [back]
 </dd>
 <hr>
@@ -1136,10 +1141,10 @@ Lifts turtle's tail up. The turtle will move without drawing a line.
 ```c
 void down(void)
 ```
-<dt>Description</dt><dd>
-Puts turtle's tail down. The turtle will move drawing a line (see [color]).
+<dt>Beschreibung</dt><dd>
+Legt den Schwanz der Schildkröte nach unten. Die Schildkröte bewegt sich und zeichnet eine Linie (siehe [color]).
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [move], [left], [right], [up], [color], [forw], [back]
 </dd>
 <hr>
@@ -1148,14 +1153,14 @@ Puts turtle's tail down. The turtle will move drawing a line (see [color]).
 ```c
 void color(uint8_t palidx)
 ```
-<dt>Description</dt><dd>
-Sets turtle paint color.
+<dt>Beschreibung</dt><dd>
+Legt die Farbe der Schildkrötenfarbe fest.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| palidx | color, palette index 0 to 255 |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| palidx | Farbe, Palettenindex 0 bis 255 |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [move], [left], [right], [up], [down], [forw], [back]
 </dd>
 <hr>
@@ -1164,14 +1169,14 @@ Sets turtle paint color.
 ```c
 void forw(uint16_t cnt)
 ```
-<dt>Description</dt><dd>
-Moves turtle forward.
+<dt>Beschreibung</dt><dd>
+Bewegt die Schildkröte vorwärts.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| cnt | amount in pixels (or 1/128 tiles with [maze]) |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| cnt | Menge in Pixeln (oder 1/128 Kacheln mit [maze]) |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [move], [left], [right], [up], [down], [color], [back]
 </dd>
 <hr>
@@ -1180,14 +1185,14 @@ Moves turtle forward.
 ```c
 void back(uint16_t cnt)
 ```
-<dt>Description</dt><dd>
-Moves turtle backward.
+<dt>Beschreibung</dt><dd>
+Bewegt die Schildkröte rückwärts.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| cnt | amount in pixels (or 1/128 tiles with [maze]) |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| cnt | Menge in Pixeln (oder 1/128 Kacheln mit [maze]) |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [move], [left], [right], [up], [down], [color], [forw]
 </dd>
 <hr>
@@ -1196,20 +1201,20 @@ Moves turtle backward.
 ```c
 void spr(int16_t x, int16_t y, uint16_t sprite, uint8_t sw, uint8_t sh, int8_t scale, uint8_t type)
 ```
-<dt>Description</dt><dd>
-Displays a sprite, or multiple adjacent sprites.
+<dt>Beschreibung</dt><dd>
+Zeigt ein Sprite oder mehrere benachbarte Sprites an.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| x | X coordinate in pixels |
-| y | Y coordinate in pixels |
-| sprite | sprite id, 0 to 1023 |
-| sw | number of horizontal sprites |
-| sh | number of vertical sprites |
-| scale | scale, -3 to 4 |
-| type | transform, 0=normal, 1=rotate 90, 2=rotate 180, 3=rotate 270, 4=flip vertically, 5=flip+90, 6=flip horizontally, 7=flip+270 |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| x | X-Koordinate in Pixel |
+| y | Y-Koordinate in Pixel |
+| sprite | Sprite-ID, 0 bis 1023 |
+| sw | Anzahl der horizontalen Sprites |
+| sh | Anzahl der vertikalen Sprites |
+| scale | Skala, -3 bis 4 |
+| type | transformieren, 0=normal, 1=90°, 2=180°, 3=270°, 4=vert. spiegeln, 5=90°+spiegeln, 6=horiz. spiegeln, 7=270°+spiegeln |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dlg], [stext]
 </dd>
 <hr>
@@ -1221,27 +1226,27 @@ void dlg(int16_t x, int16_t y, uint16_t w, uint16_t h, int8_t scale,
     uint16_t ml, uint16_t bg, uint16_t mr,
     uint16_t bl, uint16_t bm, uint16_t br)
 ```
-<dt>Description</dt><dd>
-Displays a dialog window using sprites.
+<dt>Beschreibung</dt><dd>
+Zeigt ein Dialogfenster mit Sprites an.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| x | X coordinate in pixels |
-| y | Y coordinate in pixels |
-| w | dialog width in pixels |
-| h | dialog height in pixels |
-| scale | scale, -3 to 4 |
-| tl | top left corner sprite id |
-| tm | top middle sprite id |
-| tr | top right corner sprite id |
-| ml | middle left side sprite id |
-| bg | background sprite id |
-| mr | middle right side sprite id |
-| bl | bottom left corner sprite id |
-| bm | bottom middle sprite id |
-| br | bottom right corner sprite id |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| x | X-Koordinate in Pixel |
+| y | Y-Koordinate in Pixel |
+| w | Dialogbreite in Pixel |
+| h | Dialoghöhe in Pixel |
+| scale | Skala, -3 bis 4 |
+| tl | Sprite-ID in der oberen linken Ecke |
+| tm | Sprite-ID oberen in der Mitte |
+| tr | Sprite-ID in der oberen rechten Ecke |
+| ml | Mittlere linke Sprite-ID |
+| bg | Hintergrund-Sprite-ID |
+| mr | Mittlere rechte Sprite-ID |
+| bl | Sprite-ID in der unteren linken Ecke |
+| bm | Sprite-ID unten in der Mitte |
+| br | Sprite-ID in der unteren rechten Ecke |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [spr], [stext]
 </dd>
 <hr>
@@ -1250,21 +1255,21 @@ Displays a dialog window using sprites.
 ```c
 void stext(int16_t x, int16_t y, uint16_t fs, uint16_t fu, uint8_t sw, uint8_t sh, int8_t scale, str_t str)
 ```
-<dt>Description</dt><dd>
-Displays text on screen using sprites.
+<dt>Beschreibung</dt><dd>
+Zeigt Text mithilfe von Sprites auf dem Bildschirm an.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| x | X coordinate in pixels |
-| y | Y coordinate in pixels |
-| fs | first sprite id to be used for displaying |
-| fu | first UNICODE (smallest character) in string |
-| sw | number of horizontal sprites |
-| sh | number of vertical sprites |
-| scale | scale, -3 to 4 |
-| str | zero terminated UTF-8 string |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| x | X-Koordinate in Pixel |
+| y | Y-Koordinate in Pixel |
+| fs | Erste Sprite-ID, die zur Anzeige verwendet werden soll |
+| fu | Erster UNICODE (kleinstes Zeichen) in der Zeichenfolge |
+| sw | Anzahl der horizontalen Sprites |
+| sh | Anzahl der vertikalen Sprites |
+| scale | Skala, -3 bis 4 |
+| str | nullterminierte UTF-8-Zeichenfolge |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [spr], [dlg]
 </dd>
 <hr>
@@ -1273,14 +1278,14 @@ Displays text on screen using sprites.
 ```c
 void remap(addr_t replace)
 ```
-<dt>Description</dt><dd>
-Replaces tiles on map. Can be used to animate tiles on the map.
+<dt>Beschreibung</dt><dd>
+Ersetzt Kacheln auf der Karte. Kann zum Animieren von Kacheln auf der Karte verwendet werden.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| replace | an array of 256 sprite ids |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| replace | Ein Array von 256 Sprite-IDs |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [mget], [mset], [map], [maze]
 </dd>
 <hr>
@@ -1289,18 +1294,18 @@ Replaces tiles on map. Can be used to animate tiles on the map.
 ```c
 uint16_t mget(uint16_t mx, uint16_t my)
 ```
-<dt>Description</dt><dd>
-Returns one tile on map.
+<dt>Beschreibung</dt><dd>
+Gibt eine Kachel auf der Karte zurück.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| mx | X coordinate on map in tiles |
-| my | Y coordinate on map in tiles |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| mx | X-Koordinate auf der Karte in Kacheln |
+| my | Y-Koordinate auf der Karte in Kacheln |
 </dd>
-<dt>Return Value</dt><dd>
-The sprite id of the tile at the given coordinate.
+<dt>Rückgabewert</dt><dd>
+Die Sprite-ID der Kachel an der angegebenen Koordinate.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [remap], [mset], [map], [maze]
 </dd>
 <hr>
@@ -1309,16 +1314,16 @@ The sprite id of the tile at the given coordinate.
 ```c
 void mset(uint16_t mx, uint16_t my, uint16_t sprite)
 ```
-<dt>Description</dt><dd>
-Sets one tile on map.
+<dt>Beschreibung</dt><dd>
+Legt eine Kachel auf der Karte fest.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| mx | X coordinate on map in tiles |
-| my | Y coordinate on map in tiles |
-| sprite | sprite id, 0 to 1023 |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| mx | X-Koordinate auf der Karte in Kacheln |
+| my | Y-Koordinate auf der Karte in Kacheln |
+| sprite | Sprite-ID, 0 bis 1023 |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [remap], [mget], [map], [maze]
 </dd>
 <hr>
@@ -1327,20 +1332,20 @@ Sets one tile on map.
 ```c
 void map(int16_t x, int16_t y, uint16_t mx, uint16_t my, uint16_t mw, uint16_t mh, int8_t scale)
 ```
-<dt>Description</dt><dd>
-Draws (part of) the map.
+<dt>Beschreibung</dt><dd>
+Zeichnet die Karte (oder einen Teil davon).
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| x | X coordinate in pixels |
-| y | Y coordinate in pixels |
-| mx | X coordinate on map in tiles |
-| my | Y coordinate on map in tiles |
-| mw | number of horizontal tiles |
-| mh | number of vertical tiles |
-| scale | scale, -3 to 4 |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| x | X-Koordinate in Pixel |
+| y | Y-Koordinate in Pixel |
+| mx | X-Koordinate auf der Karte in Kacheln |
+| my | Y-Koordinate auf der Karte in Kacheln |
+| mw | Anzahl der horizontalen Kacheln |
+| mh | Anzahl der vertikalen Kacheln |
+| scale | Skala, -3 bis 4 |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [remap], [mget], [mset], [maze]
 </dd>
 <hr>
@@ -1350,47 +1355,47 @@ Draws (part of) the map.
 void maze(uint16_t mx, uint16_t my, uint16_t mw, uint16_t mh, uint8_t scale,
     uint16_t sky, uint16_t grd, uint16_t door, uint16_t wall, uint16_t obj, uint8_t numnpc, addr_t npc)
 ```
-<dt>Description</dt><dd>
-Displays map as a 3D maze, using turtle's position.
+<dt>Beschreibung</dt><dd>
+Zeigt die Karte als 3D-Labyrinth unter Verwendung der Position der Schildkröte an.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| mx | X coordinate on map in tiles |
-| my | Y coordinate on map in tiles |
-| mw | number of horizontal tiles |
-| mh | number of vertical tiles |
-| scale | number of sprites per tiles in power of two, 0 to 3 |
-| sky | sky tile index |
-| grd | ground tile index |
-| door | first door tile index |
-| wall | first wall tile index |
-| obj | first object tile index |
-| numnpc | number of NPC records |
-| npc | an uint32_t array of numnpc times x,y,tile index triplets |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| mx | X-Koordinate auf der Karte in Kacheln |
+| my | Y-Koordinate auf der Karte in Kacheln |
+| mw | Anzahl der horizontalen Kacheln |
+| mh | Anzahl der vertikalen Kacheln |
+| scale | Anzahl der Sprites pro Kachel in Zweierpotenzen, 0 bis 3 |
+| sky | Index der Himmelskacheln |
+| grd | Index der Bodenkacheln |
+| door | Index der ersten Türfliesen |
+| wall | Index der ersten Wandfliesen |
+| obj | Index der ersten Objekt |
+| numnpc | Anzahl der NPC-Datensätze |
+| npc | ein uint32_t-Array aus numnpc mal x, y, Tile-Indextripeln |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [remap], [mget], [mset], [map]
 </dd>
 
-# Input
+# Benutzereingabe
 
 ## getpad
 
 ```c
 int getpad(int pad, int btn)
 ```
-<dt>Description</dt><dd>
-Gets the current state of a gamepad button.
+<dt>Beschreibung</dt><dd>
+Ruft den aktuellen Status einer Gamepad-Taste ab.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| pad | gamepad index, 0 to 3 |
-| btn | one of the [gamepad] buttons, `BTN_` |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| pad | Gamepad-Index, 0 bis 3 |
+| btn | eine der [Gamepad]-Tasten, `BTN_` |
 </dd>
-<dt>Return Value</dt><dd>
-Zero if not pressed, non-zero if pressed.
+<dt>Rückgabewert</dt><dd>
+Null, wenn nicht gedrückt, ungleich Null, wenn gedrückt.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [prspad], [relpad], [getbtn], [getclk], [getkey]
 </dd>
 <hr>
@@ -1399,18 +1404,18 @@ Zero if not pressed, non-zero if pressed.
 ```c
 int prspad(int pad, int btn)
 ```
-<dt>Description</dt><dd>
-Returns true if gamepad button was pressed since last call.
+<dt>Beschreibung</dt><dd>
+Gibt treu zurück, wenn die Gamepad-Taste seit dem letzten Aufruf gedrückt wurde.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| pad | gamepad index, 0 to 3 |
-| btn | one of the [gamepad] buttons, `BTN_` |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| pad | Gamepad-Index, 0 bis 3 |
+| btn | eine der [Gamepad]-Tasten, `BTN_` |
 </dd>
-<dt>Return Value</dt><dd>
-Zero if not pressed, non-zero if pressed.
+<dt>Rückgabewert</dt><dd>
+Null, wenn nicht gedrückt, ungleich Null, wenn gedrückt.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [relpad], [getpad], [getbtn], [getclk], [getkey]
 </dd>
 <hr>
@@ -1419,18 +1424,18 @@ Zero if not pressed, non-zero if pressed.
 ```c
 int relpad(int pad, int btn)
 ```
-<dt>Description</dt><dd>
-Returns true if gamepad button was released since last call.
+<dt>Beschreibung</dt><dd>
+Gibt treu zurück, wenn die Gamepad-Taste seit dem letzten Aufruf losgelassen wurde.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| pad | gamepad index, 0 to 3 |
-| btn | one of the [gamepad] buttons, `BTN_` |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| pad | Gamepad-Index, 0 bis 3 |
+| btn | eine der [Gamepad]-Tasten, `BTN_` |
 </dd>
-<dt>Return Value</dt><dd>
-Zero if wasn't released, non-zero if released.
+<dt>Rückgabewert</dt><dd>
+Null, wenn nicht freigegeben, ungleich Null, wenn freigegeben.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [prspad], [getpad], [getbtn], [getclk], [getkey]
 </dd>
 <hr>
@@ -1439,17 +1444,17 @@ Zero if wasn't released, non-zero if released.
 ```c
 int getbtn(int btn)
 ```
-<dt>Description</dt><dd>
-Gets the mouse button's state.
+<dt>Beschreibung</dt><dd>
+Ruft den Zustand der Maustasten ab.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| btn | one of the [pointer] buttons, `BTN_` or `SCR_` |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| btn | eine der [Mauszeiger]-Tasten, `BTN_` oder `SCR_` |
 </dd>
-<dt>Return Value</dt><dd>
-Zero if not pressed, non-zero if pressed.
+<dt>Rückgabewert</dt><dd>
+Null, wenn nicht gedrückt, ungleich Null, wenn gedrückt.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [prspad], [relpad], [getpad], [getclk], [getkey]
 </dd>
 <hr>
@@ -1458,17 +1463,17 @@ Zero if not pressed, non-zero if pressed.
 ```c
 int getclk(int btn)
 ```
-<dt>Description</dt><dd>
-Gets mouse button clicking.
+<dt>Beschreibung</dt><dd>
+Ruft das Klicken mit der Maustaste ab.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| btn | one of the [pointer] buttons, `BTN_` |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| btn | eine der [Mauszeiger]-Tasten, `BTN_` |
 </dd>
-<dt>Return Value</dt><dd>
-Zero if not clciked, non-zero if clicked.
+<dt>Rückgabewert</dt><dd>
+Null, wenn nicht geklickt wird, ungleich Null, wenn geklickt wird.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [prspad], [relpad], [getpad], [getbtn], [getkey]
 </dd>
 <hr>
@@ -1477,17 +1482,17 @@ Zero if not clciked, non-zero if clicked.
 ```c
 int getkey(int sc)
 ```
-<dt>Description</dt><dd>
-Gets the current state of a key.
+<dt>Beschreibung</dt><dd>
+Ruft den aktuellen Status eines Tasten ab.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| sc | scancode, 1 to 144, see [keyboard] |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| sc | Scancode, 1 bis 144, siehe [Tastatur] |
 </dd>
-<dt>Return Value</dt><dd>
-Zero if not pressed, non-zero if pressed.
+<dt>Rückgabewert</dt><dd>
+Null, wenn nicht gedrückt, ungleich Null, wenn gedrückt.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [prspad], [relpad], [getpad], [getbtn], [getclk]
 </dd>
 <hr>
@@ -1496,13 +1501,13 @@ Zero if not pressed, non-zero if pressed.
 ```c
 uint32_t popkey(void)
 ```
-<dt>Description</dt><dd>
-Pop an UTF-8 key from the keyboard queue. See [keyboard], and for the blocking version [getc].
+<dt>Beschreibung</dt><dd>
+Holen Sie sich einen UTF-8-Schlüssel aus der Tastaturwarteschlange. Siehe [Tastatur] und für die Blockierungsversion [getc].
 </dd>
-<dt>Return Value</dt><dd>
-The UTF-8 representation of the key, or 0 if the queue was empty (no blocking).
+<dt>Rückgabewert</dt><dd>
+Die UTF-8-Darstellung des Tasten oder 0, wenn die Warteschlange leer war (keine Blockierung).
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [pendkey], [lenkey], [speckey], [getc]
 </dd>
 <hr>
@@ -1511,14 +1516,14 @@ The UTF-8 representation of the key, or 0 if the queue was empty (no blocking).
 ```c
 int pendkey(void)
 ```
-<dt>Description</dt><dd>
-Returns true if there's a key pending in the queue (but leaves the key in the queue, does not pop it).
+<dt>Beschreibung</dt><dd>
+Gibt treu zurück, wenn ein Taste in der Warteschlange aussteht (bleibt jedoch in der Warteschlange und wird nicht entfernt).
 </dd>
-<dt>Return Value</dt><dd>
-Returns 1 if there are keys in the queue pending.
+<dt>Rückgabewert</dt><dd>
+Gibt 1 zurück, wenn Taste in der Warteschlange ausstehen.
 </dd>
-<dt>See Also</dt><dd>
-[pendkey], [lenkey], [speckey]
+<dt>Siehe auch</dt><dd>
+[popkey], [lenkey], [speckey]
 </dd>
 <hr>
 ## lenkey
@@ -1526,17 +1531,17 @@ Returns 1 if there are keys in the queue pending.
 ```c
 int lenkey(uint32_t key)
 ```
-<dt>Description</dt><dd>
-Returns the length of a UTF-8 key in bytes.
+<dt>Beschreibung</dt><dd>
+Gibt die Länge eines UTF-8-Teasten in Bytes zurück.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| key | the key, popped from the queue |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| key | die Tastaturtaste, aus der Warteschlange entfernt |
 </dd>
-<dt>Return Value</dt><dd>
+<dt>Rückgabewert</dt><dd>
 UTF-8 representation's length in bytes.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [popkey], [pendkey], [speckey]
 </dd>
 <hr>
@@ -1545,34 +1550,35 @@ UTF-8 representation's length in bytes.
 ```c
 int speckey(uint32_t key)
 ```
-<dt>Description</dt><dd>
-Returns true if key is a special key.
+<dt>Beschreibung</dt><dd>
+Gibt treu zurück, wenn der Taste ein Sondertasten ist.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| key | the key, popped from the queue |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| key | die Tastaturtaste, aus der Warteschlange entfernt |
 </dd>
-<dt>Return Value</dt><dd>
-Returns 1 if it's a special key, and 0 if it's a printable one.
+<dt>Rückgabewert</dt><dd>
+Gibt 1 zurück, wenn es sich um einen Sondertasten handelt, und 0, wenn es sich um einen druckbaren Tasten handelt.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [popkey], [pendkey], [lenkey]
 </dd>
 
-# Mathematics
+# Mathematik
 
 ## rand
 
 ```c
 uint32_t rand(void)
 ```
-<dt>Description</dt><dd>
-Get random. Use `%` modulo to make it smaller, for example `1 + rand() % 6` returns random between 1 and 6, like a dice.
+<dt>Beschreibung</dt><dd>
+Werden Sie zufällig. Verwenden Sie `%` Modulo, um es kleiner zu machen, zum Beispiel gibt `1 + rand() % 6` einen
+Zufallswert zwischen 1 und 6 zurück, wie ein Würfel.
 </dd>
-<dt>Return Value</dt><dd>
-A random number between 0 and 2^^32^^-1 (4294967295).
+<dt>Rückgabewert</dt><dd>
+Eine Zufallszahl zwischen 0 und 2^^32^^-1 (4294967295).
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [rnd]
 </dd>
 <hr>
@@ -1581,13 +1587,13 @@ A random number between 0 and 2^^32^^-1 (4294967295).
 ```c
 float rnd(void)
 ```
-<dt>Description</dt><dd>
-Get random. Same as [rand], but returns a floating point number.
+<dt>Beschreibung</dt><dd>
+Werden Sie zufällig. Wie [rand], gibt aber eine Gleitkommazahl zurück.
 </dd>
-<dt>Return Value</dt><dd>
-A random number between 0.0 and 1.0.
+<dt>Rückgabewert</dt><dd>
+Eine Zufallszahl zwischen 0.0 und 1.0.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [rand]
 </dd>
 <hr>
@@ -1596,17 +1602,17 @@ A random number between 0.0 and 1.0.
 ```c
 float float(int val)
 ```
-<dt>Description</dt><dd>
-Returns the floating point equivalent of an integer number.
+<dt>Beschreibung</dt><dd>
+Gibt das Gleitkomma-Äquivalent einer Ganzzahl zurück.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| val | value |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| val | Wert |
 </dd>
-<dt>Return Value</dt><dd>
-The floating point of value.
+<dt>Rückgabewert</dt><dd>
+Der Gleitkommawert.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [int]
 </dd>
 <hr>
@@ -1615,17 +1621,17 @@ The floating point of value.
 ```c
 int int(float val)
 ```
-<dt>Description</dt><dd>
-Returns the integer equivalent of a floating point number.
+<dt>Beschreibung</dt><dd>
+Gibt das ganzzahlige Äquivalent einer Gleitkommazahl zurück.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| val | value |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| val | Wert |
 </dd>
-<dt>Return Value</dt><dd>
-The integer of value.
+<dt>Rückgabewert</dt><dd>
+Die Ganzzahl des Werts.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [float]
 </dd>
 <hr>
@@ -1634,17 +1640,17 @@ The integer of value.
 ```c
 float floor(float val)
 ```
-<dt>Description</dt><dd>
-Returns the largest integral number that's not greater than value.
+<dt>Beschreibung</dt><dd>
+Gibt die größte ganze Zahl zurück, die nicht größer als der Wert ist.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| val | value |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| val | Wert |
 </dd>
-<dt>Return Value</dt><dd>
-The floor of value.
+<dt>Rückgabewert</dt><dd>
+Die Wertuntergrenze.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [ceil]
 </dd>
 <hr>
@@ -1653,17 +1659,17 @@ The floor of value.
 ```c
 float ceil(float val)
 ```
-<dt>Description</dt><dd>
-Returns the smallest integral number that's not less than value.
+<dt>Beschreibung</dt><dd>
+Gibt die kleinste ganze Zahl zurück, die nicht kleiner als der Wert ist.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| val | value |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| val | Wert |
 </dd>
-<dt>Return Value</dt><dd>
-The ceiling of value.
+<dt>Rückgabewert</dt><dd>
+Die Wertobergrenze.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [floor]
 </dd>
 <hr>
@@ -1672,17 +1678,17 @@ The ceiling of value.
 ```c
 float sgn(float val)
 ```
-<dt>Description</dt><dd>
-Returns the sign of the value.
+<dt>Beschreibung</dt><dd>
+Gibt das Vorzeichen des Werts zurück.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| val | value |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| val | Wert |
 </dd>
-<dt>Return Value</dt><dd>
-Either 1.0 or -1.0.
+<dt>Rückgabewert</dt><dd>
+Entweder 1.0 oder -1.0.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [abs]
 </dd>
 <hr>
@@ -1691,17 +1697,17 @@ Either 1.0 or -1.0.
 ```c
 float abs(float val)
 ```
-<dt>Description</dt><dd>
-Returns the absolute of the value.
+<dt>Beschreibung</dt><dd>
+Gibt den Absolutwert des Werts zurück.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| val | value |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| val | Wert |
 </dd>
-<dt>Return Value</dt><dd>
-Either value or -value, always positive.
+<dt>Rückgabewert</dt><dd>
+Entweder Wert oder -Wert, immer positiv.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [sgn]
 </dd>
 <hr>
@@ -1710,17 +1716,17 @@ Either value or -value, always positive.
 ```c
 float exp(float val)
 ```
-<dt>Description</dt><dd>
-Returns the exponential of the value, i.e. base of natural logarithms raised to power of the value.
+<dt>Beschreibung</dt><dd>
+Gibt die Exponentialfunktion des Werts zurück, d. h. die Basis des natürlichen Logarithmus hoch mit dem Wert.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| val | value |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| val | Wert |
 </dd>
-<dt>Return Value</dt><dd>
-Returns e^^val^^.
+<dt>Rückgabewert</dt><dd>
+Gibt e^^val^^ zurück.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [log], [pow]
 </dd>
 <hr>
@@ -1729,17 +1735,17 @@ Returns e^^val^^.
 ```c
 float log(float val)
 ```
-<dt>Description</dt><dd>
-Returns the natural logarithm of the value.
+<dt>Beschreibung</dt><dd>
+Gibt den natürlichen Logarithmus des Werts zurück.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| val | value |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| val | Wert |
 </dd>
-<dt>Return Value</dt><dd>
-Returns natural logarithm of val.
+<dt>Rückgabewert</dt><dd>
+Den natürlichen Logarithmus des Werts.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [exp]
 </dd>
 <hr>
@@ -1748,18 +1754,18 @@ Returns natural logarithm of val.
 ```c
 float pow(float val, float exp)
 ```
-<dt>Description</dt><dd>
-Returns the value raised to the power of exponent. This is a slow operation, try to avoid.
+<dt>Beschreibung</dt><dd>
+Gibt den Wert hoch mit dem Exponenten zurück. Dies ist ein langsamer Vorgang, den Sie vermeiden sollten.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| val | value |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| val | Wert |
 | exp | exponent |
 </dd>
-<dt>Return Value</dt><dd>
-Returns val^^exp^^.
+<dt>Rückgabewert</dt><dd>
+Gibt val^^exp^^ zurück.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [exp], [sqrt], [rsqrt]
 </dd>
 <hr>
@@ -1768,17 +1774,17 @@ Returns val^^exp^^.
 ```c
 float sqrt(float val)
 ```
-<dt>Description</dt><dd>
-Returns the square root of the value. This is a slow operation, try to avoid.
+<dt>Beschreibung</dt><dd>
+Gibt die Quadratwurzel des Werts zurück. Dies ist ein langsamer Vorgang, den Sie vermeiden sollten.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| val | value |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| val | Wert |
 </dd>
-<dt>Return Value</dt><dd>
-Square root.
+<dt>Rückgabewert</dt><dd>
+Quadratwurzel des Werts.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [pow], [rsqrt]
 </dd>
 <hr>
@@ -1787,17 +1793,17 @@ Square root.
 ```c
 float rsqrt(float val)
 ```
-<dt>Description</dt><dd>
-Returns the reciprocal of the square root of the value (`1 / sqrt(val)`). Uses John Carmack's fast method.
+<dt>Beschreibung</dt><dd>
+Gibt den Kehrwert der Quadratwurzel des Werts zurück (`1 / sqrt(val)`). Verwendet die schnelle Methode von John Carmack.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| val | value |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| val | Wert |
 </dd>
-<dt>Return Value</dt><dd>
-Reciprocal of the square root.
+<dt>Rückgabewert</dt><dd>
+Kehrwert der Quadratwurzel des Werts.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [pow], [sqrt]
 </dd>
 <hr>
@@ -1806,19 +1812,19 @@ Reciprocal of the square root.
 ```c
 float clamp(float val, float minv, float maxv)
 ```
-<dt>Description</dt><dd>
-Clamps a value between the limits.
+<dt>Beschreibung</dt><dd>
+Klemmt einen Wert zwischen den Grenzwerten.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| val | value |
-| minv | minimum value |
-| maxv | maximum value |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| val | Wert |
+| minv | Mindestwert |
+| maxv | Maximalwert |
 </dd>
-<dt>Return Value</dt><dd>
-Clamped value.
+<dt>Rückgabewert</dt><dd>
+Geklemmter Wert.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [clampv2], [clampv3], [clampv4]
 </dd>
 <hr>
@@ -1827,16 +1833,16 @@ Clamped value.
 ```c
 float lerp(float a, float b, float t)
 ```
-<dt>Description</dt><dd>
-Linear interpolates two numbers.
+<dt>Beschreibung</dt><dd>
+Linear interpoliert zwei Zahlen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| a | first float number |
-| b | second float number |
-| t | interpolation value between 0.0 and 1.0 |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| a | Erste Gleitkommazahl |
+| b | Zweite Gleitkommazahl |
+| t | Interpolationswert zwischen 0.0 und 1.0 |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [lerpv2], [lerpv3], [lerpv4], [lerpq], [slerpq]
 </dd>
 <hr>
@@ -1845,11 +1851,11 @@ Linear interpolates two numbers.
 ```c
 float pi(void)
 ```
-<dt>Description</dt><dd>
-Returns π as a floating point number.
+<dt>Beschreibung</dt><dd>
+Gibt π als Gleitkommazahl zurück.
 </dd>
-<dt>Return Value</dt><dd>
-The value 3.14159265358979323846.
+<dt>Rückgabewert</dt><dd>
+Der Wert 3.14159265358979323846.
 </dd>
 <hr>
 ## cos
@@ -1857,17 +1863,17 @@ The value 3.14159265358979323846.
 ```c
 float cos(uint16_t deg)
 ```
-<dt>Description</dt><dd>
-Returns cosine.
+<dt>Beschreibung</dt><dd>
+Gibt den Kosinus zurück.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| deg | degree, 0 to 359, 0 is up, 90 on the right |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| deg | Grad, 0 bis 359, 0 ist oben, 90 rechts |
 </dd>
-<dt>Return Value</dt><dd>
-Cosine of the degree, between -1.0 to 1.0.
+<dt>Rückgabewert</dt><dd>
+Kosinus des Grades, zwischen -1.0 und 1.0.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [sin], [tan], [acos], [asin], [atan], [atan2]
 </dd>
 <hr>
@@ -1876,17 +1882,17 @@ Cosine of the degree, between -1.0 to 1.0.
 ```c
 float sin(uint16_t deg)
 ```
-<dt>Description</dt><dd>
-Returns sine.
+<dt>Beschreibung</dt><dd>
+Gibt Sinus zurück.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| deg | degree, 0 to 359, 0 is up, 90 to the right |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| deg | Grad, 0 bis 359, 0 ist oben, 90 rechts |
 </dd>
-<dt>Return Value</dt><dd>
-Sine of the degree, between -1.0 to 1.0.
+<dt>Rückgabewert</dt><dd>
+Sinus des Grades, zwischen -1.0 und 1.0.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [cos], [tan], [acos], [asin], [atan], [atan2]
 </dd>
 <hr>
@@ -1895,17 +1901,17 @@ Sine of the degree, between -1.0 to 1.0.
 ```c
 float tan(uint16_t deg)
 ```
-<dt>Description</dt><dd>
-Returns tangent.
+<dt>Beschreibung</dt><dd>
+Gibt Tangente zurück.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| deg | degree, 0 to 359, 0 is up, 90 to the right |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| deg | Grad, 0 bis 359, 0 ist oben, 90 rechts |
 </dd>
-<dt>Return Value</dt><dd>
-Tangent of the degree, between -1.0 to 1.0.
+<dt>Rückgabewert</dt><dd>
+Tangens des Grades, zwischen -1.0 und 1.0.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [cos], [sin], [acos], [asin], [atan], [atan2]
 </dd>
 <hr>
@@ -1914,17 +1920,17 @@ Tangent of the degree, between -1.0 to 1.0.
 ```c
 uint16_t acos(float val)
 ```
-<dt>Description</dt><dd>
-Returns arcus cosine.
+<dt>Beschreibung</dt><dd>
+Gibt Arcuskosinus zurück.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| val | value, -1.0 to 1.0 |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| val | Wert, -1.0 bis 1.0 |
 </dd>
-<dt>Return Value</dt><dd>
-Arcus cosine in degree, 0 to 359, 0 is up, 90 to the right.
+<dt>Rückgabewert</dt><dd>
+Arcuskosinus in Grad, 0 bis 359, 0 ist oben, 90 nach rechts.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [cos], [sin], [tan], [asin], [atan], [atan2]
 </dd>
 <hr>
@@ -1933,17 +1939,17 @@ Arcus cosine in degree, 0 to 359, 0 is up, 90 to the right.
 ```c
 uint16_t asin(float val)
 ```
-<dt>Description</dt><dd>
-Returns arcus sine.
+<dt>Beschreibung</dt><dd>
+Gibt Arcussinus zurück.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| val | value, -1.0 to 1.0 |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| val | Wert, -1.0 bis 1.0 |
 </dd>
-<dt>Return Value</dt><dd>
-Arcus sine in degree, 0 to 359, 0 is up, 90 to the right.
+<dt>Rückgabewert</dt><dd>
+Arcussinus in Grad, 0 bis 359, 0 ist oben, 90 nach rechts.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [cos], [sin], [tan], [acos], [atan], [atan2]
 </dd>
 <hr>
@@ -1952,17 +1958,17 @@ Arcus sine in degree, 0 to 359, 0 is up, 90 to the right.
 ```c
 uint16_t atan(float val)
 ```
-<dt>Description</dt><dd>
-Returns arcus tangent.
+<dt>Beschreibung</dt><dd>
+Gibt den Arcus-Tangens zurück.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| val | value, -1.0 to 1.0 |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| val | Wert, -1.0 bis 1.0 |
 </dd>
-<dt>Return Value</dt><dd>
-Arcus tangent in degree, 0 to 359, 0 is up, 90 to the right.
+<dt>Rückgabewert</dt><dd>
+Arcus-Tangens in Grad, 0 bis 359, 0 ist oben, 90 nach rechts.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [cos], [sin], [tan], [acos], [asin], [atan2]
 </dd>
 <hr>
@@ -1971,18 +1977,18 @@ Arcus tangent in degree, 0 to 359, 0 is up, 90 to the right.
 ```c
 uint16_t atan2(float y, float x)
 ```
-<dt>Description</dt><dd>
-Returns arcus tangent for y/x, using the signs of y and x to determine the quadrant.
+<dt>Beschreibung</dt><dd>
+Gibt den Arcus-Tangens für y/x zurück und verwendet die Vorzeichen von y und x, um den Quadranten zu bestimmen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| y | Y coordinate |
-| x | X coordinate |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| y | Y-Koordinate |
+| x | X-Koordinate |
 </dd>
-<dt>Return Value</dt><dd>
-Arcus tangent in degree, 0 to 359, 0 is up, 90 to the right.
+<dt>Rückgabewert</dt><dd>
+Arcus-Tangens in Grad, 0 bis 359, 0 ist oben, 90 nach rechts.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [cos], [sin], [tan], [acos], [asin]
 </dd>
 <hr>
@@ -1991,18 +1997,18 @@ Arcus tangent in degree, 0 to 359, 0 is up, 90 to the right.
 ```c
 float dotv2(addr_t a, addr_t b)
 ```
-<dt>Description</dt><dd>
-Calculates dot product of two vectors with two elements.
+<dt>Beschreibung</dt><dd>
+Berechnet das Skalarprodukt zweier Vektoren mit zwei Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| a | address of two floats |
-| b | address of two floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| a | Adresse von zwei Gleitkommazahlen |
+| b | Adresse von zwei Gleitkommazahlen |
 </dd>
-<dt>Return Value</dt><dd>
-Dot product of the vectors.
+<dt>Rückgabewert</dt><dd>
+Skalarprodukt der Vektoren.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [lenv2], [scalev2], [negv2], [addv2], [subv2], [mulv2], [divv2], [clampv2], [lerpv2], [normv2]
 </dd>
 <hr>
@@ -2011,17 +2017,17 @@ Dot product of the vectors.
 ```c
 float lenv2(addr_t a)
 ```
-<dt>Description</dt><dd>
-Calculates the length of a vector with two elements. This is slow, try to avoid (see [normv2]).
+<dt>Beschreibung</dt><dd>
+Berechnet die Länge eines Vektors mit zwei Elementen. Das ist langsam, versuchen Sie es zu vermeiden (siehe [normv2]).
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| a | address of two floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| a | Adresse von zwei Gleitkommazahlen |
 </dd>
-<dt>Return Value</dt><dd>
-Length of the vector.
+<dt>Rückgabewert</dt><dd>
+Länge des Vektors.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv2], [scalev2], [negv2], [addv2], [subv2], [mulv2], [divv2], [clampv2], [lerpv2], [normv2]
 </dd>
 <hr>
@@ -2030,15 +2036,15 @@ Length of the vector.
 ```c
 void scalev2(addr_t a, float s)
 ```
-<dt>Description</dt><dd>
-Scales a vector with two elements.
+<dt>Beschreibung</dt><dd>
+Skaliert einen Vektor mit zwei Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| a | address of two floats |
-| s | scaler value |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| a | Adresse von zwei Gleitkommazahlen |
+| s | Skaliererwert |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv2], [lenv2], [negv2], [addv2], [subv2], [mulv2], [divv2], [clampv2], [lerpv2], [normv2]
 </dd>
 <hr>
@@ -2047,14 +2053,14 @@ Scales a vector with two elements.
 ```c
 void negv2(addr_t a)
 ```
-<dt>Description</dt><dd>
-Negates a vector with two elements.
+<dt>Beschreibung</dt><dd>
+Negiert einen Vektor mit zwei Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| a | address of two floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| a | Adresse von zwei Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv2], [lenv2], [scalev2], [addv2], [subv2], [mulv2], [divv2], [clampv2], [lerpv2], [normv2]
 </dd>
 <hr>
@@ -2063,16 +2069,16 @@ Negates a vector with two elements.
 ```c
 void addv2(addr_t dst, addr_t a, addr_t b)
 ```
-<dt>Description</dt><dd>
-Adds together vectors with two elements.
+<dt>Beschreibung</dt><dd>
+Addiert Vektoren mit zwei Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of two floats |
-| a | address of two floats |
-| b | address of two floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von zwei Gleitkommazahlen, Ergebnis |
+| a | Adresse von zwei Gleitkommazahlen |
+| b | Adresse von zwei Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv2], [lenv2], [scalev2], [negv2], [subv2], [mulv2], [divv2], [clampv2], [lerpv2], [normv2]
 </dd>
 <hr>
@@ -2081,16 +2087,16 @@ Adds together vectors with two elements.
 ```c
 void subv2(addr_t dst, addr_t a, addr_t b)
 ```
-<dt>Description</dt><dd>
-Subtracts vectors with two elements.
+<dt>Beschreibung</dt><dd>
+Subtrahiert Vektoren mit zwei Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of two floats |
-| a | address of two floats |
-| b | address of two floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von zwei Gleitkommazahlen, Ergebnis |
+| a | Adresse von zwei Gleitkommazahlen |
+| b | Adresse von zwei Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv2], [lenv2], [scalev2], [negv2], [addv2], [mulv2], [divv2], [clampv2], [lerpv2], [normv2]
 </dd>
 <hr>
@@ -2099,16 +2105,16 @@ Subtracts vectors with two elements.
 ```c
 void mulv2(addr_t dst, addr_t a, addr_t b)
 ```
-<dt>Description</dt><dd>
-Multiplies vectors with two elements.
+<dt>Beschreibung</dt><dd>
+Multipliziert Vektoren mit zwei Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of two floats |
-| a | address of two floats |
-| b | address of two floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von zwei Gleitkommazahlen, Ergebnis |
+| a | Adresse von zwei Gleitkommazahlen |
+| b | Adresse von zwei Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv2], [lenv2], [scalev2], [negv2], [addv2], [subv2], [divv2], [clampv2], [lerpv2], [normv2]
 </dd>
 <hr>
@@ -2117,16 +2123,16 @@ Multiplies vectors with two elements.
 ```c
 void divv2(addr_t dst, addr_t a, addr_t b)
 ```
-<dt>Description</dt><dd>
-Divides vectors with two elements.
+<dt>Beschreibung</dt><dd>
+Teilt Vektoren durch zwei Elemente.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of two floats |
-| a | address of two floats |
-| b | address of two floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von zwei Gleitkommazahlen, Ergebnis |
+| a | Adresse von zwei Gleitkommazahlen |
+| b | Adresse von zwei Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv2], [lenv2], [scalev2], [negv2], [addv2], [subv2], [mulv2], [clampv2], [lerpv2], [normv2]
 </dd>
 <hr>
@@ -2135,17 +2141,17 @@ Divides vectors with two elements.
 ```c
 void clampv2(addr_t dst, addr_t v, addr_t minv, addr_t maxv)
 ```
-<dt>Description</dt><dd>
-Clamps vectors with two elements.
+<dt>Beschreibung</dt><dd>
+Klemmt Vektoren mit zwei Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of two floats |
-| v | address of two floats, input |
-| minv | address of two floats, minimum |
-| maxv | address of two floats, maximum |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von zwei Gleitkommazahlen, Ergebnis |
+| v | Adresse von zwei Gleitkommazahlen, Eingabe |
+| minv | Adresse von zwei Gleitkommazahlen, Ninimum |
+| maxv | Adresse von zwei Gleitkommazahlen, Maximum |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv2], [lenv2], [scalev2], [negv2], [addv2], [subv2], [mulv2], [divv2], [lerpv2], [normv2]
 </dd>
 <hr>
@@ -2154,17 +2160,17 @@ Clamps vectors with two elements.
 ```c
 void lerpv2(addr_t dst, addr_t a, addr_t b, float t)
 ```
-<dt>Description</dt><dd>
-Linear interpolates vectors with two elements.
+<dt>Beschreibung</dt><dd>
+Linear interpoliert Vektoren mit zwei Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of two floats |
-| a | address of two floats |
-| b | address of two floats |
-| t | interpolation value between 0.0 and 1.0 |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von zwei Gleitkommazahlen, Ergebnis |
+| a | Adresse von zwei Gleitkommazahlen |
+| b | Adresse von zwei Gleitkommazahlen |
+| t | Interpolationswert zwischen 0.0 und 1.0 |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv2], [lenv2], [scalev2], [negv2], [addv2], [subv2], [mulv2], [divv2], [clampv2], [normv2]
 </dd>
 <hr>
@@ -2173,14 +2179,14 @@ Linear interpolates vectors with two elements.
 ```c
 void normv2(addr_t a)
 ```
-<dt>Description</dt><dd>
-Normalizes a vector with two elements.
+<dt>Beschreibung</dt><dd>
+Normalisiert einen Vektor mit zwei Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| a | address of two floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| a | Adresse von zwei Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv2], [lenv2], [scalev2], [negv2], [addv2], [subv2], [mulv2], [divv2], [clampv2], [lerpv2]
 </dd>
 <hr>
@@ -2189,18 +2195,18 @@ Normalizes a vector with two elements.
 ```c
 float dotv3(addr_t a, addr_t b)
 ```
-<dt>Description</dt><dd>
-Calculates dot product of two vectors with three elements.
+<dt>Beschreibung</dt><dd>
+Berechnet das Skalarprodukt zweier Vektoren mit drei Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| a | address of three floats |
-| b | address of three floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| a | Adresse von drei Gleitkommazahlen |
+| b | Adresse von drei Gleitkommazahlen |
 </dd>
-<dt>Return Value</dt><dd>
-Dot product of the vectors.
+<dt>Rückgabewert</dt><dd>
+Skalarprodukt der Vektoren.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [lenv3], [scalev3], [negv3], [addv3], [subv3], [mulv3], [divv3], [crossv3], [clampv3], [lerpv3], [normv3]
 </dd>
 <hr>
@@ -2209,17 +2215,17 @@ Dot product of the vectors.
 ```c
 float lenv3(addr_t a)
 ```
-<dt>Description</dt><dd>
-Calculates the length of a vector with three elements. This is slow, try to avoid (see [normv3]).
+<dt>Beschreibung</dt><dd>
+Berechnet die Länge eines Vektors mit drei Elementen. Das ist langsam, versuchen Sie es zu vermeiden (siehe [normv3]).
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| a | address of three floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| a | Adresse von drei Gleitkommazahlen |
 </dd>
-<dt>Return Value</dt><dd>
-Length of the vector.
+<dt>Rückgabewert</dt><dd>
+Länge des Vektors.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv3], [scalev3], [negv3], [addv3], [subv3], [mulv3], [divv3], [crossv3], [clampv3], [lerpv3], [normv3]
 </dd>
 <hr>
@@ -2228,15 +2234,15 @@ Length of the vector.
 ```c
 void scalev3(addr_t a, float s)
 ```
-<dt>Description</dt><dd>
-Scales a vector with three elements.
+<dt>Beschreibung</dt><dd>
+Skaliert einen Vektor mit drei Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| a | address of three floats |
-| b | scaler value |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| a | Adresse von drei Gleitkommazahlen |
+| s | Skaliererwert |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv3], [lenv3], [negv3], [addv3], [subv3], [mulv3], [divv3], [crossv3], [clampv3], [lerpv3], [normv3]
 </dd>
 <hr>
@@ -2245,14 +2251,14 @@ Scales a vector with three elements.
 ```c
 void negv3(addr_t a)
 ```
-<dt>Description</dt><dd>
-Negates a vector with three elements.
+<dt>Beschreibung</dt><dd>
+Negiert einen Vektor mit drei Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| a | address of three floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| a | Adresse von drei Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv3], [lenv3], [scalev3], [addv3], [subv3], [mulv3], [divv3], [crossv3], [clampv3], [lerpv3], [normv3]
 </dd>
 <hr>
@@ -2261,16 +2267,16 @@ Negates a vector with three elements.
 ```c
 void addv3(addr_t dst, addr_t a, addr_t b)
 ```
-<dt>Description</dt><dd>
-Adds together vectors with three elements.
+<dt>Beschreibung</dt><dd>
+Addiert Vektoren mit drei Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of three floats |
-| a | address of three floats |
-| b | address of three floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von drei Gleitkommazahlen, Ergebnis |
+| a | Adresse von drei Gleitkommazahlen |
+| b | Adresse von drei Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv3], [lenv3], [scalev3], [negv3], [subv3], [mulv3], [divv3], [crossv3], [clampv3], [lerpv3], [normv3]
 </dd>
 <hr>
@@ -2279,16 +2285,16 @@ Adds together vectors with three elements.
 ```c
 void subv3(addr_t dst, addr_t a, addr_t b)
 ```
-<dt>Description</dt><dd>
-Subtracts vectors with three elements.
+<dt>Beschreibung</dt><dd>
+Subtrahiert Vektoren mit drei Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of three floats |
-| a | address of three floats |
-| b | address of three floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von drei Gleitkommazahlen, Ergebnis |
+| a | Adresse von drei Gleitkommazahlen |
+| b | Adresse von drei Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv3], [lenv3], [scalev3], [negv3], [addv3], [mulv3], [divv3], [crossv3], [clampv3], [lerpv3], [normv3]
 </dd>
 <hr>
@@ -2297,16 +2303,16 @@ Subtracts vectors with three elements.
 ```c
 void mulv3(addr_t dst, addr_t a, addr_t b)
 ```
-<dt>Description</dt><dd>
-Multiplies vectors with three elements.
+<dt>Beschreibung</dt><dd>
+Multipliziert Vektoren mit drei Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of three floats |
-| a | address of three floats |
-| b | address of three floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von drei Gleitkommazahlen, Ergebnis |
+| a | Adresse von drei Gleitkommazahlen |
+| b | Adresse von drei Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv3], [lenv3], [scalev3], [negv3], [addv3], [subv3], [divv3], [crossv3], [clampv3], [lerpv3], [normv3]
 </dd>
 <hr>
@@ -2315,16 +2321,16 @@ Multiplies vectors with three elements.
 ```c
 void divv3(addr_t dst, addr_t a, addr_t b)
 ```
-<dt>Description</dt><dd>
-Divides vectors with three elements.
+<dt>Beschreibung</dt><dd>
+Teilt Vektoren durch drei Elemente.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of three floats |
-| a | address of three floats |
-| b | address of three floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von drei Gleitkommazahlen, Ergebnis |
+| a | Adresse von drei Gleitkommazahlen |
+| b | Adresse von drei Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv3], [lenv3], [scalev3], [negv3], [addv3], [subv3], [mulv3], [crossv3], [clampv3], [lerpv3], [normv3]
 </dd>
 <hr>
@@ -2333,16 +2339,16 @@ Divides vectors with three elements.
 ```c
 void crossv3(addr_t dst, addr_t a, addr_t b)
 ```
-<dt>Description</dt><dd>
-Calculates cross product of vectors with three elements.
+<dt>Beschreibung</dt><dd>
+Berechnet das Kreuzprodukt von Vektoren mit drei Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of three floats |
-| a | address of three floats |
-| b | address of three floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von drei Gleitkommazahlen, Ergebnis |
+| a | Adresse von drei Gleitkommazahlen |
+| b | Adresse von drei Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv3], [lenv3], [scalev3], [negv3], [addv3], [subv3], [mulv3], [divv3], [clampv3], [lerpv3], [normv3]
 </dd>
 <hr>
@@ -2351,17 +2357,17 @@ Calculates cross product of vectors with three elements.
 ```c
 void clampv3(addr_t dst, addr_t v, addr_t minv, addr_t maxv)
 ```
-<dt>Description</dt><dd>
-Clamps vectors with three elements.
+<dt>Beschreibung</dt><dd>
+Klemmt Vektoren mit drei Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of three floats |
-| v | address of three floats, input |
-| minv | address of three floats, minimum |
-| maxv | address of three floats, maximum |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von drei Gleitkommazahlen, Ergebnis |
+| v | Adresse von drei Gleitkommazahlen, Eingabe |
+| minv | Adresse von drei Gleitkommazahlen, Minimum |
+| maxv | Adresse von drei Gleitkommazahlen, Maximum |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv3], [lenv3], [scalev3], [negv3], [addv3], [subv3], [mulv3], [divv3], [crossv3], [lerpv3], [normv3]
 </dd>
 <hr>
@@ -2370,17 +2376,17 @@ Clamps vectors with three elements.
 ```c
 void lerpv3(addr_t dst, addr_t a, addr_t b, float t)
 ```
-<dt>Description</dt><dd>
-Linear interpolates vectors with three elements.
+<dt>Beschreibung</dt><dd>
+Linear interpoliert Vektoren mit drei Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of three floats |
-| a | address of three floats |
-| b | address of three floats |
-| t | interpolation value between 0.0 and 1.0 |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von drei Gleitkommazahlen, Ergebnis |
+| a | Adresse von drei Gleitkommazahlen |
+| b | Adresse von drei Gleitkommazahlen |
+| t | Interpolationswert zwischen 0.0 und 1.0 |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv3], [lenv3], [scalev3], [negv3], [addv3], [subv3], [mulv3], [divv3], [crossv3], [clampv3], [normv3]
 </dd>
 <hr>
@@ -2389,14 +2395,14 @@ Linear interpolates vectors with three elements.
 ```c
 void normv3(addr_t a)
 ```
-<dt>Description</dt><dd>
-Normalizes a vector with three elements.
+<dt>Beschreibung</dt><dd>
+Normalisiert einen Vektor mit drei Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| a | address of three floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| a | Adresse von drei Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv3], [lenv3], [scalev3], [negv3], [addv3], [subv3], [mulv3], [divv3], [crossv3], [clampv3], [lerpv3]
 </dd>
 <hr>
@@ -2405,18 +2411,18 @@ Normalizes a vector with three elements.
 ```c
 float dotv4(addr_t a, addr_t b)
 ```
-<dt>Description</dt><dd>
-Calculates dot product of two vectors with four elements.
+<dt>Beschreibung</dt><dd>
+Berechnet das Skalarprodukt zweier Vektoren mit vier Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| a | address of four floats |
-| b | address of four floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| a | Adresse von vier Gleitkommazahlen |
+| b | Adresse von vier Gleitkommazahlen |
 </dd>
-<dt>Return Value</dt><dd>
-Dot product of the vectors.
+<dt>Rückgabewert</dt><dd>
+Skalarprodukt der Vektoren.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [lenv4], [scalev4], [negv4], [addv4], [subv4], [mulv4], [divv4], [clampv4], [lerpv4], [normv4]
 </dd>
 <hr>
@@ -2425,17 +2431,17 @@ Dot product of the vectors.
 ```c
 float lenv4(addr_t a)
 ```
-<dt>Description</dt><dd>
-Calculates the length of a vector with four elements. This is slow, try to avoid (see [normv4]).
+<dt>Beschreibung</dt><dd>
+Berechnet die Länge eines Vektors mit vier Elementen. Das ist langsam, versuchen Sie es zu vermeiden (siehe [normv4]).
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| a | address of four floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| a | Adresse von vier Gleitkommazahlen |
 </dd>
-<dt>Return Value</dt><dd>
-Length of the vector.
+<dt>Rückgabewert</dt><dd>
+Länge des Vektors.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv4], [scalev4], [negv4], [addv4], [subv4], [mulv4], [divv4], [clampv4], [lerpv4], [normv4]
 </dd>
 <hr>
@@ -2444,15 +2450,15 @@ Length of the vector.
 ```c
 void scalev4(addr_t a, float s)
 ```
-<dt>Description</dt><dd>
-Scales a vector with four elements.
+<dt>Beschreibung</dt><dd>
+Skaliert einen Vektor mit vier Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| a | address of four floats |
-| b | scaler value |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| a | Adresse von vier Gleitkommazahlen |
+| s | Skaliererwert |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv4], [lenv4], [negv4], [addv4], [subv4], [mulv4], [divv4], [clampv4], [lerpv4], [normv4]
 </dd>
 <hr>
@@ -2461,14 +2467,14 @@ Scales a vector with four elements.
 ```c
 void negv4(addr_t a)
 ```
-<dt>Description</dt><dd>
-Negates a vector with four elements.
+<dt>Beschreibung</dt><dd>
+Negiert einen Vektor mit vier Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| a | address of four floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| a | Adresse von vier Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv4], [lenv4], [scalev4], [addv4], [subv4], [mulv4], [divv4], [clampv4], [lerpv4], [normv4]
 </dd>
 <hr>
@@ -2477,16 +2483,16 @@ Negates a vector with four elements.
 ```c
 void addv4(addr_t dst, addr_t a, addr_t b)
 ```
-<dt>Description</dt><dd>
-Adds together vectors with four elements.
+<dt>Beschreibung</dt><dd>
+Addiert Vektoren mit vier Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of four floats |
-| a | address of four floats |
-| b | address of four floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von vier Gleitkommazahlen, Ergebnis |
+| a | Adresse von vier Gleitkommazahlen |
+| b | Adresse von vier Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv4], [lenv4], [negv4], [scalev4], [subv4], [mulv4], [divv4], [clampv4], [lerpv4], [normv4]
 </dd>
 <hr>
@@ -2495,16 +2501,16 @@ Adds together vectors with four elements.
 ```c
 void subv4(addr_t dst, addr_t a, addr_t b)
 ```
-<dt>Description</dt><dd>
-Subtracts vectors with four elements.
+<dt>Beschreibung</dt><dd>
+Subtrahiert Vektoren mit vier Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of four floats |
-| a | address of four floats |
-| b | address of four floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von vier Gleitkommazahlen, Ergebnis |
+| a | Adresse von vier Gleitkommazahlen |
+| b | Adresse von vier Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv4], [lenv4], [scalev4], [negv4], [addv4], [mulv4], [divv4], [clampv4], [lerpv4], [normv4]
 </dd>
 <hr>
@@ -2513,16 +2519,16 @@ Subtracts vectors with four elements.
 ```c
 void mulv4(addr_t dst, addr_t a, addr_t b)
 ```
-<dt>Description</dt><dd>
-Multiplies vectors with four elements.
+<dt>Beschreibung</dt><dd>
+Multipliziert Vektoren mit vier Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of four floats |
-| a | address of four floats |
-| b | address of four floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von vier Gleitkommazahlen, Ergebnis |
+| a | Adresse von vier Gleitkommazahlen |
+| b | Adresse von vier Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv4], [lenv4], [scalev4], [negv4], [addv4], [subv4], [divv4], [clampv4], [lerpv4], [normv4]
 </dd>
 <hr>
@@ -2531,16 +2537,16 @@ Multiplies vectors with four elements.
 ```c
 void divv4(addr_t dst, addr_t a, addr_t b)
 ```
-<dt>Description</dt><dd>
-Divides vectors with four elements.
+<dt>Beschreibung</dt><dd>
+Teilt Vektoren durch vier Elemente.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of four floats |
-| a | address of four floats |
-| b | address of four floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von vier Gleitkommazahlen, Ergebnis |
+| a | Adresse von vier Gleitkommazahlen |
+| b | Adresse von vier Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv4], [lenv4], [scalev4], [negv4], [addv4], [subv4], [mulv4], [clampv4], [lerpv4], [normv4]
 </dd>
 <hr>
@@ -2549,17 +2555,17 @@ Divides vectors with four elements.
 ```c
 void clampv4(addr_t dst, addr_t v, addr_t minv, addr_t maxv)
 ```
-<dt>Description</dt><dd>
-Clamps vectors with four elements.
+<dt>Beschreibung</dt><dd>
+Klemmt Vektoren mit vier Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of four floats |
-| v | address of four floats, input |
-| minv | address of four floats, minimum |
-| maxv | address of four floats, maximum |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von vier Gleitkommazahlen, Ergebnis |
+| v | Adresse von vier Gleitkommazahlen, Eingabe |
+| minv | Adresse von vier Gleitkommazahlen, Minimum |
+| maxv | Adresse von vier Gleitkommazahlen, Maximum |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv4], [lenv4], [scalev4], [negv4], [addv4], [subv4], [mulv4], [divv4], [lerpv4], [normv4]
 </dd>
 <hr>
@@ -2568,17 +2574,17 @@ Clamps vectors with four elements.
 ```c
 void lerpv4(addr_t dst, addr_t a, addr_t b, float t)
 ```
-<dt>Description</dt><dd>
-Linear interpolates vectors with four elements.
+<dt>Beschreibung</dt><dd>
+Linear interpoliert Vektoren mit vier Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of four floats |
-| a | address of four floats |
-| b | address of four floats |
-| t | interpolation value between 0.0 and 1.0 |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von vier Gleitkommazahlen, Ergebnis |
+| a | Adresse von vier Gleitkommazahlen |
+| b | Adresse von vier Gleitkommazahlen |
+| t | Interpolationswert zwischen 0.0 und 1.0 |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv4], [lenv4], [scalev4], [negv4], [addv4], [subv4], [mulv4], [divv4], [clampv4], [normv4]
 </dd>
 <hr>
@@ -2587,14 +2593,14 @@ Linear interpolates vectors with four elements.
 ```c
 void normv4(addr_t a)
 ```
-<dt>Description</dt><dd>
-Normalizes a vector with four elements.
+<dt>Beschreibung</dt><dd>
+Normalisiert einen Vektor mit vier Elementen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| a | address of four floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| a | Adresse von vier Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [dotv4], [lenv4], [scalev4], [negv4], [addv4], [subv4], [mulv4], [divv4], [clampv4], [lerpv4]
 </dd>
 <hr>
@@ -2603,14 +2609,14 @@ Normalizes a vector with four elements.
 ```c
 void idq(addr_t a)
 ```
-<dt>Description</dt><dd>
-Loads the identity quaternion.
+<dt>Beschreibung</dt><dd>
+Lädt die Identitätsquaternion.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| a | address of four floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| a | Adresse von vier Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [eulerq], [dotq], [lenq], [scaleq], [negq], [addq], [subq], [mulq], [rotq], [lerpq], [slerpq], [normq]
 </dd>
 <hr>
@@ -2619,17 +2625,17 @@ Loads the identity quaternion.
 ```c
 void eulerq(addr_t dst, uint16_t pitch, uint16_t yaw, uint16_t roll)
 ```
-<dt>Description</dt><dd>
-Loads a quaternion using Euler angles.
+<dt>Beschreibung</dt><dd>
+Lädt eine Quaternion unter Verwendung von Euler-Winkeln.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of four floats |
-| pitch | rotation around X axis in degress, 0 to 359 |
-| yaw | rotation around Y axis in degress, 0 to 359 |
-| roll | rotation around Z axis in degress, 0 to 359 |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von vier Gleitkommazahlen, Ergebnis |
+| pitch | Drehung um die X-Achse in Grad, 0 bis 359 |
+| yaw | Drehung um die Y-Achse in Grad, 0 bis 359 |
+| roll | Drehung um die Z-Achse in Grad, 0 bis 359 |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [idq], [dotq], [lenq], [scaleq], [negq], [addq], [subq], [mulq], [rotq], [lerpq], [slerpq], [normq]
 </dd>
 <hr>
@@ -2638,18 +2644,18 @@ Loads a quaternion using Euler angles.
 ```c
 float dotq(addr_t a, addr_t b)
 ```
-<dt>Description</dt><dd>
-Calculates dot product of a quaternion.
+<dt>Beschreibung</dt><dd>
+Berechnet das Skalarprodukt einer Quaternion.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| a | address of four floats |
-| b | address of four floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| a | Adresse von vier Gleitkommazahlen |
+| b | Adresse von vier Gleitkommazahlen |
 </dd>
-<dt>Return Value</dt><dd>
-Dot product of the quaternion.
+<dt>Rückgabewert</dt><dd>
+Skalarprodukt der Quaternion.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [idq], [eulerq], [lenq], [scaleq], [negq], [addq], [subq], [mulq], [rotq], [lerpq], [slerpq], [normq]
 </dd>
 <hr>
@@ -2658,17 +2664,17 @@ Dot product of the quaternion.
 ```c
 float lenq(addr_t a)
 ```
-<dt>Description</dt><dd>
-Calculates the length of a quaternion.
+<dt>Beschreibung</dt><dd>
+Berechnet die Länge einer Quaternion.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| a | address of four floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| a | Adresse von vier Gleitkommazahlen |
 </dd>
-<dt>Return Value</dt><dd>
-Length of the quaternion.
+<dt>Rückgabewert</dt><dd>
+Länge der Quaternion.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [idq], [eulerq], [dotq], [scaleq], [negq], [addq], [subq], [mulq], [rotq], [lerpq], [slerpq], [normq]
 </dd>
 <hr>
@@ -2677,15 +2683,15 @@ Length of the quaternion.
 ```c
 void scaleq(addr_t a, float s)
 ```
-<dt>Description</dt><dd>
-Scales a quaternion.
+<dt>Beschreibung</dt><dd>
+Skaliert eine Quaternion.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| a | address of four floats |
-| b | scaler value |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| a | Adresse von vier Gleitkommazahlen |
+| s | Skaliererwert |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [idq], [eulerq], [dotq], [lenq], [negq], [addq], [subq], [mulq], [rotq], [lerpq], [slerpq], [normq]
 </dd>
 <hr>
@@ -2694,14 +2700,14 @@ Scales a quaternion.
 ```c
 void negq(addr_t a)
 ```
-<dt>Description</dt><dd>
-Negates a quaternion.
+<dt>Beschreibung</dt><dd>
+Negiert eine Quaternion.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| a | address of four floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| a | Adresse von vier Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [idq], [eulerq], [dotq], [lenq], [scaleq], [addq], [subq], [mulq], [rotq], [lerpq], [slerpq], [normq]
 </dd>
 <hr>
@@ -2710,16 +2716,16 @@ Negates a quaternion.
 ```c
 void addq(addr_t dst, addr_t a, addr_t b)
 ```
-<dt>Description</dt><dd>
-Adds together quaternions.
+<dt>Beschreibung</dt><dd>
+Addiert Quaternionen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of four floats |
-| a | address of four floats |
-| b | address of four floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von vier Gleitkommazahlen, Ergebnis |
+| a | Adresse von vier Gleitkommazahlen |
+| b | Adresse von vier Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [idq], [eulerq], [dotq], [lenq], [scaleq], [negq], [subq], [mulq], [rotq], [lerpq], [slerpq], [normq]
 </dd>
 <hr>
@@ -2728,16 +2734,16 @@ Adds together quaternions.
 ```c
 void subq(addr_t dst, addr_t a, addr_t b)
 ```
-<dt>Description</dt><dd>
-Subtracts quaternions.
+<dt>Beschreibung</dt><dd>
+Subtrahiert Quaternionen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of four floats |
-| a | address of four floats |
-| b | address of four floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von vier Gleitkommazahlen, Ergebnis |
+| a | Adresse von vier Gleitkommazahlen |
+| b | Adresse von vier Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [idq], [eulerq], [dotq], [lenq], [scaleq], [negq], [addq], [mulq], [rotq], [lerpq], [slerpq], [normq]
 </dd>
 <hr>
@@ -2746,16 +2752,16 @@ Subtracts quaternions.
 ```c
 void mulq(addr_t dst, addr_t a, addr_t b)
 ```
-<dt>Description</dt><dd>
-Multiplies quaternions.
+<dt>Beschreibung</dt><dd>
+Multipliziert Quaternionen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of four floats |
-| a | address of four floats |
-| b | address of four floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von vier Gleitkommazahlen, Ergebnis |
+| a | Adresse von vier Gleitkommazahlen |
+| b | Adresse von vier Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [idq], [eulerq], [dotq], [lenq], [scaleq], [negq], [addq], [subq], [rotq], [lerpq], [slerpq], [normq]
 </dd>
 <hr>
@@ -2764,16 +2770,16 @@ Multiplies quaternions.
 ```c
 void rotq(addr_t dst, addr_t q, addr_t v)
 ```
-<dt>Description</dt><dd>
-Rotates a vector with three elements by a quaternion.
+<dt>Beschreibung</dt><dd>
+Dreht einen Vektor mit drei Elementen um ein Quaternion.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of three floats |
-| q | address of four floats |
-| v | address of three floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von drei Gleitkommazahlen, Ergebnis |
+| q | Adresse von vier Gleitkommazahlen |
+| v | Adresse von drei Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [idq], [eulerq], [dotq], [lenq], [scaleq], [negq], [addq], [subq], [mulq], [lerpq], [slerpq], [normq]
 </dd>
 <hr>
@@ -2782,17 +2788,17 @@ Rotates a vector with three elements by a quaternion.
 ```c
 void lerpq(addr_t dst, addr_t a, addr_t b, float t)
 ```
-<dt>Description</dt><dd>
-Linear interpolates two quaternions.
+<dt>Beschreibung</dt><dd>
+Linear interpoliert zwei Quaternionen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of four floats |
-| a | address of four floats |
-| b | address of four floats |
-| t | interpolation value between 0.0 and 1.0 |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von vier Gleitkommazahlen, Ergebnis |
+| a | Adresse von vier Gleitkommazahlen |
+| b | Adresse von vier Gleitkommazahlen |
+| t | Interpolationswert zwischen 0.0 und 1.0 |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [idq], [eulerq], [dotq], [lenq], [scaleq], [negq], [addq], [subq], [mulq], [rotq], [slerpq], [normq]
 </dd>
 <hr>
@@ -2801,17 +2807,17 @@ Linear interpolates two quaternions.
 ```c
 void slerpq(addr_t dst, addr_t a, addr_t b, float t)
 ```
-<dt>Description</dt><dd>
-Spherical interpolates a quaternion.
+<dt>Beschreibung</dt><dd>
+Sphärisch interpoliert zwei Quaternionen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of four floats |
-| a | address of four floats |
-| b | address of four floats |
-| t | interpolation value between 0.0 and 1.0 |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von vier Gleitkommazahlen, Ergebnis |
+| a | Adresse von vier Gleitkommazahlen |
+| b | Adresse von vier Gleitkommazahlen |
+| t | Interpolationswert zwischen 0.0 und 1.0 |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [idq], [eulerq], [dotq], [lenq], [scaleq], [negq], [addq], [subq], [mulq], [rotq], [lerpq], [normq]
 </dd>
 <hr>
@@ -2820,14 +2826,14 @@ Spherical interpolates a quaternion.
 ```c
 void normq(addr_t a)
 ```
-<dt>Description</dt><dd>
-Normalizes a quaternion.
+<dt>Beschreibung</dt><dd>
+Normalisiert eine Quaternion.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| a | address of four floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| a | Adresse von vier Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [idq], [eulerq], [dotq], [lenq], [scaleq], [negq], [addq], [subq], [mulq], [rotq], [lerpq], [slerpq]
 </dd>
 <hr>
@@ -2836,14 +2842,14 @@ Normalizes a quaternion.
 ```c
 void idm4(addr_t a)
 ```
-<dt>Description</dt><dd>
-Loads an 4 x 4 identity matrix.
+<dt>Beschreibung</dt><dd>
+Lädt eine 4 x 4-Identitätsmatrix.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| a | address of 16 floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| a | Adresse von 16 Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [trsm4], [detm4], [addm4], [subm4], [mulm4], [mulm4v3], [mulm4v4], [invm4], [trpm4]
 </dd>
 <hr>
@@ -2852,17 +2858,17 @@ Loads an 4 x 4 identity matrix.
 ```c
 void trsm4(addr_t dst, addr_t t, addr_t r, addr_t s)
 ```
-<dt>Description</dt><dd>
-Creates a 4 x 4 matrix with translation, rotation and scaling.
+<dt>Beschreibung</dt><dd>
+Erstellt eine 4 x 4-Matrix mit Übersetzung, Rotation und Skalierung.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of 16 floats, destination matrix |
-| t | address of three floats, translation vector |
-| r | address of four floats, rotation quaternion |
-| s | address of three floats, scaling vector |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von 16 Gleitkommazahlen, Zielmatrix |
+| t | Adresse von drei Gleitkommazahlen, Übersetzungsvektor |
+| r | Adresse von vier Gleitkommazahlen, Rotationsquaternion |
+| s | Adresse von drei Gleitkommazahlen, Skalierungsvektor |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [idm4], [detm4], [addm4], [subm4], [mulm4], [mulm4v3], [mulm4v4], [invm4], [trpm4]
 </dd>
 <hr>
@@ -2871,17 +2877,17 @@ Creates a 4 x 4 matrix with translation, rotation and scaling.
 ```c
 float detm4(addr_t a)
 ```
-<dt>Description</dt><dd>
-Returns the matrix's determinant.
+<dt>Beschreibung</dt><dd>
+Gibt die Determinante der Matrix zurück.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| a | address of 16 floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| a | Adresse von 16 Gleitkommazahlen |
 </dd>
-<dt>Return Value</dt><dd>
-The matrix's determinant.
+<dt>Rückgabewert</dt><dd>
+Die Determinante der Matrix.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [idm4], [trsm4], [addm4], [subm4], [mulm4], [mulm4v3], [mulm4v4], [invm4], [trpm4]
 </dd>
 <hr>
@@ -2890,16 +2896,16 @@ The matrix's determinant.
 ```c
 void addm4(addr_t dst, addr_t a, addr_t b)
 ```
-<dt>Description</dt><dd>
-Adds matrices together.
+<dt>Beschreibung</dt><dd>
+Addiert Matrizen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of 16 floats |
-| a | address of 16 floats |
-| b | address of 16 floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von 16 Gleitkommazahlen, Ergebnis |
+| a | Adresse von 16 Gleitkommazahlen |
+| b | Adresse von 16 Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [idm4], [trsm4], [detm4], [subm4], [mulm4], [mulm4v3], [mulm4v4], [invm4], [trpm4]
 </dd>
 <hr>
@@ -2908,16 +2914,16 @@ Adds matrices together.
 ```c
 void subm4(addr_t dst, addr_t a, addr_t b)
 ```
-<dt>Description</dt><dd>
-Subtracts matrices.
+<dt>Beschreibung</dt><dd>
+Subtrahiert Matrizen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of 16 floats |
-| a | address of 16 floats |
-| b | address of 16 floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von 16 Gleitkommazahlen, Ergebnis |
+| a | Adresse von 16 Gleitkommazahlen |
+| b | Adresse von 16 Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [idm4], [trsm4], [detm4], [addm4], [mulm4], [mulm4v3], [mulm4v4], [invm4], [trpm4]
 </dd>
 <hr>
@@ -2926,16 +2932,16 @@ Subtracts matrices.
 ```c
 void mulm4(addr_t dst, addr_t a, addr_t b)
 ```
-<dt>Description</dt><dd>
-Multiplies matrices.
+<dt>Beschreibung</dt><dd>
+Multipliziert Matrizen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of 16 floats |
-| a | address of 16 floats |
-| b | address of 16 floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von 16 Gleitkommazahlen, Ergebnis |
+| a | Adresse von 16 Gleitkommazahlen |
+| b | Adresse von 16 Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [idm4], [trsm4], [detm4], [addm4], [subm4], [mulm4v3], [mulm4v4], [invm4], [trpm4]
 </dd>
 <hr>
@@ -2944,16 +2950,16 @@ Multiplies matrices.
 ```c
 void mulm4v3(addr_t dst, addr_t m, addr_t v)
 ```
-<dt>Description</dt><dd>
-Multiplies a vector with three elements by a matrix.
+<dt>Beschreibung</dt><dd>
+Multipliziert einen Vektor mit drei Elementen mit einer Matrix.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of three floats |
-| m | address of 16 floats |
-| v | address of three floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von drei Gleitkommazahlen, Ergebnis |
+| m | Adresse von 16 Gleitkommazahlen |
+| v | Adresse von drei Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [idm4], [trsm4], [detm4], [addm4], [subm4], [mulm4], [mulm4v4], [invm4], [trpm4]
 </dd>
 <hr>
@@ -2962,16 +2968,16 @@ Multiplies a vector with three elements by a matrix.
 ```c
 void mulm4v4(addr_t dst, addr_t m, addr_t v)
 ```
-<dt>Description</dt><dd>
-Multiplies a vector with four elements by a matrix.
+<dt>Beschreibung</dt><dd>
+Multipliziert einen Vektor mit vier Elementen mit einer Matrix.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of four floats |
-| m | address of 16 floats |
-| v | address of four floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von vier Gleitkommazahlen, Ergebnis |
+| m | Adresse von 16 Gleitkommazahlen |
+| v | Adresse von vier Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [idm4], [trsm4], [detm4], [addm4], [subm4], [mulm4], [mulm4v3], [invm4], [trpm4]
 </dd>
 <hr>
@@ -2980,15 +2986,15 @@ Multiplies a vector with four elements by a matrix.
 ```c
 void invm4(addr_t dst, addr_t a)
 ```
-<dt>Description</dt><dd>
-Calculates inverse matrix.
+<dt>Beschreibung</dt><dd>
+Berechnet die inverse Matrix.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of 16 floats |
-| a | address of 16 floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von 16 Gleitkommazahlen, Ergebnis |
+| a | Adresse von 16 Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [idm4], [trsm4], [detm4], [addm4], [subm4], [mulm4], [mulm4v3], [mulm4v4], [trpm4]
 </dd>
 <hr>
@@ -2997,15 +3003,15 @@ Calculates inverse matrix.
 ```c
 void trpm4(addr_t dst, addr_t a)
 ```
-<dt>Description</dt><dd>
-Transpose matrix.
+<dt>Beschreibung</dt><dd>
+Matrix transponieren.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address of 16 floats |
-| a | address of 16 floats |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse von 16 Gleitkommazahlen, Ergebnis |
+| a | Adresse von 16 Gleitkommazahlen |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [idm4], [trsm4], [detm4], [addm4], [subm4], [mulm4], [mulm4v3], [mulm4v4], [invm4]
 </dd>
 <hr>
@@ -3017,42 +3023,42 @@ void trns(addr_t dst, addr_t src, uint8_t num,
     uint16_t pitch, uint16_t yaw, uint16_t roll,
     float scale)
 ```
-<dt>Description</dt><dd>
-Translate a vertex cloud, aka. place a 3D model in [3D space].
+<dt>Beschreibung</dt><dd>
+Vertexwolke verschieben, 3D-Modell in [3D-Welt] platzieren.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | destination vertices array, 3 x 2 bytes each, X, Y, Z |
-| src | source vertices array, 3 x 2 bytes each, X, Y, Z |
-| num | number of vertex coordinate triplets in the array |
-| x | world X coordinate, -32767 to 32767 |
-| y | world Y coordinate, -32767 to 32767 |
-| z | world Z coordinate, -32767 to 32767 |
-| pitch | rotation around X axis in degress, 0 to 359 |
-| yaw | rotation around Y axis in degress, 0 to 359 |
-| roll | rotation around Z axis in degress, 0 to 359 |
-| scale | scale, use 1.0 to keep original size |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Zielscheitelpunkt-Array, jeweils 3 x 2 Bytes, X, Y, Z |
+| src | Quellscheitelpunkt-Array, jeweils 3 x 2 Bytes, X, Y, Z |
+| num | Anzahl der Scheitelpunktkoordinatentripel im Array |
+| x | Welt-X-Koordinate, -32767 bis 32767 |
+| y | Welt-Y-Koordinate, -32767 bis 32767 |
+| z | Welt-Z-Koordinate, -32767 bis 32767 |
+| pitch | Drehung um die X-Achse in Grad, 0 bis 359 |
+| yaw | Drehung um die Y-Achse in Grad, 0 bis 359 |
+| roll | Drehung um die Z-Achse in Grad, 0 bis 359 |
+| scale | Skalierungswert, verwenden Sie 1.0 für Originalgröße |
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [mesh]
 </dd>
 
-# Memory
+# Speicher
 
 ## inb
 
 ```c
 uint8_t inb(addr_t src)
 ```
-<dt>Description</dt><dd>
-Read in one byte from memory.
+<dt>Beschreibung</dt><dd>
+Ein Byte aus dem Speicher einlesen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| src | address, 0x00000 to 0xBFFFF |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| src | Adresse, 0x00000 bis 0xBFFFF |
 </dd>
-<dt>Return Value</dt><dd>
-Returns the value at that address.
+<dt>Rückgabewert</dt><dd>
+Gibt den Wert an dieser Adresse zurück.
 </dd>
 <hr>
 ## inw
@@ -3060,15 +3066,15 @@ Returns the value at that address.
 ```c
 uint16_t inw(addr_t src)
 ```
-<dt>Description</dt><dd>
-Read in a word (two bytes) from memory.
+<dt>Beschreibung</dt><dd>
+Ein Wort (word, zwei Bytes) aus dem Speicher einlesen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| src | address, 0x00000 to 0xBFFFE |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| src | Adresse, 0x00000 bis 0xBFFFE |
 </dd>
-<dt>Return Value</dt><dd>
-Returns the value at that address.
+<dt>Rückgabewert</dt><dd>
+Gibt den Wert an dieser Adresse zurück.
 </dd>
 <hr>
 ## ini
@@ -3076,15 +3082,15 @@ Returns the value at that address.
 ```c
 uint32_t ini(addr_t src)
 ```
-<dt>Description</dt><dd>
-Read in an integer (four bytes) from memory.
+<dt>Beschreibung</dt><dd>
+Eine Ganzzahl (int, vier Bytes) aus dem Speicher einlesen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| src | address, 0x00000 to 0xBFFFC |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| src | Adresse, 0x00000 bis 0xBFFFC |
 </dd>
-<dt>Return Value</dt><dd>
-Returns the value at that address.
+<dt>Rückgabewert</dt><dd>
+Gibt den Wert an dieser Adresse zurück.
 </dd>
 <hr>
 ## outb
@@ -3092,13 +3098,13 @@ Returns the value at that address.
 ```c
 void outb(addr_t dst, uint8_t value)
 ```
-<dt>Description</dt><dd>
-Write out one byte to memory.
+<dt>Beschreibung</dt><dd>
+Schreiben Sie ein Byte in den Speicher.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address, 0x00000 to 0xBFFFF |
-| value | value to set, 0 to 255 |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse, 0x00000 bis 0xBFFFF |
+| value | Einzustellender Wert, 0 bis 255 |
 </dd>
 <hr>
 ## outw
@@ -3106,13 +3112,13 @@ Write out one byte to memory.
 ```c
 void outw(addr_t dst, uint16_t value)
 ```
-<dt>Description</dt><dd>
-Write out a word (two bytes) to memory.
+<dt>Beschreibung</dt><dd>
+Schreiben Sie ein Wort (word, zwei Bytes) in den Speicher.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address, 0x00000 to 0xBFFFE |
-| value | value to set, 0 to 65535 |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse, 0x00000 bis 0xBFFFE |
+| value | Einzustellender Wert, 0 bis 65535 |
 </dd>
 <hr>
 ## outi
@@ -3120,13 +3126,13 @@ Write out a word (two bytes) to memory.
 ```c
 void outi(addr_t dst, uint32_t value)
 ```
-<dt>Description</dt><dd>
-Write out an integer (four bytes) to memory.
+<dt>Beschreibung</dt><dd>
+Schreiben Sie eine Ganzzahl (int, vier Bytes) in den Speicher.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | address, 0x00000 to 0xBFFFC |
-| value | value to set, 0 to 4294967295 |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Adresse, 0x00000 bis 0xBFFFC |
+| value | Einzustellender Wert, 0 bis 4294967295 |
 </dd>
 <hr>
 ## memsave
@@ -3134,19 +3140,19 @@ Write out an integer (four bytes) to memory.
 ```c
 int memsave(uint8_t overlay, addr_t src, uint32_t size)
 ```
-<dt>Description</dt><dd>
-Saves memory area to overlay.
+<dt>Beschreibung</dt><dd>
+Speichert Speicherbereich zum Overlay.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| overlay | index of overlay to write to, 0 to 255 |
-| src | memory offset to save from, 0x00000 to 0xBFFFF |
-| size | number of bytes to save |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| overlay | Index des Overlays, in das geschrieben werden soll, 0 bis 255 |
+| src | Speicheroffset, ab dem gespeichert werden soll, 0x00000 bis 0xBFFFF |
+| size | Anzahl der zu speichernden Bytes |
 </dd>
-<dt>Return Value</dt><dd>
-Returns 1 on success, 0 on error.
+<dt>Rückgabewert</dt><dd>
+Gibt 1 bei Erfolg zurück, 0 bei Fehler.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [memload]
 </dd>
 <hr>
@@ -3155,19 +3161,19 @@ Returns 1 on success, 0 on error.
 ```c
 int memload(addr_t dst, uint8_t overlay, uint32_t maxsize)
 ```
-<dt>Description</dt><dd>
-Loads an overlay into the specified memory area.
+<dt>Beschreibung</dt><dd>
+Lädt ein Overlay in den angegebenen Speicherbereich.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | memory offset to load to, 0x00000 to 0xBFFFF |
-| overlay | index of overlay to read from, 0 to 255 |
-| maxsize | maximum number of bytes to load |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Speicheroffset, in den geladen werden soll, 0x00000 bis 0xBFFFF |
+| overlay | Index des Overlays, von dem gelesen werden soll, 0 bis 255 |
+| maxsize | Maximale Anzahl zu ladender Bytes |
 </dd>
-<dt>Return Value</dt><dd>
-Returns the number of bytes actually loaded.
+<dt>Rückgabewert</dt><dd>
+Gibt die Anzahl der tatsächlich geladenen Bytes zurück.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [memsave]
 </dd>
 <hr>
@@ -3176,14 +3182,14 @@ Returns the number of bytes actually loaded.
 ```c
 void memcpy(addr_t dst, addr_t src, uint32_t len)
 ```
-<dt>Description</dt><dd>
-Copy memory regions.
+<dt>Beschreibung</dt><dd>
+Speicherbereiche kopieren.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | destination address, 0x00000 to 0xBFFFF |
-| src | source address, 0x00000 to 0xBFFFF |
-| len | number of bytes to copy |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Zieladresse, 0x00000 bis 0xBFFFF |
+| src | Quelladresse, 0x00000 bis 0xBFFFF |
+| len | Anzahl der zu kopierenden Bytes |
 </dd>
 <hr>
 ## memset
@@ -3191,14 +3197,14 @@ Copy memory regions.
 ```c
 void memset(addr_t dst, uint8_t value, uint32_t len)
 ```
-<dt>Description</dt><dd>
-Set memory region to a given value.
+<dt>Beschreibung</dt><dd>
+Speicherbereich auf einen bestimmten Wert setzen.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | destination address, 0x00000 to 0xBFFFF |
-| value | value to set, 0 to 255 |
-| len | number of bytes to set |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Zieladresse, 0x00000 bis 0xBFFFF |
+| value | Einzustellender Wert, 0 bis 255 |
+| len | Anzahl der festzulegenden Bytes |
 </dd>
 <hr>
 ## memcmp
@@ -3206,17 +3212,17 @@ Set memory region to a given value.
 ```c
 int memcmp(addr_t addr0, addr_t addr1, uint32_t len)
 ```
-<dt>Description</dt><dd>
-Compare memory regions.
+<dt>Beschreibung</dt><dd>
+Vergleichen Sie Speicherbereiche.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| addr0 | first address, 0x00000 to 0xBFFFF |
-| addr1 | second address, 0x00000 to 0xBFFFF |
-| len | number of bytes to compare |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| addr0 | Erste Adresse, 0x00000 bis 0xBFFFF |
+| addr1 | Zweiste Adresse, 0x00000 bis 0xBFFFF |
+| len | Anzahl der zu vergleichenden Bytes |
 </dd>
-<dt>Return Value</dt><dd>
-Returns difference, 0 if the two memory region matches.
+<dt>Rückgabewert</dt><dd>
+Gibt den Unterschied zurück, 0, wenn die beiden Speicherbereiche übereinstimmen.
 </dd>
 <hr>
 ## deflate
@@ -3224,19 +3230,19 @@ Returns difference, 0 if the two memory region matches.
 ```c
 int deflate(addr_t dst, addr_t src, uint32_t len)
 ```
-<dt>Description</dt><dd>
-Compress a buffer using RFC1950 deflate (zlib).
+<dt>Beschreibung</dt><dd>
+Komprimieren Sie einen Puffer mit RFC1950 deflate (zlib).
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | destination address, 0x30000 to 0xBFFFF |
-| src | source address, 0x30000 to 0xBFFFF |
-| len | number of bytes to compress |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Zieladresse, 0x30000 bis 0xBFFFF |
+| src | Quelladresse, 0x30000 bis 0xBFFFF |
+| len | Anzahl der zu komprimierenden Bytes |
 </dd>
-<dt>Return Value</dt><dd>
-0 or negative on error, otherwise the length of the compressed buffer and compressed data in dst.
+<dt>Rückgabewert</dt><dd>
+0 oder negativ bei Fehler, andernfalls die Länge des komprimierten Puffers und der komprimierten Daten in dst.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [inflate]
 </dd>
 <hr>
@@ -3245,19 +3251,19 @@ Compress a buffer using RFC1950 deflate (zlib).
 ```c
 int inflate(addr_t dst, addr_t src, uint32_t len)
 ```
-<dt>Description</dt><dd>
-Uncompress a buffer with RFC1950 deflate (zlib) compressed data.
+<dt>Beschreibung</dt><dd>
+Dekomprimieren Sie einen Puffer mit komprimierten RFC1950 deflate (zlib) Daten.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| dst | destination address, 0x30000 to 0xBFFFF |
-| src | source address, 0x30000 to 0xBFFFF |
-| len | number of compressed bytes |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| dst | Zieladresse, 0x30000 bis 0xBFFFF |
+| src | Quelladresse, 0x30000 bis 0xBFFFF |
+| len | Anzahl der komprimierten Bytes |
 </dd>
-<dt>Return Value</dt><dd>
-0 or negative on error, otherwise the length of the uncompressed buffer and uncompressed data in dst.
+<dt>Rückgabewert</dt><dd>
+0 oder negativ bei Fehler, andernfalls die Länge des unkomprimierten Puffers und der unkomprimierten Daten in dst.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [deflate]
 </dd>
 <hr>
@@ -3266,13 +3272,13 @@ Uncompress a buffer with RFC1950 deflate (zlib) compressed data.
 ```c
 float time(void)
 ```
-<dt>Description</dt><dd>
-Returns the number of ticks since power on.
+<dt>Beschreibung</dt><dd>
+Gibt die Anzahl der Ticks seit dem Einschalten zurück.
 </dd>
-<dt>Return Value</dt><dd>
-The elapsed time in milliseconds since power on.
+<dt>Rückgabewert</dt><dd>
+Die seit dem Einschalten verstrichene Zeit in Millisekunden.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [now]
 </dd>
 <hr>
@@ -3281,13 +3287,13 @@ The elapsed time in milliseconds since power on.
 ```c
 uint32_t now(void)
 ```
-<dt>Description</dt><dd>
-Returns the UNIX timestamp. Check the byte at offset 0000C to see if it overflows.
+<dt>Beschreibung</dt><dd>
+Gibt den UNIX-Zeitstempel zurück. Überprüfen Sie das Byte bei Offset 0000C, um festzustellen, ob es überläuft.
 </dd>
-<dt>Return Value</dt><dd>
-The elapsed time in seconds since 1 Jan 1970 midnight, Greenwich Mean Time.
+<dt>Rückgabewert</dt><dd>
+Die seit dem 1. Januar 1970 um Mitternacht verstrichene Zeit in Sekunden, Greenwich Mean Time.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [time]
 </dd>
 <hr>
@@ -3296,17 +3302,17 @@ The elapsed time in seconds since 1 Jan 1970 midnight, Greenwich Mean Time.
 ```c
 int atoi(str_t src)
 ```
-<dt>Description</dt><dd>
-Converts an ASCII decimal string into an integer number.
+<dt>Beschreibung</dt><dd>
+Konvertiert eine ASCII-Dezimalzeichenfolge in eine Ganzzahl.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| src | string address, 0x00000 to 0xBFFFF |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| src | Zeichenfolgenadresse, 0x00000 bis 0xBFFFF |
 </dd>
-<dt>Return Value</dt><dd>
-The number value of the string.
+<dt>Rückgabewert</dt><dd>
+Der Zahlenwert der Zeichenfolge.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [itoa], [str], [val]
 </dd>
 <hr>
@@ -3315,17 +3321,17 @@ The number value of the string.
 ```c
 str_t itoa(int value)
 ```
-<dt>Description</dt><dd>
-Converts an integer number into an ASCII decimal string.
+<dt>Beschreibung</dt><dd>
+Konvertiert eine Ganzzahl in eine ASCII-Dezimalzeichenfolge.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| value | the value, -2147483648 to 2147483647 |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| value | Wert, -2147483648 bis 2147483647 |
 </dd>
-<dt>Return Value</dt><dd>
-The converted string.
+<dt>Rückgabewert</dt><dd>
+Die konvertierte Zeichenfolge.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [atoi], [str], [val]
 </dd>
 <hr>
@@ -3334,17 +3340,17 @@ The converted string.
 ```c
 float val(str_t src)
 ```
-<dt>Description</dt><dd>
-Converts an ASCII decimal string into a floating point number.
+<dt>Beschreibung</dt><dd>
+Konvertiert eine ASCII-Dezimalzeichenfolge in eine Gleitkommazahl.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| src | string address, 0x00000 to 0xBFFFF |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| src | Zeichenfolgenadresse, 0x00000 bis 0xBFFFF |
 </dd>
-<dt>Return Value</dt><dd>
-The number value of the string.
+<dt>Rückgabewert</dt><dd>
+Der Zahlenwert der Zeichenfolge.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [itoa], [atoi], [str]
 </dd>
 <hr>
@@ -3353,17 +3359,17 @@ The number value of the string.
 ```c
 str_t str(float value)
 ```
-<dt>Description</dt><dd>
-Converts a floating point number into an ASCII decimal string.
+<dt>Beschreibung</dt><dd>
+Konvertiert eine Gleitkommazahl in eine ASCII-Dezimalzeichenfolge.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| value | the value |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| value | Wert |
 </dd>
-<dt>Return Value</dt><dd>
-The converted string.
+<dt>Rückgabewert</dt><dd>
+Die konvertierte Zeichenfolge.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [atoi], [itoa], [val]
 </dd>
 <hr>
@@ -3372,16 +3378,16 @@ The converted string.
 ```c
 str_t sprintf(str_t fmt, ...)
 ```
-<dt>Description</dt><dd>
-Returns a zero terminated UTF-8 string created using format and arguments.
+<dt>Beschreibung</dt><dd>
+Gibt eine mit Null terminierte UTF-8-Zeichenfolge zurück, die mithilfe von Format und Argumenten erstellt wurde.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| fmt | [format string] |
-| ... | optional arguments |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| fmt | [Formatierungszeichenfolge] |
+| ... | optionale Argumente |
 </dd>
-<dt>Return Value</dt><dd>
-Constructed string.
+<dt>Rückgabewert</dt><dd>
+Konstruierte Zeichenfolge.
 </dd>
 <hr>
 ## strlen
@@ -3389,17 +3395,17 @@ Constructed string.
 ```c
 int strlen(str_t src)
 ```
-<dt>Description</dt><dd>
-Return the number of bytes in a string (without the terminating zero).
+<dt>Beschreibung</dt><dd>
+Gibt die Anzahl der Bytes in einer Zeichenfolge zurück (ohne die abschließende Null).
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| src | string address, 0x00000 to 0xBFFFF |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| src | Zeichenfolgenadresse, 0x00000 bis 0xBFFFF |
 </dd>
-<dt>Return Value</dt><dd>
-The number of bytes in the string.
+<dt>Rückgabewert</dt><dd>
+Die Anzahl der Bytes in der Zeichenfolge.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [mblen]
 </dd>
 <hr>
@@ -3408,17 +3414,17 @@ The number of bytes in the string.
 ```c
 int mblen(str_t src)
 ```
-<dt>Description</dt><dd>
-Return the number of UTF-8 multi-byte characters in a string (without the terminating zero).
+<dt>Beschreibung</dt><dd>
+Gibt die Anzahl der UTF-8-Multibyte-Zeichen in einer Zeichenfolge zurück (ohne die abschließende Null).
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| src | string address, 0x00000 to 0xBFFFF |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| src | Zeichenfolgenadresse, 0x00000 bis 0xBFFFF |
 </dd>
-<dt>Return Value</dt><dd>
-The number of characters in the string.
+<dt>Rückgabewert</dt><dd>
+Die Anzahl der Zeichen in der Zeichenfolge.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [strlen]
 </dd>
 <hr>
@@ -3427,17 +3433,17 @@ The number of characters in the string.
 ```c
 addr_t malloc(uint32_t size)
 ```
-<dt>Description</dt><dd>
-Allocates user memory dynamically.
+<dt>Beschreibung</dt><dd>
+Weist Puffer dynamisch zu.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| size | number of bytes to allocate |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| size | Anzahl der zuzuordnenden Bytes |
 </dd>
-<dt>Return Value</dt><dd>
-Address of the new allocated buffer or NULL on error.
+<dt>Rückgabewert</dt><dd>
+Adresse des neu zugewiesenen Puffers oder NULL im Fehlerfall.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [realloc], [free]
 </dd>
 <hr>
@@ -3446,18 +3452,18 @@ Address of the new allocated buffer or NULL on error.
 ```c
 addr_t realloc(addr_t addr, uint32_t size)
 ```
-<dt>Description</dt><dd>
-Resize a previously allocated buffer.
+<dt>Beschreibung</dt><dd>
+Ändern Sie die Größe eines zuvor zugewiesenen Puffers.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| addr | address of the allocated buffer |
-| size | number of bytes to resize to |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| addr | Adresse des zugewiesenen Puffers |
+| size | Anzahl der Bytes, auf die die Größe geändert werden soll |
 </dd>
-<dt>Return Value</dt><dd>
-Address of the new allocated buffer or NULL on error.
+<dt>Rückgabewert</dt><dd>
+Adresse des neu zugewiesenen Puffers oder NULL im Fehlerfall.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [malloc], [free]
 </dd>
 <hr>
@@ -3466,16 +3472,16 @@ Address of the new allocated buffer or NULL on error.
 ```c
 int free(addr_t addr)
 ```
-<dt>Description</dt><dd>
-Frees dynamically allocated user memory.
+<dt>Beschreibung</dt><dd>
+Gibt dynamisch zugewiesenen Benutzerspeicher frei.
 </dd>
-<dt>Parameters</dt><dd>
-| Argument | Description |
-| addr | address of the allocated buffer |
+<dt>Argumente</dt><dd>
+| Argument | Beschreibung |
+| addr | Adresse des zugewiesenen Puffers |
 </dd>
-<dt>Return Value</dt><dd>
-1 on success, 0 on error.
+<dt>Rückgabewert</dt><dd>
+1 bei Erfolg, 0 bei Fehler.
 </dd>
-<dt>See Also</dt><dd>
+<dt>Siehe auch</dt><dd>
 [malloc], [realloc]
 </dd>

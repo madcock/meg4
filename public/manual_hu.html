@@ -158,6 +158,7 @@
           <li class="h2"><a href="#jatekpad" onclick="m()">Játékpad</a></li>
           <li class="h2"><a href="#grafikus_feldolgozo_egyseg" onclick="m()">Grafikus Feldolgozó Egység</a></li>
           <li class="h2"><a href="#digitalis_szignalfeldolgozo_processzor" onclick="m()">Digitális Szignálfeldolgozó Processzor</a></li>
+          <li class="h2"><a href="#hangjegyeffektek" onclick="m()">Hangjegyeffektek</a></li>
           <li class="h2"><a href="#felhasznaloi_memoria" onclick="m()">Felhasználói memória</a></li>
           <li class="h2"><a href="#formazo_sztring" onclick="m()">Formázó sztring</a></li>
           <li class="h2"><a href="#3d_s_ter" onclick="m()">3D-s Tér</a></li>
@@ -2102,13 +2103,14 @@ csatornához egy-egy és 1024 sor van összesen; míg a hangeffekteknél csak eg
 <div class="table"><table><tr><th>Cím </th><th>Méret </th><th>Leírás </th></tr>
 <tr><td>0 </td><td class="right">1 </td><td>hangjegy, lásd <samp>NOTE_x</samp> defineok, 0-tól 96-ig </td></tr>
 <tr><td>1 </td><td class="right">1 </td><td>hullámminta index, 0-tól 31-ig </td></tr>
-<tr><td>2 </td><td class="right">1 </td><td>effekt típusa, 0-tól 255-ig </td></tr>
+<tr><td>2 </td><td class="right">1 </td><td>effekt típusa, 0-tól 255-ig (lásd <a href="#hangjegyeffektek" onclick="c('hangjegyeffektek')">hangjegyeffektek</a>) </td></tr>
 <tr><td>3 </td><td class="right">1 </td><td>effekt paraméter </td></tr></table></div>
 <p>A hangjegy sorszáma a következő: a 0 azt jelenti, nincs beállítva. A többi pedig 8 oktávonként 12 érték, azaz az 1-es a C-0,
 12-es a B-0 (a legmélyebb oktávon), 13-as a C-1 (egy oktávval magasabb), a 14-es pedig a C#1 (cisz, fél hanggal magasabb).
 A D hang a 4. oktávon tehát 1 + 4*12 + 2 = 51. A B-7 a 96-os, a legmagasabb hang a legmagasabb oktávon. De vannak
 define-ok hozzájuk, például a C-1 a <samp>NOTE_C_1</samp> és a C#1 az <samp>NOTE_Cs1</samp>, ha nem akarsz számolni, akkor használhatod ezeket is a
 programodban.</p>
+<h2 id="hangjegyeffektek">Hangjegyeffektek<a href="#hangjegyeffektek"></a></h2>
 <p>Az egyszerűség kedvéért a MEG-4 ugyanazokat az effektkódokat használja, mint az Amiga MOD fájlok (így ugyanazt látod a beépített
 zeneszerkesztőben mint egy külsős trackerben), de nem támogatja az összeset. Mint korábban említettük, ezek a kódok három hexa
 számból állnak, az első a típus <samp>t</samp>, az utolsó kettő pedig a paraméter, <samp>xy</samp> (vagy <samp>xx</samp>). Az <samp>E1</samp>-től <samp>ED</samp>-ig mind a típus bájtban van

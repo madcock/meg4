@@ -158,6 +158,7 @@
           <li class="h2"><a href="#gamepad" onclick="m()">Gamepad</a></li>
           <li class="h2"><a href="#graphics_processing_unit" onclick="m()">Graphics Processing Unit</a></li>
           <li class="h2"><a href="#digital_signal_processor" onclick="m()">Digital Signal Processor</a></li>
+          <li class="h2"><a href="#note_effects" onclick="m()">Note Effects</a></li>
           <li class="h2"><a href="#user_memory" onclick="m()">User Memory</a></li>
           <li class="h2"><a href="#format_string" onclick="m()">Format String</a></li>
           <li class="h2"><a href="#3d_space" onclick="m()">3D Space</a></li>
@@ -2081,13 +2082,14 @@ one for each channel, and there are 1024 rows; while for sound effects there's o
 <div class="table"><table><tr><th>Offset </th><th>Size </th><th>Description </th></tr>
 <tr><td>0 </td><td class="right">1 </td><td>note number, see <samp>NOTE_x</samp> defines, 0 to 96 </td></tr>
 <tr><td>1 </td><td class="right">1 </td><td>waveform index, 0 to 31 </td></tr>
-<tr><td>2 </td><td class="right">1 </td><td>effect type, 0 to 255 </td></tr>
+<tr><td>2 </td><td class="right">1 </td><td>effect type, 0 to 255 (see <a href="#note_effects" onclick="c('note_effects')">note effects</a>) </td></tr>
 <tr><td>3 </td><td class="right">1 </td><td>effect parameter </td></tr></table></div>
 <p>The counting of notes goes as follows: 0 means no note set. Followed by 8 octaves, each with 12 notes, so 1 equals to C-0,
 12 is B-0 (on the lowest octave), 13 is C-1 (one octave higher) and 14 is C#1 (C sharp, semitone higher). For example the
 D note on the 4th octave would be 1 + 4*12 + 2 = 51. The B-7 is 96, the highest note on the highest octave. You also have
 built-in defines, for example C-1 is <samp>NOTE_C_1</samp> and C#1 is <samp>NOTE_Cs1</samp>, if you don't want to count then you can use these as well
 in your program.</p>
+<h2 id="note_effects">Note Effects<a href="#note_effects"></a></h2>
 <p>For simplicity, MEG-4 uses the same codes as the Amiga MOD file (this way you'll see the same in the built-in editor as well
 as in a third party music tracker), but it does not support all of them. As said earlier, these codes are represented by three
 hex numbers, the first being the type <samp>t</samp>, and the last two the parameter, <samp>xy</samp> (or <samp>xx</samp>). The types <samp>E1</samp> to <samp>ED</samp> are all stored

@@ -322,7 +322,7 @@ rangée, une pour chaque canal, et il y a 1024 lignes; tandis que pour les effet
 |--------|-----------:|--------------------------------------------------------------------|
 |      0 |          1 | numéro de note, voir les définitions de `NOTE_x`, 0 à 96           |
 |      1 |          1 | indice de forme d'onde, 0 à 31                                     |
-|      2 |          1 | type d'effet, 0 à 255                                              |
+|      2 |          1 | type d'effet, 0 à 255 (voir [effets sonores])                      |
 |      3 |          1 | paramètre d'effet                                                  |
 
 Le comptage des notes se déroule comme suit : 0 signifie aucune note définie. Suivi de 8 octaves, chacune avec 12 notes, donc 1
@@ -330,6 +330,8 @@ est égal à C-0, 12 est B-0 (sur l'octave la plus basse), 13 est C-1 (une octav
 haut). Par exemple, la note D sur la 4ème octave serait 1 + 4\*12 + 2 = 51. Le B-7 est 96, la note la plus haute de l'octave la
 plus élevée. Vous avez également des définitions intégrées, par exemple C-1 est `NOTE_C_1` et C#1 est `NOTE_Cs1`, si vous ne
 voulez pas compter, vous pouvez également les utiliser dans votre programme.
+
+## Effets sonores
 
 Pour plus de simplicité, MEG-4 utilise les mêmes codes que le fichier Amiga MOD (de cette façon, vous verrez la même chose dans
 l'éditeur intégré ainsi que dans un tracker musical tiers), mais il ne les prend pas tous en charge. Comme indiqué précédemment,

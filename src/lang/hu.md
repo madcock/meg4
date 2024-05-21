@@ -323,7 +323,7 @@ csatornához egy-egy és 1024 sor van összesen; míg a hangeffekteknél csak eg
 |--------|-----------:|--------------------------------------------------------------------|
 |      0 |          1 | hangjegy, lásd `NOTE_x` defineok, 0-tól 96-ig                      |
 |      1 |          1 | hullámminta index, 0-tól 31-ig                                     |
-|      2 |          1 | effekt típusa, 0-tól 255-ig                                        |
+|      2 |          1 | effekt típusa, 0-tól 255-ig (lásd [hangjegyeffektek])              |
 |      3 |          1 | effekt paraméter                                                   |
 
 A hangjegy sorszáma a következő: a 0 azt jelenti, nincs beállítva. A többi pedig 8 oktávonként 12 érték, azaz az 1-es a C-0,
@@ -331,6 +331,8 @@ A hangjegy sorszáma a következő: a 0 azt jelenti, nincs beállítva. A többi
 A D hang a 4. oktávon tehát 1 + 4\*12 + 2 = 51. A B-7 a 96-os, a legmagasabb hang a legmagasabb oktávon. De vannak
 define-ok hozzájuk, például a C-1 a `NOTE_C_1` és a C#1 az `NOTE_Cs1`, ha nem akarsz számolni, akkor használhatod ezeket is a
 programodban.
+
+## Hangjegyeffektek
 
 Az egyszerűség kedvéért a MEG-4 ugyanazokat az effektkódokat használja, mint az Amiga MOD fájlok (így ugyanazt látod a beépített
 zeneszerkesztőben mint egy külsős trackerben), de nem támogatja az összeset. Mint korábban említettük, ezek a kódok három hexa
