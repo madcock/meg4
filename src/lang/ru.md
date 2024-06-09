@@ -466,7 +466,6 @@ void putc(uint32_t chr)
 | chr | Символ UTF-8 |
 </dd>
 <hr>
-
 ## printf
 
 ```c
@@ -481,7 +480,6 @@ void printf(str_t fmt, ...)
 | ... | необязательные аргументы |
 </dd>
 <hr>
-
 ## getc
 
 ```c
@@ -497,7 +495,6 @@ uint32_t getc(void)
 [popkey]
 </dd>
 <hr>
-
 ## gets
 
 ```c
@@ -510,7 +507,6 @@ str_t gets(void)
 Байты читаются в строке.
 </dd>
 <hr>
-
 ## trace
 
 ```c
@@ -526,7 +522,6 @@ void trace(str_t fmt, ...)
 | ... | необязательные аргументы |
 </dd>
 <hr>
-
 ## delay
 
 ```c
@@ -540,7 +535,6 @@ void delay(uint16_t msec)
 | msec | задержка в миллисекундах |
 </dd>
 <hr>
-
 ## exit
 
 ```c
@@ -567,7 +561,6 @@ void sfx(uint8_t sfx, uint8_t channel, uint8_t volume)
 | volume | громкость, которая будет использоваться, от 0 до 255, 0 отключает канал |
 </dd>
 <hr>
-
 ## music
 
 ```c
@@ -597,7 +590,6 @@ uint32_t gpio_rev(void)
 Номер версии платы или 0, если не поддерживается.
 </dd>
 <hr>
-
 ## gpio_get
 
 ```c
@@ -618,7 +610,6 @@ GPIO не поддерживается).
 [gpio_set]
 </dd>
 <hr>
-
 ## gpio_set
 
 ```c
@@ -657,7 +648,6 @@ void cls(uint8_t palidx)
 [pget], [pset]
 </dd>
 <hr>
-
 ## cget
 
 ```c
@@ -678,7 +668,6 @@ uint32_t cget(uint16_t x, uint16_t y)
 [cls], [pget], [pset]
 </dd>
 <hr>
-
 ## pget
 
 ```c
@@ -699,7 +688,6 @@ uint8_t pget(uint16_t x, uint16_t y)
 [cls], [pset], [cget]
 </dd>
 <hr>
-
 ## pset
 
 ```c
@@ -718,7 +706,6 @@ void pset(uint8_t palidx, uint16_t x, uint16_t y)
 [cls], [pget]
 </dd>
 <hr>
-
 ## width
 
 ```c
@@ -739,7 +726,6 @@ uint16_t width(int8_t type, str_t str)
 [text]
 </dd>
 <hr>
-
 ## text
 
 ```c
@@ -762,7 +748,6 @@ void text(uint8_t palidx, int16_t x, int16_t y, int8_t type, uint8_t shidx, uint
 [width]
 </dd>
 <hr>
-
 ## line
 
 ```c
@@ -783,7 +768,6 @@ void line(uint8_t palidx, int16_t x0, int16_t y0, int16_t x1, int16_t y1)
 [qbez], [cbez]
 </dd>
 <hr>
-
 ## qbez
 
 ```c
@@ -807,7 +791,6 @@ void qbez(uint8_t palidx, int16_t x0, int16_t y0, int16_t x1, int16_t y1,
 [line], [cbez]
 </dd>
 <hr>
-
 ## cbez
 
 ```c
@@ -833,7 +816,6 @@ void cbez(uint8_t palidx, int16_t x0, int16_t y0, int16_t x1, int16_t y1,
 [line], [qbez]
 </dd>
 <hr>
-
 ## tri
 
 ```c
@@ -856,7 +838,6 @@ void tri(uint8_t palidx, int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t
 [ftri], [tri2d], [tri3d], [tritx], [mesh], [trns]
 </dd>
 <hr>
-
 ## ftri
 
 ```c
@@ -879,7 +860,6 @@ void ftri(uint8_t palidx, int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_
 [tri], [tri2d], [tri3d], [tritx], [mesh], [trns]
 </dd>
 <hr>
-
 ## tri2d
 
 ```c
@@ -906,7 +886,6 @@ void tri2d(uint8_t pi0, int16_t x0, int16_t y0,
 [tri], [ftri], [tri3d], [tritx], [mesh], [trns]
 </dd>
 <hr>
-
 ## tri3d
 
 ```c
@@ -936,7 +915,6 @@ void tri3d(uint8_t pi0, int16_t x0, int16_t y0, int16_t z0,
 [tri], [ftri], [tri2d], [tritx], [mesh], [trns]
 </dd>
 <hr>
-
 ## tritx
 
 ```c
@@ -969,7 +947,6 @@ void tritx(uint8_t u0, uint8_t v0, int16_t x0, int16_t y0, int16_t z0,
 [tri], [ftri], [tri2d], [tri3d], [mesh], [trns]
 </dd>
 <hr>
-
 ## mesh
 
 ```c
@@ -989,7 +966,6 @@ void mesh(addr_t verts, addr_t uvs, uint16_t numtri, addr_t tris)
 [tri], [ftri], [tri2d], [tri3d], [tritx], [trns]
 </dd>
 <hr>
-
 ## rect
 
 ```c
@@ -1010,7 +986,6 @@ void rect(uint8_t palidx, int16_t x0, int16_t y0, int16_t x1, int16_t y1)
 [frect]
 </dd>
 <hr>
-
 ## frect
 
 ```c
@@ -1031,7 +1006,6 @@ void frect(uint8_t palidx, int16_t x0, int16_t y0, int16_t x1, int16_t y1)
 [rect]
 </dd>
 <hr>
-
 ## circ
 
 ```c
@@ -1051,7 +1025,6 @@ void circ(uint8_t palidx, int16_t x, int16_t y, uint16_t r)
 [fcirc], [ellip], [fellip]
 </dd>
 <hr>
-
 ## fcirc
 
 ```c
@@ -1071,7 +1044,6 @@ void fcirc(uint8_t palidx, int16_t x, int16_t y, uint16_t r)
 [circ], [ellip], [fellip]
 </dd>
 <hr>
-
 ## ellip
 
 ```c
@@ -1092,7 +1064,6 @@ void ellip(uint8_t palidx, int16_t x0, int16_t y0, int16_t x1, int16_t y1)
 [circ], [fcirc], [fellip]
 </dd>
 <hr>
-
 ## fellip
 
 ```c
@@ -1113,7 +1084,6 @@ void fellip(uint8_t palidx, int16_t x0, int16_t y0, int16_t x1, int16_t y1)
 [circ], [fcirc], [ellip]
 </dd>
 <hr>
-
 ## move
 
 ```c
@@ -1132,7 +1102,6 @@ void move(int16_t x, int16_t y, uint16_t deg)
 [left], [right], [up], [down], [color], [forw], [back]
 </dd>
 <hr>
-
 ## left
 
 ```c
@@ -1149,7 +1118,6 @@ void left(uint16_t deg)
 [move], [right], [up], [down], [color], [forw], [back]
 </dd>
 <hr>
-
 ## right
 
 ```c
@@ -1166,7 +1134,6 @@ void right(uint16_t deg)
 [move], [left], [up], [down], [color], [forw], [back]
 </dd>
 <hr>
-
 ## up
 
 ```c
@@ -1179,7 +1146,6 @@ void up(void)
 [move], [left], [right], [down], [color], [forw], [back]
 </dd>
 <hr>
-
 ## down
 
 ```c
@@ -1192,7 +1158,6 @@ void down(void)
 [move], [left], [right], [up], [color], [forw], [back]
 </dd>
 <hr>
-
 ## color
 
 ```c
@@ -1209,7 +1174,6 @@ void color(uint8_t palidx)
 [move], [left], [right], [up], [down], [forw], [back]
 </dd>
 <hr>
-
 ## forw
 
 ```c
@@ -1226,7 +1190,6 @@ void forw(uint16_t cnt)
 [move], [left], [right], [up], [down], [color], [back]
 </dd>
 <hr>
-
 ## back
 
 ```c
@@ -1243,7 +1206,6 @@ void back(uint16_t cnt)
 [move], [left], [right], [up], [down], [color], [forw]
 </dd>
 <hr>
-
 ## spr
 
 ```c
@@ -1266,7 +1228,6 @@ void spr(int16_t x, int16_t y, uint16_t sprite, uint8_t sw, uint8_t sh, int8_t s
 [dlg], [stext]
 </dd>
 <hr>
-
 ## dlg
 
 ```c
@@ -1299,7 +1260,6 @@ void dlg(int16_t x, int16_t y, uint16_t w, uint16_t h, int8_t scale,
 [spr], [stext]
 </dd>
 <hr>
-
 ## stext
 
 ```c
@@ -1323,7 +1283,6 @@ void stext(int16_t x, int16_t y, uint16_t fs, uint16_t fu, uint8_t sw, uint8_t s
 [spr], [dlg]
 </dd>
 <hr>
-
 ## remap
 
 ```c
@@ -1340,7 +1299,6 @@ void remap(addr_t replace)
 [mget], [mset], [map], [maze]
 </dd>
 <hr>
-
 ## mget
 
 ```c
@@ -1361,7 +1319,6 @@ uint16_t mget(uint16_t mx, uint16_t my)
 [remap], [mset], [map], [maze]
 </dd>
 <hr>
-
 ## mset
 
 ```c
@@ -1380,7 +1337,6 @@ void mset(uint16_t mx, uint16_t my, uint16_t sprite)
 [remap], [mget], [map], [maze]
 </dd>
 <hr>
-
 ## map
 
 ```c
@@ -1403,7 +1359,6 @@ void map(int16_t x, int16_t y, uint16_t mx, uint16_t my, uint16_t mw, uint16_t m
 [remap], [mget], [mset], [maze]
 </dd>
 <hr>
-
 ## maze
 
 ```c
@@ -1454,7 +1409,6 @@ int getpad(int pad, int btn)
 [prspad], [relpad], [getbtn], [getclk], [getkey]
 </dd>
 <hr>
-
 ## prspad
 
 ```c
@@ -1475,7 +1429,6 @@ int prspad(int pad, int btn)
 [relpad], [getpad], [getbtn], [getclk], [getkey]
 </dd>
 <hr>
-
 ## relpad
 
 ```c
@@ -1496,7 +1449,6 @@ int relpad(int pad, int btn)
 [prspad], [getpad], [getbtn], [getclk], [getkey]
 </dd>
 <hr>
-
 ## getbtn
 
 ```c
@@ -1516,7 +1468,6 @@ int getbtn(int btn)
 [prspad], [relpad], [getpad], [getclk], [getkey]
 </dd>
 <hr>
-
 ## getclk
 
 ```c
@@ -1536,7 +1487,6 @@ int getclk(int btn)
 [prspad], [relpad], [getpad], [getbtn], [getkey]
 </dd>
 <hr>
-
 ## getkey
 
 ```c
@@ -1556,7 +1506,6 @@ int getkey(int sc)
 [prspad], [relpad], [getpad], [getbtn], [getclk]
 </dd>
 <hr>
-
 ## popkey
 
 ```c
@@ -1572,7 +1521,6 @@ uint32_t popkey(void)
 [pendkey], [lenkey], [speckey], [getc]
 </dd>
 <hr>
-
 ## pendkey
 
 ```c
@@ -1588,7 +1536,6 @@ int pendkey(void)
 [popkey], [lenkey], [speckey]
 </dd>
 <hr>
-
 ## lenkey
 
 ```c
@@ -1608,7 +1555,6 @@ int lenkey(uint32_t key)
 [popkey], [pendkey], [speckey]
 </dd>
 <hr>
-
 ## speckey
 
 ```c
@@ -1661,7 +1607,6 @@ float rnd(void)
 [rand]
 </dd>
 <hr>
-
 ## float
 
 ```c
@@ -1681,7 +1626,6 @@ float float(int val)
 [int]
 </dd>
 <hr>
-
 ## int
 
 ```c
@@ -1701,7 +1645,6 @@ The integer of value.
 [float]
 </dd>
 <hr>
-
 ## floor
 
 ```c
@@ -1721,7 +1664,6 @@ float floor(float val)
 [ceil]
 </dd>
 <hr>
-
 ## ceil
 
 ```c
@@ -1741,7 +1683,6 @@ float ceil(float val)
 [floor]
 </dd>
 <hr>
-
 ## sgn
 
 ```c
@@ -1761,7 +1702,6 @@ float sgn(float val)
 [abs]
 </dd>
 <hr>
-
 ## abs
 
 ```c
@@ -1781,7 +1721,6 @@ float abs(float val)
 [sgn]
 </dd>
 <hr>
-
 ## exp
 
 ```c
@@ -1801,7 +1740,6 @@ float exp(float val)
 [log], [pow]
 </dd>
 <hr>
-
 ## log
 
 ```c
@@ -1821,7 +1759,6 @@ float log(float val)
 [exp]
 </dd>
 <hr>
-
 ## pow
 
 ```c
@@ -1842,7 +1779,6 @@ float pow(float val, float exp)
 [exp], [sqrt], [rsqrt]
 </dd>
 <hr>
-
 ## sqrt
 
 ```c
@@ -1862,7 +1798,6 @@ float sqrt(float val)
 [pow], [rsqrt]
 </dd>
 <hr>
-
 ## rsqrt
 
 ```c
@@ -1883,7 +1818,6 @@ John Carmackа.
 [pow], [sqrt]
 </dd>
 <hr>
-
 ## clamp
 
 ```c
@@ -1905,7 +1839,6 @@ float clamp(float val, float minv, float maxv)
 [clampv2], [clampv3], [clampv4]
 </dd>
 <hr>
-
 ## lerp
 
 ```c
@@ -1924,7 +1857,6 @@ float lerp(float a, float b, float t)
 [lerpv2], [lerpv3], [lerpv4], [lerpq], [slerpq]
 </dd>
 <hr>
-
 ## pi
 
 ```c
@@ -1937,7 +1869,6 @@ float pi(void)
 Значение 3.14159265358979323846.
 </dd>
 <hr>
-
 ## cos
 
 ```c
@@ -1957,7 +1888,6 @@ float cos(uint16_t deg)
 [sin], [tan], [acos], [asin], [atan], [atan2]
 </dd>
 <hr>
-
 ## sin
 
 ```c
@@ -1977,7 +1907,6 @@ float sin(uint16_t deg)
 [cos], [tan], [acos], [asin], [atan], [atan2]
 </dd>
 <hr>
-
 ## tan
 
 ```c
@@ -1997,7 +1926,6 @@ float tan(uint16_t deg)
 [cos], [sin], [acos], [asin], [atan], [atan2]
 </dd>
 <hr>
-
 ## acos
 
 ```c
@@ -2017,7 +1945,6 @@ uint16_t acos(float val)
 [cos], [sin], [tan], [asin], [atan], [atan2]
 </dd>
 <hr>
-
 ## asin
 
 ```c
@@ -2037,7 +1964,6 @@ Returns arcus sine.
 [cos], [sin], [tan], [acos], [atan], [atan2]
 </dd>
 <hr>
-
 ## atan
 
 ```c
@@ -2077,7 +2003,6 @@ uint16_t atan2(float y, float x)
 [cos], [sin], [tan], [acos], [asin]
 </dd>
 <hr>
-
 ## dotv2
 
 ```c
@@ -2098,7 +2023,6 @@ float dotv2(addr_t a, addr_t b)
 [lenv2], [scalev2], [negv2], [addv2], [subv2], [mulv2], [divv2], [clampv2], [lerpv2], [normv2]
 </dd>
 <hr>
-
 ## lenv2
 
 ```c
@@ -2118,7 +2042,6 @@ float lenv2(addr_t a)
 [dotv2], [scalev2], [negv2], [addv2], [subv2], [mulv2], [divv2], [clampv2], [lerpv2], [normv2]
 </dd>
 <hr>
-
 ## scalev2
 
 ```c
@@ -2136,7 +2059,6 @@ void scalev2(addr_t a, float s)
 [dotv2], [lenv2], [negv2], [addv2], [subv2], [mulv2], [divv2], [clampv2], [lerpv2], [normv2]
 </dd>
 <hr>
-
 ## negv2
 
 ```c
@@ -2153,7 +2075,6 @@ void negv2(addr_t a)
 [dotv2], [lenv2], [scalev2], [addv2], [subv2], [mulv2], [divv2], [clampv2], [lerpv2], [normv2]
 </dd>
 <hr>
-
 ## addv2
 
 ```c
@@ -2172,7 +2093,6 @@ void addv2(addr_t dst, addr_t a, addr_t b)
 [dotv2], [lenv2], [scalev2], [negv2], [subv2], [mulv2], [divv2], [clampv2], [lerpv2], [normv2]
 </dd>
 <hr>
-
 ## subv2
 
 ```c
@@ -2191,7 +2111,6 @@ void subv2(addr_t dst, addr_t a, addr_t b)
 [dotv2], [lenv2], [scalev2], [negv2], [addv2], [mulv2], [divv2], [clampv2], [lerpv2], [normv2]
 </dd>
 <hr>
-
 ## mulv2
 
 ```c
@@ -2210,7 +2129,6 @@ void mulv2(addr_t dst, addr_t a, addr_t b)
 [dotv2], [lenv2], [scalev2], [negv2], [addv2], [subv2], [divv2], [clampv2], [lerpv2], [normv2]
 </dd>
 <hr>
-
 ## divv2
 
 ```c
@@ -2229,7 +2147,6 @@ void divv2(addr_t dst, addr_t a, addr_t b)
 [dotv2], [lenv2], [scalev2], [negv2], [addv2], [subv2], [mulv2], [clampv2], [lerpv2], [normv2]
 </dd>
 <hr>
-
 ## clampv2
 
 ```c
@@ -2249,7 +2166,6 @@ void clampv2(addr_t dst, addr_t v, addr_t minv, addr_t maxv)
 [dotv2], [lenv2], [scalev2], [negv2], [addv2], [subv2], [mulv2], [divv2], [lerpv2], [normv2]
 </dd>
 <hr>
-
 ## lerpv2
 
 ```c
@@ -2269,7 +2185,6 @@ void lerpv2(addr_t dst, addr_t a, addr_t b, float t)
 [dotv2], [lenv2], [scalev2], [negv2], [addv2], [subv2], [mulv2], [divv2], [clampv2], [normv2]
 </dd>
 <hr>
-
 ## normv2
 
 ```c
@@ -2286,7 +2201,6 @@ void normv2(addr_t a)
 [dotv2], [lenv2], [scalev2], [negv2], [addv2], [subv2], [mulv2], [divv2], [clampv2], [lerpv2]
 </dd>
 <hr>
-
 ## dotv3
 
 ```c
@@ -2307,7 +2221,6 @@ float dotv3(addr_t a, addr_t b)
 [lenv3], [scalev3], [negv3], [addv3], [subv3], [mulv3], [divv3], [crossv3], [clampv3], [lerpv3], [normv3]
 </dd>
 <hr>
-
 ## lenv3
 
 ```c
@@ -2327,7 +2240,6 @@ float lenv3(addr_t a)
 [dotv3], [scalev3], [negv3], [addv3], [subv3], [mulv3], [divv3], [crossv3], [clampv3], [lerpv3], [normv3]
 </dd>
 <hr>
-
 ## scalev3
 
 ```c
@@ -2345,7 +2257,6 @@ void scalev3(addr_t a, float s)
 [dotv3], [lenv3], [negv3], [addv3], [subv3], [mulv3], [divv3], [crossv3], [clampv3], [lerpv3], [normv3]
 </dd>
 <hr>
-
 ## negv3
 
 ```c
@@ -2362,7 +2273,6 @@ void negv3(addr_t a)
 [dotv3], [lenv3], [scalev3], [addv3], [subv3], [mulv3], [divv3], [crossv3], [clampv3], [lerpv3], [normv3]
 </dd>
 <hr>
-
 ## addv3
 
 ```c
@@ -2381,7 +2291,6 @@ void addv3(addr_t dst, addr_t a, addr_t b)
 [dotv3], [lenv3], [scalev3], [negv3], [subv3], [mulv3], [divv3], [crossv3], [clampv3], [lerpv3], [normv3]
 </dd>
 <hr>
-
 ## subv3
 
 ```c
@@ -2400,7 +2309,6 @@ void subv3(addr_t dst, addr_t a, addr_t b)
 [dotv3], [lenv3], [scalev3], [negv3], [addv3], [mulv3], [divv3], [crossv3], [clampv3], [lerpv3], [normv3]
 </dd>
 <hr>
-
 ## mulv3
 
 ```c
@@ -2419,7 +2327,6 @@ void mulv3(addr_t dst, addr_t a, addr_t b)
 [dotv3], [lenv3], [scalev3], [negv3], [addv3], [subv3], [divv3], [crossv3], [clampv3], [lerpv3], [normv3]
 </dd>
 <hr>
-
 ## divv3
 
 ```c
@@ -2438,7 +2345,6 @@ void divv3(addr_t dst, addr_t a, addr_t b)
 [dotv3], [lenv3], [scalev3], [negv3], [addv3], [subv3], [mulv3], [crossv3], [clampv3], [lerpv3], [normv3]
 </dd>
 <hr>
-
 ## crossv3
 
 ```c
@@ -2457,7 +2363,6 @@ void crossv3(addr_t dst, addr_t a, addr_t b)
 [dotv3], [lenv3], [scalev3], [negv3], [addv3], [subv3], [mulv3], [divv3], [clampv3], [lerpv3], [normv3]
 </dd>
 <hr>
-
 ## clampv3
 
 ```c
@@ -2477,7 +2382,6 @@ void clampv3(addr_t dst, addr_t v, addr_t minv, addr_t maxv)
 [dotv3], [lenv3], [scalev3], [negv3], [addv3], [subv3], [mulv3], [divv3], [crossv3], [lerpv3], [normv3]
 </dd>
 <hr>
-
 ## lerpv3
 
 ```c
@@ -2497,7 +2401,6 @@ void lerpv3(addr_t dst, addr_t a, addr_t b, float t)
 [dotv3], [lenv3], [scalev3], [negv3], [addv3], [subv3], [mulv3], [divv3], [crossv3], [clampv3], [normv3]
 </dd>
 <hr>
-
 ## normv3
 
 ```c
@@ -2514,7 +2417,6 @@ void normv3(addr_t a)
 [dotv3], [lenv3], [scalev3], [negv3], [addv3], [subv3], [mulv3], [divv3], [crossv3], [clampv3], [lerpv3]
 </dd>
 <hr>
-
 ## dotv4
 
 ```c
@@ -2535,7 +2437,6 @@ float dotv4(addr_t a, addr_t b)
 [lenv4], [scalev4], [negv4], [addv4], [subv4], [mulv4], [divv4], [clampv4], [lerpv4], [normv4]
 </dd>
 <hr>
-
 ## lenv4
 
 ```c
@@ -2555,7 +2456,6 @@ float lenv4(addr_t a)
 [dotv4], [scalev4], [negv4], [addv4], [subv4], [mulv4], [divv4], [clampv4], [lerpv4], [normv4]
 </dd>
 <hr>
-
 ## scalev4
 
 ```c
@@ -2573,7 +2473,6 @@ void scalev4(addr_t a, float s)
 [dotv4], [lenv4], [negv4], [addv4], [subv4], [mulv4], [divv4], [clampv4], [lerpv4], [normv4]
 </dd>
 <hr>
-
 ## negv4
 
 ```c
@@ -2590,7 +2489,6 @@ void negv4(addr_t a)
 [dotv4], [lenv4], [scalev4], [addv4], [subv4], [mulv4], [divv4], [clampv4], [lerpv4], [normv4]
 </dd>
 <hr>
-
 ## addv4
 
 ```c
@@ -2609,7 +2507,6 @@ void addv4(addr_t dst, addr_t a, addr_t b)
 [dotv4], [lenv4], [negv4], [scalev4], [subv4], [mulv4], [divv4], [clampv4], [lerpv4], [normv4]
 </dd>
 <hr>
-
 ## subv4
 
 ```c
@@ -2628,7 +2525,6 @@ void subv4(addr_t dst, addr_t a, addr_t b)
 [dotv4], [lenv4], [scalev4], [negv4], [addv4], [mulv4], [divv4], [clampv4], [lerpv4], [normv4]
 </dd>
 <hr>
-
 ## mulv4
 
 ```c
@@ -2647,7 +2543,6 @@ void mulv4(addr_t dst, addr_t a, addr_t b)
 [dotv4], [lenv4], [scalev4], [negv4], [addv4], [subv4], [divv4], [clampv4], [lerpv4], [normv4]
 </dd>
 <hr>
-
 ## divv4
 
 ```c
@@ -2666,7 +2561,6 @@ void divv4(addr_t dst, addr_t a, addr_t b)
 [dotv4], [lenv4], [scalev4], [negv4], [addv4], [subv4], [mulv4], [clampv4], [lerpv4], [normv4]
 </dd>
 <hr>
-
 ## clampv4
 
 ```c
@@ -2686,7 +2580,6 @@ void clampv4(addr_t dst, addr_t v, addr_t minv, addr_t maxv)
 [dotv4], [lenv4], [scalev4], [negv4], [addv4], [subv4], [mulv4], [divv4], [lerpv4], [normv4]
 </dd>
 <hr>
-
 ## lerpv4
 
 ```c
@@ -2706,7 +2599,6 @@ void lerpv4(addr_t dst, addr_t a, addr_t b, float t)
 [dotv4], [lenv4], [scalev4], [negv4], [addv4], [subv4], [mulv4], [divv4], [clampv4], [normv4]
 </dd>
 <hr>
-
 ## normv4
 
 ```c
@@ -2723,7 +2615,6 @@ void normv4(addr_t a)
 [dotv4], [lenv4], [scalev4], [negv4], [addv4], [subv4], [mulv4], [divv4], [clampv4], [lerpv4]
 </dd>
 <hr>
-
 ## idq
 
 ```c
@@ -2740,7 +2631,6 @@ void idq(addr_t a)
 [eulerq], [dotq], [lenq], [scaleq], [negq], [addq], [subq], [mulq], [rotq], [lerpq], [slerpq], [normq]
 </dd>
 <hr>
-
 ## eulerq
 
 ```c
@@ -2760,7 +2650,6 @@ void eulerq(addr_t dst, uint16_t pitch, uint16_t yaw, uint16_t roll)
 [idq], [dotq], [lenq], [scaleq], [negq], [addq], [subq], [mulq], [rotq], [lerpq], [slerpq], [normq]
 </dd>
 <hr>
-
 ## dotq
 
 ```c
@@ -2781,7 +2670,6 @@ float dotq(addr_t a, addr_t b)
 [idq], [eulerq], [lenq], [scaleq], [negq], [addq], [subq], [mulq], [rotq], [lerpq], [slerpq], [normq]
 </dd>
 <hr>
-
 ## lenq
 
 ```c
@@ -2801,7 +2689,6 @@ float lenq(addr_t a)
 [idq], [eulerq], [dotq], [scaleq], [negq], [addq], [subq], [mulq], [rotq], [lerpq], [slerpq], [normq]
 </dd>
 <hr>
-
 ## scaleq
 
 ```c
@@ -2819,7 +2706,6 @@ void scaleq(addr_t a, float s)
 [idq], [eulerq], [dotq], [lenq], [negq], [addq], [subq], [mulq], [rotq], [lerpq], [slerpq], [normq]
 </dd>
 <hr>
-
 ## negq
 
 ```c
@@ -2836,7 +2722,6 @@ void negq(addr_t a)
 [idq], [eulerq], [dotq], [lenq], [scaleq], [addq], [subq], [mulq], [rotq], [lerpq], [slerpq], [normq]
 </dd>
 <hr>
-
 ## addq
 
 ```c
@@ -2855,7 +2740,6 @@ void addq(addr_t dst, addr_t a, addr_t b)
 [idq], [eulerq], [dotq], [lenq], [scaleq], [negq], [subq], [mulq], [rotq], [lerpq], [slerpq], [normq]
 </dd>
 <hr>
-
 ## subq
 
 ```c
@@ -2874,7 +2758,6 @@ void subq(addr_t dst, addr_t a, addr_t b)
 [idq], [eulerq], [dotq], [lenq], [scaleq], [negq], [addq], [mulq], [rotq], [lerpq], [slerpq], [normq]
 </dd>
 <hr>
-
 ## mulq
 
 ```c
@@ -2893,7 +2776,6 @@ void mulq(addr_t dst, addr_t a, addr_t b)
 [idq], [eulerq], [dotq], [lenq], [scaleq], [negq], [addq], [subq], [rotq], [lerpq], [slerpq], [normq]
 </dd>
 <hr>
-
 ## rotq
 
 ```c
@@ -2912,7 +2794,6 @@ void rotq(addr_t dst, addr_t q, addr_t v)
 [idq], [eulerq], [dotq], [lenq], [scaleq], [negq], [addq], [subq], [mulq], [lerpq], [slerpq], [normq]
 </dd>
 <hr>
-
 ## lerpq
 
 ```c
@@ -2932,7 +2813,6 @@ void lerpq(addr_t dst, addr_t a, addr_t b, float t)
 [idq], [eulerq], [dotq], [lenq], [scaleq], [negq], [addq], [subq], [mulq], [rotq], [slerpq], [normq]
 </dd>
 <hr>
-
 ## slerpq
 
 ```c
@@ -2952,7 +2832,6 @@ void slerpq(addr_t dst, addr_t a, addr_t b, float t)
 [idq], [eulerq], [dotq], [lenq], [scaleq], [negq], [addq], [subq], [mulq], [rotq], [lerpq], [normq]
 </dd>
 <hr>
-
 ## normq
 
 ```c
@@ -2969,7 +2848,6 @@ void normq(addr_t a)
 [idq], [eulerq], [dotq], [lenq], [scaleq], [negq], [addq], [subq], [mulq], [rotq], [lerpq], [slerpq]
 </dd>
 <hr>
-
 ## idm4
 
 ```c
@@ -2986,7 +2864,6 @@ void idm4(addr_t a)
 [trsm4], [detm4], [addm4], [subm4], [mulm4], [mulm4v3], [mulm4v4], [invm4], [trpm4]
 </dd>
 <hr>
-
 ## trsm4
 
 ```c
@@ -3006,7 +2883,6 @@ void trsm4(addr_t dst, addr_t t, addr_t r, addr_t s)
 [idm4], [detm4], [addm4], [subm4], [mulm4], [mulm4v3], [mulm4v4], [invm4], [trpm4]
 </dd>
 <hr>
-
 ## detm4
 
 ```c
@@ -3026,7 +2902,6 @@ float detm4(addr_t a)
 [idm4], [trsm4], [addm4], [subm4], [mulm4], [mulm4v3], [mulm4v4], [invm4], [trpm4]
 </dd>
 <hr>
-
 ## addm4
 
 ```c
@@ -3045,7 +2920,6 @@ void addm4(addr_t dst, addr_t a, addr_t b)
 [idm4], [trsm4], [detm4], [subm4], [mulm4], [mulm4v3], [mulm4v4], [invm4], [trpm4]
 </dd>
 <hr>
-
 ## subm4
 
 ```c
@@ -3064,7 +2938,6 @@ void subm4(addr_t dst, addr_t a, addr_t b)
 [idm4], [trsm4], [detm4], [addm4], [mulm4], [mulm4v3], [mulm4v4], [invm4], [trpm4]
 </dd>
 <hr>
-
 ## mulm4
 
 ```c
@@ -3083,7 +2956,6 @@ void mulm4(addr_t dst, addr_t a, addr_t b)
 [idm4], [trsm4], [detm4], [addm4], [subm4], [mulm4v3], [mulm4v4], [invm4], [trpm4]
 </dd>
 <hr>
-
 ## mulm4v3
 
 ```c
@@ -3102,7 +2974,6 @@ void mulm4v3(addr_t dst, addr_t m, addr_t v)
 [idm4], [trsm4], [detm4], [addm4], [subm4], [mulm4], [mulm4v4], [invm4], [trpm4]
 </dd>
 <hr>
-
 ## mulm4v4
 
 ```c
@@ -3121,7 +2992,6 @@ void mulm4v4(addr_t dst, addr_t m, addr_t v)
 [idm4], [trsm4], [detm4], [addm4], [subm4], [mulm4], [mulm4v3], [invm4], [trpm4]
 </dd>
 <hr>
-
 ## invm4
 
 ```c
@@ -3139,7 +3009,6 @@ void invm4(addr_t dst, addr_t a)
 [idm4], [trsm4], [detm4], [addm4], [subm4], [mulm4], [mulm4v3], [mulm4v4], [trpm4]
 </dd>
 <hr>
-
 ## trpm4
 
 ```c
@@ -3157,7 +3026,6 @@ void trpm4(addr_t dst, addr_t a)
 [idm4], [trsm4], [detm4], [addm4], [subm4], [mulm4], [mulm4v3], [mulm4v4], [invm4]
 </dd>
 <hr>
-
 ## trns
 
 ```c
@@ -3204,7 +3072,6 @@ uint8_t inb(addr_t src)
 Возвращает значение по этому адресу.
 </dd>
 <hr>
-
 ## inw
 
 ```c
@@ -3221,7 +3088,6 @@ uint16_t inw(addr_t src)
 Возвращает значение по этому адресу.
 </dd>
 <hr>
-
 ## ini
 
 ```c
@@ -3238,7 +3104,6 @@ uint32_t ini(addr_t src)
 Возвращает значение по этому адресу.
 </dd>
 <hr>
-
 ## outb
 
 ```c
@@ -3253,7 +3118,6 @@ void outb(addr_t dst, uint8_t value)
 | value | значение для установки, от 0 до 255 |
 </dd>
 <hr>
-
 ## outw
 
 ```c
@@ -3268,7 +3132,6 @@ void outw(addr_t dst, uint16_t value)
 | value | значение для установки, от 0 до 65535 |
 </dd>
 <hr>
-
 ## outi
 
 ```c
@@ -3283,7 +3146,6 @@ void outi(addr_t dst, uint32_t value)
 | value | значение для установки, от 0 до 4294967295 |
 </dd>
 <hr>
-
 ## memsave
 
 ```c
@@ -3305,7 +3167,6 @@ int memsave(uint8_t overlay, addr_t src, uint32_t size)
 [memload]
 </dd>
 <hr>
-
 ## memload
 
 ```c
@@ -3327,7 +3188,6 @@ int memload(addr_t dst, uint8_t overlay, uint32_t maxsize)
 [memsave]
 </dd>
 <hr>
-
 ## memcpy
 
 ```c
@@ -3343,7 +3203,6 @@ void memcpy(addr_t dst, addr_t src, uint32_t len)
 | len | количество байтов для копирования |
 </dd>
 <hr>
-
 ## memset
 
 ```c
@@ -3359,7 +3218,6 @@ void memset(addr_t dst, uint8_t value, uint32_t len)
 | len | количество байтов для установки |
 </dd>
 <hr>
-
 ## memcmp
 
 ```c
@@ -3378,7 +3236,6 @@ int memcmp(addr_t addr0, addr_t addr1, uint32_t len)
 Возвращает разницу, 0, если две области памяти совпадают.
 </dd>
 <hr>
-
 ## deflate
 
 ```c
@@ -3400,7 +3257,6 @@ int deflate(addr_t dst, addr_t src, uint32_t len)
 [inflate]
 </dd>
 <hr>
-
 ## inflate
 
 ```c
@@ -3422,7 +3278,6 @@ int inflate(addr_t dst, addr_t src, uint32_t len)
 [deflate]
 </dd>
 <hr>
-
 ## time
 
 ```c
@@ -3438,7 +3293,6 @@ float time(void)
 [now]
 </dd>
 <hr>
-
 ## now
 
 ```c
@@ -3454,7 +3308,6 @@ uint32_t now(void)
 [time]
 </dd>
 <hr>
-
 ## atoi
 
 ```c
@@ -3474,7 +3327,6 @@ int atoi(str_t src)
 [itoa], [str], [val]
 </dd>
 <hr>
-
 ## itoa
 
 ```c
@@ -3494,7 +3346,6 @@ str_t itoa(int value)
 [atoi], [str], [val]
 </dd>
 <hr>
-
 ## val
 
 ```c
@@ -3514,7 +3365,6 @@ float val(str_t src)
 [itoa], [atoi], [str]
 </dd>
 <hr>
-
 ## str
 
 ```c
@@ -3534,7 +3384,6 @@ str_t str(float value)
 [atoi], [itoa], [val]
 </dd>
 <hr>
-
 ## sprintf
 
 ```c
@@ -3552,7 +3401,6 @@ str_t sprintf(str_t fmt, ...)
 Созданная строка.
 </dd>
 <hr>
-
 ## strlen
 
 ```c
@@ -3572,7 +3420,6 @@ int strlen(str_t src)
 [mblen]
 </dd>
 <hr>
-
 ## mblen
 
 ```c
@@ -3592,7 +3439,6 @@ int mblen(str_t src)
 [strlen]
 </dd>
 <hr>
-
 ## malloc
 
 ```c
@@ -3612,7 +3458,6 @@ addr_t malloc(uint32_t size)
 [realloc], [free]
 </dd>
 <hr>
-
 ## realloc
 
 ```c
@@ -3633,7 +3478,6 @@ addr_t realloc(addr_t addr, uint32_t size)
 [malloc], [free]
 </dd>
 <hr>
-
 ## free
 
 ```c
