@@ -301,13 +301,14 @@ void loop()
 }
 ```
 
-Mivel az ütőt az egyes szprájtra rajzoltuk, ezért a `sprite` paraméter most `1`, és mivel három szprájt széles, ezért az `sw`
-pedig `3`. Az `y` koordináta konstans, mivel függőlegesen nem fogjuk mozgatni az ütőt, csak vízszintesen.
+Az `x` paraméter helyére kerül a `px` változó, az `y` koordináta konstans `191`, mivel függőlegesen nem fogjuk mozgatni az ütőt,
+csak vízszintesen. Mivel az ütőt az egyes szprájtra rajzoltuk, ezért a `sprite` paraméter most `1`, és mivel három szprájt széles,
+ezért az `sw` pedig `3`, de továbbra is csak egy szprájt magas, tehát az `sh` az `1`.
 
-Eddig jó, de hogy fogja tudni mozgatni a játékos az ütőt az egérrel? Hát úgy, hogy az egér koordinátáját adjuk az `x` paraméternek.
+Eddig jó, de hogy fogja tudni mozgatni a játékos az ütőt az egérrel? Hát úgy, hogy az egér koordinátáját adjuk a `px` változónak.
 Ha megnézed a memóriatérképet, akkor a [mutató] fejezetben azt látod, hogy az egér X koordintája 2 bájton, a `00016`-os címen
 található. Hogy ezt lekérdezzük, az [inw] függvényt fogjuk használni (word, azaz szó, mivel két bájtra van szükségünk). De arra
-is figyelnünk kell, hogy az ütő a képernyőn maradjon, ezért csak azokat a koordinátákat használjuk, amik kissebbek, mint a
+is figyelnünk kell, hogy az ütő a képernyőn maradjon, ezért csak azokat a koordinátákat engedjük, amik kissebbek, mint a
 képernyő szélessége mínusz az ütő szélessége (ami három szprájtnyi, tehát 24 pixeles). Még egy dolog, a memóriatérképen minden cím
 tizenhatos számrendszerben van megadva, így a `0x` előtagot kell használnunk, hogy jelezzük a fordítóprogramnak, egy hexadecimális
 szám következik.
@@ -341,7 +342,7 @@ void loop()
 ```
 
 Futtassuk le a programot! Megjelenik az ütő, és mozgatni is tudjuk az egérrel. Azonban akad egy kis bökkenő, a labdát nem érdekli,
-hol van az ütő. Írjuk át a programot, hogy a képernyő alja helyett csak akkor pattanjon a labda, ha épp az ütőre esik. A labda
+hogy hol van az ütő. Írjuk át a programot, hogy a képernyő alja helyett csak akkor pattanjon a labda, ha épp az ütőre esik. A labda
 magassága 8 pixel, ezért ennyivel feljebb kell az ellenőrzést elvégezni.
 
 ```c
@@ -381,9 +382,8 @@ Játék vége
 Most, hogy átírtuk az alsó pattanást, szükségünk van egy újabb ellenőrzésre, hogy a labda alul kiment-e a képernyőről. Ez ugye
 a játék végét fogja jelenteni.
 
-Ilyenkor három dolgot is szeretnénk. Először is ne felejtsük el, hogy a `loop()` továbbra is többször lefut, ezért hogy a labda
-ne mozogjon tovább, a `dx` és `dy` változókat nullára állítjuk. Másodszor, meg akarunk jeleníteni egy vége a játéknak üzenetet.
-Végezetül pedig, ha a játékos kattint egyet, akkor újra akarjuk indítani a játékot.
+Először is ne felejtsük el, hogy a `loop()` továbbra is többször lefut, ezért hogy a labda ne mozogjon tovább, a `dx` és `dy`
+változókat nullára állítjuk. Másodszor, meg akarunk jeleníteni egy vége a játéknak üzenetet.
 
 ```c
 #!c
@@ -414,7 +414,6 @@ void loop()
 <hm>  if(y > 199) {
     dx = dy = 0;
     text(184, (320 - width(2, msg)) / 2, 90, 2, 112, 128, msg);
-    if(getclk(BTN_L)) setup();
   }</hm>
 }
 ```
@@ -435,8 +434,47 @@ pontosabban itt most a mérete. Mivel nagy betűkkel szeretnénk kiírni, ezért
 ami megint egy szín sorszám, az árnyék színe. Ide egy sötétebb pirosat választottam. Az árnyéknál fontos azonban az is, hogy
 mennyire átlátszó, ezt az `sha` paraméterben adhatjuk meg, ami egy alfa csatorna érték 0-tól (teljesen átlátszó) 255-ig
 (semennyire sem). Ide a `128`-at választottam, ami félúton van a két érték között, tehát félig átlátszó. Végezetül pedig `str`-ben
-kell megadni, hogy melyik szöveget szeretnénk kiíratni.
+kell megadni, hogy melyik szöveget szeretnénk kiíratni, ezt ugye az `msg` változóban tároljuk.
+
+Újrakezdés
+----------
+
+Végezetül pedig, ha a játékos kattint egyet, akkor újra akarjuk indítani a játékot.
+
+```c
+#!c
+
+int x, y, dx, dy, px;
+str_t msg = "VÉGE A JÁTÉKNAK!";
+
+void setup()
+{
+  /* Induláskor lefuttatandó dolgok */
+  x = 156;
+  y = 96;
+  dx = dy = 1;
+}
+
+void loop()
+{
+  /* Minden képkockánál lefuttatandó dolgok, 60 FPS */
+  cls(0);
+  spr(x, y, 0, 1, 1, 1, 0);
+  px = inw(0x16);
+  if(px > 296) px = 296;
+  spr(px, 191, 1, 3, 1, 1, 0);
+  x = x + dx;
+  y = y + dy;
+  if(x == 0 || x == 311) dx = -dx;
+  if(y == 0 || (y == 183 && x >= px && x <= px + 24)) dy = -dy;
+  if(y > 199) {
+    dx = dy = 0;
+    text(184, (320 - width(2, msg)) / 2, 90, 2, 112, 128, msg);
+    <hl>if(getclk(BTN_L)) setup();</hl>
+  }
+}
+```
 
 Hogy megtudjuk, kattintott-e a felhasználó, arra a [getclk] (get click) funkciót használjuk, egy `BTN_L` (button left) paraméterrel,
-azaz kattintottak-e a bal egérgommbal. A pattogó labda játékunk alapértékeit a `setup()` függvényben állítottuk be, ami nagyon
+azaz kattintottak-e a bal egérgombbal. A pattogó labda játékunk alapértékeit a `setup()` függvényben állítottuk be, ami nagyon
 kapóra jön, mivel ha itt most újra meghívjuk a `setup()`-ot, akkor a játék egyszerűen visszaáll az alaphelyzetébe.

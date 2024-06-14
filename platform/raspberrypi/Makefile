@@ -58,10 +58,10 @@ boot/initrd: rootfs/init
 
 ### construct disk image ###
 meg4.iso: boot/kernel8.img boot/initrd
-	@printf "dtparam=audio=on\nmax_framebuffers=2\narm_64bit=1\ninitramfs initrd followkernel" >boot/config.txt
-	@printf "console=serial0,115200 quiet" >boot/cmdline.txt
+	@printf "dtparam=audio=on\nenable_uart=1\nmax_framebuffers=2\narm_64bit=1\ninitramfs initrd followkernel" >boot/config.txt
+	@printf "console=serial0,115200 init=/init quiet" >boot/cmdline.txt
 	@mkdir -p boot/MEG-4 2>/dev/null || true
-	@cp -r ../../public/floppies/* boot/MEG-4
+	@cp -r ../../public/floppies/* boot/MEG-4 || true
 	dd if=/dev/zero of=meg4.iso count=$(IMGSIZE) bs=1048576
 	printf "n\np\n1\n2048\n\nt 1\nc\na\nw\nq\n" | fdisk meg4.iso
 	mkfs.vfat -F 32 -n "MEG-4 OS" --offset 2048 meg4.iso

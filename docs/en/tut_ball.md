@@ -299,13 +299,14 @@ void loop()
 }
 ```
 
-Because we draw the bat at the 1st sprite, the `sprite` parameter is `1`. And because it is three sprites wide, `sw` is `3`. We
-don't want to move the bat vertically, just horizontally, so the `y` argument is a constant.
+So the `x` argument becomes `px`, and we don't want to move the bat vertically, just horizontally, so the `y` argument is a
+constant `191`. Because we draw the bat at the 1st sprite, the `sprite` parameter is `1`. And because it is three sprites wide,
+`sw` is `3`, but it is still just one sprite tall, so `sh` is `1`.
 
-So far so good, but how will the player move this bat with the mouse? We'll set the `x` parameter to the mouse coordinate for that.
+So far so good, but how will the player move this bat with the mouse? We'll set the mouse coordinate to the `px` variable for that.
 If you go the memory map, then under [pointer] you can see that the mouse's X coordinate is stored on 2 bytes at address `00016`.
 To get this value, we use the [inw] function (word, because we need 2 bytes). But we also must not allow moving the bat off screen,
-so we only do this if the coordinate is less than the screen size minus the bat's size (which is three sprites, so 24 pixels). One
+so we clamp if the coordinate is bigger than the screen size minus the bat's size (which is three sprites, so 24 pixels). One
 more thing, the offsets in the memory map are given in hexadecimal, so we need the `0x` prefix to tell the compiler that this is a
 hexadecimal number.
 
@@ -378,9 +379,8 @@ Game Over
 Now that we have changed the bottom check, we have to add a new check to see if the ball has left the screen. Of course this would
 mean game over.
 
-There are three things that we want to do if this happens. First, remember that `loop()` runs constantly, so to stop moving the
-ball any further, we set the `dx` and `dy` variables to zero. Second, we want to display a game over message. And last, if the
-player clicks, we want to restart the game.
+First, remember that `loop()` runs constantly, so to stop moving the ball any further, we set the `dx` and `dy` variables to zero.
+Second, we want to display a game over message.
 
 ```c
 #!c
@@ -411,7 +411,6 @@ void loop()
 <hm>  if(y > 199) {
     dx = dy = 0;
     text(184, (320 - width(2, msg)) / 2, 90, 2, 112, 128, msg);
-    if(getclk(BTN_L)) setup();
   }</hm>
 }
 ```
@@ -431,7 +430,46 @@ say what to print. After the coordinates comes the `type`, which is the font's t
 letters, so we've used `2`, double size. After this comes the shadow, `shidx`, which is also a color index. I've choosen a darker
 red here. For a shadow, it is important how transparent it is, we can specify this in the `sha` argument. That is an alpha
 channel value from 0 (fully transparent) to 255 (fully opaque). By using `128`, which is half way between these values, I've told
-to use half transparent. And finally in the `str` argument we specify which text to display.
+to use half transparent. And finally the `str` argument specifies the text to be displayed, which we store in the `msg` variable.
+
+Restart
+-------
+
+And last, if the player clicks, we want to restart the game.
+
+```c
+#!c
+
+int x, y, dx, dy, px;
+str_t msg = "GAME OVER!";
+
+void setup()
+{
+  /* Things to do on startup */
+  x = 156;
+  y = 96;
+  dx = dy = 1;
+}
+
+void loop()
+{
+  /* Things to run for every frame, at 60 FPS */
+  cls(0);
+  spr(x, y, 0, 1, 1, 1, 0);
+  px = inw(0x16);
+  if(px > 296) px = 296;
+  spr(px, 191, 1, 3, 1, 1, 0);
+  x = x + dx;
+  y = y + dy;
+  if(x == 0 || x == 311) dx = -dx;
+  if(y == 0 || (y == 183 && x >= px && x <= px + 24)) dy = -dy;
+  if(y > 199) {
+    dx = dy = 0;
+    text(184, (320 - width(2, msg)) / 2, 90, 2, 112, 128, msg);
+    <hl>if(getclk(BTN_L)) setup();</hl>
+  }
+}
+```
 
 To query if the user has clicked, we use the [getclk] function, with a `BTN_L` argument, meaning is the left button clicked. We've
 used the `setup()` function to set the default values for our little bouncing ball game. This is very convenient, because calling

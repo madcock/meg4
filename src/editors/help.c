@@ -51,10 +51,15 @@ void help_init(void)
     tocw = meg4_width(meg4_font, 1, lang[HELP_TOC], NULL);
     bckw = meg4_width(meg4_font, 1, lang[HELP_BACK], NULL);
     for(i = 0; i < (int)(sizeof(hist)/sizeof(int)); i++) hist[i] = -1;
+    /* find help for locale */
     for(i = 0; help_md[i * 2] && !md; i++)
         if(help_md[i * 2][0] == meg4.mmio.locale[0] && help_md[i * 2][1] == meg4.mmio.locale[1])
             md = (char*)help_md[i * 2 + 1];
-    if(!md) md = (char*)help_md[1];
+    /* if not found, fallback to English */
+    if(!md)
+        for(i = 0; help_md[i * 2] && !md; i++)
+            if(help_md[i * 2][0] == 'e' && help_md[i * 2][1] == 'n')
+                md = (char*)help_md[i * 2 + 1];
     buf = (char*)stbi_zlib_decode_malloc_guesssize_headerflag(md + 3, ((uint8_t)md[2]<<16)|((uint8_t)md[1]<<8)|(uint8_t)md[0],
         65536, &i, 1);
     if(!buf) return;
@@ -502,7 +507,7 @@ void help_view(void)
                 dy += LINEHEIGHT;
             }
         }
-        menu_scrmax = dy + menu_scroll;
+        menu_scrmax = dy + menu_scroll + 16;
         meg4.mmio.cropy0 = y0;
     } else {
         /* display one help page */
@@ -620,7 +625,7 @@ void help_view(void)
         }
 /*for(i = 0; i < help_pages[help_current].numlink; i++)meg4_box(meg4.valt, 630, 388, dp, help_pages[help_current].link[i].x, help_pages[help_current].link[i].y-12, help_pages[help_current].link[i].w, LINEHEIGHT, 0xffffffff, 0, 0xffffffff, 0, 0, 0, 0, 0);*/
         if(!help_pages[help_current].h) help_pages[help_current].h = dy + menu_scroll;
-        menu_scrmax = help_pages[help_current].h;
+        menu_scrmax = help_pages[help_current].h + 16;
         meg4.mmio.cropy0 = y0;
     }
 }

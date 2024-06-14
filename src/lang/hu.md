@@ -323,7 +323,7 @@ csatornához egy-egy és 1024 sor van összesen; míg a hangeffekteknél csak eg
 |--------|-----------:|--------------------------------------------------------------------|
 |      0 |          1 | hangjegy, lásd `NOTE_x` defineok, 0-tól 96-ig                      |
 |      1 |          1 | hullámminta index, 0-tól 31-ig                                     |
-|      2 |          1 | effekt típusa, 0-tól 255-ig                                        |
+|      2 |          1 | effekt típusa, 0-tól 255-ig (lásd [hangjegyeffektek])              |
 |      3 |          1 | effekt paraméter                                                   |
 
 A hangjegy sorszáma a következő: a 0 azt jelenti, nincs beállítva. A többi pedig 8 oktávonként 12 érték, azaz az 1-es a C-0,
@@ -331,6 +331,8 @@ A hangjegy sorszáma a következő: a 0 azt jelenti, nincs beállítva. A többi
 A D hang a 4. oktávon tehát 1 + 4\*12 + 2 = 51. A B-7 a 96-os, a legmagasabb hang a legmagasabb oktávon. De vannak
 define-ok hozzájuk, például a C-1 a `NOTE_C_1` és a C#1 az `NOTE_Cs1`, ha nem akarsz számolni, akkor használhatod ezeket is a
 programodban.
+
+## Hangjegyeffektek
 
 Az egyszerűség kedvéért a MEG-4 ugyanazokat az effektkódokat használja, mint az Amiga MOD fájlok (így ugyanazt látod a beépített
 zeneszerkesztőben mint egy külsős trackerben), de nem támogatja az összeset. Mint korábban említettük, ezek a kódok három hexa
@@ -1517,7 +1519,7 @@ Igaz értékkel tér vissza, ha legalább egy billentyű várakozik a sorban (de
 1 ha van kiolvasatlan billentyű a sorban, egyébként 0 ha a sor üres.
 </dd>
 <dt>Lásd még</dt><dd>
-[pendkey], [lenkey], [speckey]
+[popkey], [lenkey], [speckey]
 </dd>
 <hr>
 ## lenkey
@@ -2035,7 +2037,7 @@ Atméretezi a kételemű vektort (skálázás, skalárral szorzás).
 <dt>Paraméterek</dt><dd>
 | Paraméter | Leírás |
 | a | két float címe |
-| b | skálázó érték |
+| s | skálázó érték |
 </dd>
 <dt>Lásd még</dt><dd>
 [dotv2], [lenv2], [negv2], [addv2], [subv2], [mulv2], [divv2], [clampv2], [lerpv2], [normv2]
@@ -2233,7 +2235,7 @@ Atméretezi a háromelemű vektort (skálázás, skalárral szorzás).
 <dt>Paraméterek</dt><dd>
 | Paraméter | Leírás |
 | a | három float címe |
-| b | skálázó érték |
+| s | skálázó érték |
 </dd>
 <dt>Lásd még</dt><dd>
 [dotv3], [lenv3], [negv3], [addv3], [subv3], [mulv3], [divv3], [crossv3], [clampv3], [lerpv3], [normv3]
@@ -2449,7 +2451,7 @@ Atméretezi a négyelemű vektort (skálázás, skalárral szorzás).
 <dt>Paraméterek</dt><dd>
 | Paraméter | Leírás |
 | a | négy float címe |
-| b | skálázó érték |
+| s | skálázó érték |
 </dd>
 <dt>Lásd még</dt><dd>
 [dotv4], [lenv4], [negv4], [addv4], [subv4], [mulv4], [divv4], [clampv4], [lerpv4], [normv4]
@@ -2682,7 +2684,7 @@ Atméretezi a kvaterniót (skálázás, skalárral szorzás).
 <dt>Paraméterek</dt><dd>
 | Paraméter | Leírás |
 | a | négy float címe |
-| b | skálázó érték |
+| s | skálázó érték |
 </dd>
 <dt>Lásd még</dt><dd>
 [idq], [eulerq], [dotq], [lenq], [negq], [addq], [subq], [mulq], [rotq], [lerpq], [slerpq], [normq]

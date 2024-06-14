@@ -275,7 +275,7 @@ void meg4_setbtn(int btn)
 }
 
 /**
- * Gets the mouse button's state.
+ * Gets the mouse buttons state.
  * @param btn one of the [pointer] buttons, `BTN_` or `SCR_`
  * @return Zero if not pressed, non-zero if pressed.
  * @see [prspad], [relpad], [getpad], [getclk], [getkey]
@@ -290,7 +290,7 @@ int meg4_api_getbtn(int btn)
 /**
  * Gets mouse button clicking.
  * @param btn one of the [pointer] buttons, `BTN_`
- * @return Zero if not clciked, non-zero if clicked.
+ * @return Zero if not clicked, non-zero if clicked.
  * @see [prspad], [relpad], [getpad], [getbtn], [getkey]
  */
 int meg4_api_getclk(int btn)
@@ -572,7 +572,7 @@ uint32_t meg4_api_popkey(void)
 /**
  * Returns true if there's a key pending in the queue (but leaves the key in the queue, does not pop it).
  * @return Returns 1 if there are keys in the queue pending.
- * @see [pendkey], [lenkey], [speckey]
+ * @see [popkey], [lenkey], [speckey]
  */
 int meg4_api_pendkey(void)
 {

@@ -216,7 +216,7 @@ float meg4_api_exp(float val)
 /**
  * Returns the natural logarithm of the value.
  * @param val value
- * @return Returns natural logarithm of val.
+ * @return Returns natural logarithm of value.
  * @see [exp]
  */
 float meg4_api_log(float val)
@@ -239,7 +239,7 @@ float meg4_api_pow(float val, float exp)
 /**
  * Returns the square root of the value. This is a slow operation, try to avoid.
  * @param val value
- * @return Square root.
+ * @return Square root of the value.
  * @see [pow], [rsqrt]
  */
 float meg4_api_sqrt(float val)
@@ -250,7 +250,7 @@ float meg4_api_sqrt(float val)
 /**
  * Returns the reciprocal of the square root of the value (`1 / sqrt(val)`). Uses John Carmack's fast method.
  * @param val value
- * @return Reciprocal of the square root.
+ * @return Reciprocal of the square root of the value.
  * @see [pow], [sqrt]
  */
 float meg4_api_rsqrt(float val)
@@ -405,7 +405,7 @@ float meg4_api_lenv2(addr_t a)
 /**
  * Scales a vector with two elements.
  * @param a address of two floats
- * @param b scaler value
+ * @param s scaler value
  * @see [dotv2], [lenv2], [negv2], [addv2], [subv2], [mulv2], [divv2], [clampv2], [lerpv2], [normv2]
  */
 void meg4_api_scalev2(addr_t a, float s)
@@ -580,7 +580,7 @@ float meg4_api_lenv3(addr_t a)
 /**
  * Scales a vector with three elements.
  * @param a address of three floats
- * @param b scaler value
+ * @param s scaler value
  * @see [dotv3], [lenv3], [negv3], [addv3], [subv3], [mulv3], [divv3], [crossv3], [clampv3], [lerpv3], [normv3]
  */
 void meg4_api_scalev3(addr_t a, float s)
@@ -770,7 +770,7 @@ float meg4_api_lenv4(addr_t a)
 /**
  * Scales a vector with four elements.
  * @param a address of four floats
- * @param b scaler value
+ * @param s scaler value
  * @see [dotv4], [lenv4], [negv4], [addv4], [subv4], [mulv4], [divv4], [clampv4], [lerpv4], [normv4]
  */
 void meg4_api_scalev4(addr_t a, float s)
@@ -935,9 +935,9 @@ void meg4_api_idq(addr_t a)
 /**
  * Loads a quaternion using Euler angles.
  * @param dst address of four floats
- * @param pitch rotation around X axis in degress, 0 to 359
- * @param yaw rotation around Y axis in degress, 0 to 359
- * @param roll rotation around Z axis in degress, 0 to 359
+ * @param pitch rotation around X axis in degrees, 0 to 359
+ * @param yaw rotation around Y axis in degrees, 0 to 359
+ * @param roll rotation around Z axis in degrees, 0 to 359
  * @see [idq], [dotq], [lenq], [scaleq], [negq], [addq], [subq], [mulq], [rotq], [lerpq], [slerpq], [normq]
  */
 void meg4_api_eulerq(addr_t dst, uint16_t pitch, uint16_t yaw, uint16_t roll)
@@ -977,7 +977,7 @@ float meg4_api_lenq(addr_t a) { return meg4_api_lenv4(a); }
 /**
  * Scales a quaternion.
  * @param a address of four floats
- * @param b scaler value
+ * @param s scaler value
  * @see [idq], [eulerq], [dotq], [lenq], [negq], [addq], [subq], [mulq], [rotq], [lerpq], [slerpq], [normq]
  */
 void meg4_api_scaleq(addr_t a, float s) { meg4_api_scalev4(a, s); }
@@ -1093,7 +1093,7 @@ void meg4_api_slerpq(addr_t dst, addr_t a, addr_t b, float t)
 void meg4_api_normq(addr_t a) { meg4_api_normv4(a); }
 
 /**
- * Loads an 4 x 4 identity matrix.
+ * Loads a 4 x 4 identity matrix.
  * @param a address of 16 floats
  * @see [trsm4], [detm4], [addm4], [subm4], [mulm4], [mulm4v3], [mulm4v4], [invm4], [trpm4]
  */
@@ -1266,9 +1266,9 @@ void meg4_api_trpm4(addr_t dst, addr_t a)
  * @param x world X coordinate, -32767 to 32767
  * @param y world Y coordinate, -32767 to 32767
  * @param z world Z coordinate, -32767 to 32767
- * @param pitch rotation around X axis in degress, 0 to 359
- * @param yaw rotation around Y axis in degress, 0 to 359
- * @param roll rotation around Z axis in degress, 0 to 359
+ * @param pitch rotation around X axis in degrees, 0 to 359
+ * @param yaw rotation around Y axis in degrees, 0 to 359
+ * @param roll rotation around Z axis in degrees, 0 to 359
  * @param scale scale, use 1.0 to keep original size
  * @see [mesh]
  */

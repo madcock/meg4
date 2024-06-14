@@ -589,6 +589,7 @@ void meg4_playnote(uint8_t *note, uint8_t volume);
 #endif
 
 /* gpio.c - general purpose input / output pins (specific platforms only) */
+int gpio_init(uint8_t *buf, int len);
 uint32_t meg4_api_gpio_rev(void);
 int meg4_api_gpio_get(uint8_t pin);
 int meg4_api_gpio_set(uint8_t pin, int value);

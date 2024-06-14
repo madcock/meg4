@@ -250,6 +250,8 @@ void meg4_reset(void)
     dsp_init();
     dsp_reset();
     cpu_init();
+    /* load optional GPIO Layout configuration */
+    if((buf = main_cfgload("gpio.txt", &i))) { gpio_init(buf, i); free(buf); }
     /* uncompress and set default font */
     meg4_font = (uint8_t*)malloc(9 * 65536);
     if(meg4_font) {
